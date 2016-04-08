@@ -1,1 +1,48 @@
 Requerimientos del proyecto :
+
+Juego de truco de 40 cartas (1,2,3,4,5,6,7,10,11,12) de cuatro palos distintos (oro, basto, copa y espada);
+
+- Como jugador quiero poder comenzar el juego y jugar contra jugador
+- Como jugadores  queremos comenzar cada ronda con unicamente 3 cartas al azar del mazo
+
+-Como jugadores queremos poder jugar entre 2 y 3 manos por ronda, y que gane el mejor de 3
+
+
+- como jugadro qquiero poder ver mis puntos y los de mi adverrsario durante el juego, ambos comenzamos el juego con 0 puntos
+
+-como jugador quiero poder comenzar la mano 1
+-Como jugador quiero poder irme al mazo en cualquier mano, dandole los puntos correspondientes al rival
+-como jugador quiero poder cantar envido, real envido o falta envido (Esto solo en la primer mano)
+-Como jugador quiero poder revirar el envido (del adversario)           ||
+
+-Como jugador quiero saber cuando gane y cuando perdi el envido, o el envido envido, el real envido o el falta envido (el ganador gana lo que le falta al jugador adversario)
+
+- Como jugadores quiero poder elegir la carta a jugar de entre las tres que poseo
+
+- como jugadores queremos poder saber quien gana la mano, comparando las cartas, el que gana comienza jugando la siguiente mano. Si salen pardas el que gane la proxima mano gana la ronda
+
+
+
+
+
+ 
+-como jugadores queremos poder cantar truco en cualquier parte de la ronda (primera, segunda o tercera mano), siempre y cuando no lo hayan cantado antes
+
+-Como jugador quiero poder decir "quiero" para aceptar el truco, "no quiero " para rechazar el truco y terminar la ronda, y poder retrucar 
+
+-Como jugador quiero poder decir "quiero" para aceptar el retruco, "no quiero " para terminar la ronda o cantar "quiero vale 4" para aumentar los puntos en juego
+- Como jugador quiero poder decir "quiero " o "no quiero"
+
+
+- como jugador quiero poder comenzar la segunda mano,
+- queremos poder jugar la mano igual que la primera, excepto que en esta mano no se puede cantar ningun envido, solo se puede cantar truco (o sus derivados)
+
+- Queremos poder (nuevamente) jugar una carta cada jugador, siendo el primero el que gano la mano anterior
+- queremos poder saber quien gano la segunda mano, si salieron pardas en la primera ronda, el que gane la segunda gana la ronda
+
+- queremos que si un jugador gano la primer mano y la segunda mano, que gane la ronda.
+
+-si los jugadores ganaron una mano cada uno o salieron pardas en la primera y en la segunda,  se procedera a una tercera mano que decida quien gane la ronda
+- queremos poder jugar la tercera mano
+
+
