@@ -1,0 +1,37 @@
+	models/card.js
+
+
+function Card (suit, number){
+	this.suit=suit;
+	this.number=number;
+	this.weigth=weigth[this.suit][this.number]
+}
+
+	test/card.js
+var expect=require ("chair").expect;
+var cardModel=require("../models/card");
+var Card=cardModel.card;
+describe("Card", function(){
+	it("Should have a suit", function()){
+		var c=new Card(1, "ORO");
+		expect(c)..to.have.property("suit");//api chair
+	}
+	
+	describe("#show", function(){
+		it ("should show the card", function()){
+			var c = new Card(4, "Copa");
+			expect(c.show()).to.be.equals("4,Copa");
+		}
+	}
+}
+
+module.exports.card=Card; //exporta objeto de clase Carta (funcion)
+//suit=palo
+
+function Card (suit, number){//constructor de clase Card
+	this.suit=suit;
+	this.number=number;
+	Card.prototyp.show=function(){ //creo funcion show en javascrip
+		return this.number+":"+this.suit;
+	}
+}
