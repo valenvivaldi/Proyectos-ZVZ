@@ -39,8 +39,10 @@ function Card(number, suit){
  *  Print a card
  */
 Card.prototype.show = function(){
-  return this.number + ": " + this.suit;
+  return this.number + " de " + this.suit;
 };
+
+
 
 /*
  * Compares two cards
@@ -59,6 +61,13 @@ Card.prototype.confront = function(card){
   else if(this.weight < card.weight)
     return -1;
 };
+
+Card.prototype.envidovalor = function(){
+	if(this.number<10){return 10+this.number}
+	return 10;
+	
+	}
+
 
 module.exports.card = Card;
 
