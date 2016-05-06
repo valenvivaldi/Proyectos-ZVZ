@@ -11,13 +11,13 @@ var Player = playerModel.player;
 var jugador1 = new Player(1);
 
 var facha = new Player(2);
-var decksito =  new Deck();
-var mazo = decksito.mix();
+var mazo =  new Deck().mix();
+
 
 
 
 jugador1.setcards(mazo[0],mazo[1],mazo[2]);
-Console.log(jugador1.showcards());
+console.log(jugador1.showcards());
 
-console.log(jugador1.puntosenvido());
+jugador1.puntosenvido();
 
