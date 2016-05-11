@@ -52,6 +52,24 @@ valorpar=function(a,b){
 	return 0;
 	};
 
+Player.prototype.jugarEnvido=function(env,envenv,real,falta,quiero,jugNoQ,otroJug,jugmazo){
+	console.log('0- Yo me voy al mazo');
+	if(env==null&&envenv==null&&real==null&&falta==null){console.log('1-Cantar Envido \n')};
+	if(env!=null&&real==null&&falta==null){console.log('2-Cantar EnvidoEnvido \n')};
+	if(real==null&&falta==null){console.log('3-Cantar Real Envido \n')};
+	if(falta==null){console.log('4-Cantar Falta Envido \n')};
+	
+	if(env!=null||envenv!=null||real!=null||falta!=null){console.log('5-Quiero \n 6-No Quiero')};
+	
+	if(env==null&&envenv==null&&real==null&&falta==null){console.log('7- Yo voy a jugar una carta')}
+	
+	
+	
+	
+	
+	
+	}
+
 module.exports.player = Player;
 
 
