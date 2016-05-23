@@ -1,5 +1,3 @@
-var _ = require('lodash');
-
 /*
 * Matrix used to calculate the card weight in the Truco game
 *   weigth - card
@@ -41,8 +39,10 @@ function Card(number, suit){
  *  Print a card
  */
 Card.prototype.show = function(){
-  return this.number + ": " + this.suit;
+  return this.number + " de " + this.suit;
 };
+
+
 
 /*
  * Compares two cards
@@ -62,35 +62,12 @@ Card.prototype.confront = function(card){
     return -1;
 };
 
-/*
- * Returns the envido points of two cards 'this' and 'card'
- */
-Card.prototype.envido = function(card) {
-  var cardValue = card.isBlackCard() ? 0 : card.number;
-  var thisValue = this.isBlackCard() ? 0 : this.number;
+Card.prototype.envidovalor = function(){
+	if(this.number<10){return 10+this.number}
+	return 10;
+	
+	}
 
-  if(!this.isSameSuit(card))
-    return _.max([cardValue, thisValue]);
-
-  else if (card.isBlackCard() && this.isBlackCard())
-    return 20;
-
-  else
-    return cardValue + thisValue + 20;
-};
-
-/*
- * Returns true if card is number 11 or 12
- */
-Card.prototype.isBlackCard = function(){
-  return this.number == 11 || this.number == 12;
-};
-
-/*
- * Returns true when this has the same suit than @card
- */
-Card.prototype.isSameSuit = function(card){
-  return this.suit == card.suit;
-};
 
 module.exports.card = Card;
+
