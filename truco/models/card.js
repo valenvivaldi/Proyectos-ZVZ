@@ -29,7 +29,7 @@ var weight = {
 /*
  * This is the Card Object
  *   @number: the number representing the card number
- *   @suit: this is the card suit
+ *   @suit: thiaaaas is the card suit
  */
 function Card(number, suit){
   this.number = number;

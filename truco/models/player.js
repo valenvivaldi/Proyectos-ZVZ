@@ -29,6 +29,12 @@ Player.prototype.setCards = function(cards){
   this.envidoPoints = this.points();
 }
 
+// Returns the name of the player
+
+Player.prototype.getname = function(){
+	
+	return this.name;
+	}
 /*
  * Returns the user envido points
  */

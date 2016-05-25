@@ -33,7 +33,7 @@ function Game(player1, player2){
   /*
    * Game's hand
    */
-  this.currentHand = 'player1';
+  this.currentHand = this.player1;
 
   /*
    * Game's hand
@@ -44,17 +44,22 @@ function Game(player1, player2){
    * Game' score
    */
   this.score = [0, 0];
+
 }
 
 /*
  * Check if it's valid move and play in the current round
  */
 Game.prototype.play = function(player, action, value){
-  if(this.currentRound.currentTurn !== player)
+  if(this.currentRound.currentTurn.getname() !== player)
     throw new Error("[ERROR] INVALID TURN...");
 
   if(this.currentRound.fsm.cannot(action))
     throw new Error("[ERROR] INVALID MOVE...");
+  if (action=='envido'){this.currentRound.jugadorCantoEnvido=convertStringToPlayer(player);};
+  if (action=='truco'){this.currentRound.jugadorCantoTruco=convertStringToPlayer(player);};
+
+
 
   return this.currentRound.play(action, value);
 };
@@ -75,7 +80,14 @@ Game.prototype.newRound = function(){
  * returns the oposite player
  */
 function switchPlayer(player) {
-  return "player1" === player ? "player2" : "player1";
+  return this.player1 === player ? this.player2 : this.player1;
 };
+
+function convertStringToPlayer (nombre){
+if (this.player1.getname()==nombre){return this.player1;}else{return this.player2;}
+
+}
+
+
 
 module.exports.game = Game;
