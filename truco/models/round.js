@@ -15,28 +15,30 @@ function newTrucoFSM(){
   var fsm = StateMachine.create({
   initial: 'init',
   events: [
-    { name: 'play card', from: 'init',                           to: 'primer carta' },
-    { name: 'envido',    from: ['init', 'primer carta'],         to: 'envido' },
-    { name: 'truco',     from: ['init', 'played card'],          to: 'truco'  },
-    { name: 'play card', from: ['quiero', 'no-quiero',
-                                'primer carta', 'played card'],  to: 'played card' },
+    { name: 'play-card', from: 'init',                           to: 'primer-carta' },
+    { name: 'envido',    from: ['init', 'primer-carta'],         to: 'envido' },
+    { name: 'truco',     from: ['init', 'played-card'],          to: 'truco'  },
+    { name: 'play-card', from: ['quiero', 'no-quiero',
+                                'primer carta', 'played-card'],  to: 'played-card' },
     { name: 'quiero',    from: ['envido', 'truco'],              to: 'quiero'  },
     { name: 'no-quiero', from: ['envido', 'truco'],              to: 'no-quiero' },
-    { name: 'fin-ronda', from: ['played card','no-quiero'],      to:'estado final' },  
+    { name: 'fin-ronda', from: ['played-card','no-quiero'],      to:'estado-final' },  
   ],
    callbacks: {
-    onplayed card:  function(event, from, to) { this.winnerOfRound = this.checkWinnerOfRound();
-                                                if (this.winnerOfRound!==undefined){this.cargarPuntosJugador(this.winnerOfRound,this.puntosDelTruco());this.fsm["fin-ronda"];}
-                                                        },
-   
-  }
+    "onplayed-card":  function(event,from, to) { this.winnerOfRound = this.checkWinnerOfRound();
+                                                if (this.winnerOfRound!==undefined){this.cargarPuntosJugador(this.winnerOfRound,this.puntosDelTruco());this.fsm["fin-ronda"];
+                                            	}
+                                                
+   											//preguntar ERRROR !!!
+  						}
   	
 
-  });
+  	}
 
-  return fsm;
+  	
+	});
+	return fsm;
 }
-
 
 function Round(game, turn){
   /*
@@ -48,7 +50,7 @@ function Round(game, turn){
    * next turn
    */
   this.currentTurn = turn;
-  this.jugadorMano =turn;
+  this.jugadorMano = turn;
   /*
    * here is a FSM to perform user's actions
    */
@@ -87,6 +89,9 @@ Round.prototype.deal = function(){
 
   this.game.player1.setCards(_.pullAt(deck, 0, 2, 4));
   this.game.player2.setCards(_.pullAt(deck, 1, 3, 5));
+
+	this.game.player1.envidopoints =this.game.player1.points();
+  	this.game.player2.envidopoints =this.game.player2.points();
 };
 
 /*
@@ -101,14 +106,14 @@ Round.prototype.deal = function(){
  * ToDo
  */
  Round.prototype.changeTurn = function(){
-   return this.currentTurn = switchPlayer(this.currentTurn);
+   this.currentTurn = this.switchPlayer(this.currentTurn);
 }
 
 /*
  * returns the oposite player
  */
-function switchPlayer(player) {
-  return game.player1 === player ? game.player2 : game.player1;
+Round.prototype.switchPlayer= function(player) {
+  return this.game.player1 === player ? this.game.player2 : this.game.player1;
 };
 
 /*
@@ -118,7 +123,6 @@ Round.prototype.calculateRealPoints =function(){
 var puntosp1 = this.game.score[0] +this.score[0];
 var puntosp2 = this.game.score[1] +this.score[1];
 
-
 return [puntosp1,puntosp2];
 }
 
@@ -127,6 +131,7 @@ return [puntosp1,puntosp2];
 
 Round.prototype.calculateScore = function(action){
   var accionAnterior = this.historialDeAcciones.length-2
+  
   if(action == "quiero" &&this.historialDeAcciones[accionAnterior] =="envido" ){
     if (this.game.player1.envidopoints <this.game.player2.envidopoints){this.score[1]+=2;};
     if (this.game.player1.envidopoints >this.game.player2.envidopoints){this.score[0]+=2;};
@@ -135,6 +140,7 @@ Round.prototype.calculateScore = function(action){
   
   };
   if(action == "no-quiero" &&this.historialDeAcciones[accionAnterior] =="envido" ){
+
     if (this.jugadorCantoEnvido == this.game.player1) {this.score[0]+=1;};
   	if (this.jugadorCantoEnvido == this.game.player2) {this.score[1]+=1;};
   
@@ -149,7 +155,8 @@ Round.prototype.calculateScore = function(action){
     this.fsm["fin-ronda"]();
     
   };
-
+  var aux = this.calculateRealPoints();  //verificamos que alguno haya llegado a los treinta por haber ganado el envido
+  if (aux[0]>=30 || aux[1]>=30){this.fsm["fin-ronda"]};
 
 
 
@@ -161,7 +168,7 @@ Round.prototype.calculateScore = function(action){
  */
 Round.prototype.play = function(action, value) {
   
-  if(action=="play card"){this.seJuegaCarta(value);}
+  if(action=="play-card"){this.seJuegaCarta(value);}
 
 
   // move to the next state
@@ -210,21 +217,29 @@ Round.prototype.checkWinnerOfRound =function(){
 var ganadorPrimera;
 var ganadorSegunda;
 var ganadorTercera;
+	
 
-  if (this.cartasPrimerJugador.length>=2&&this.cartasSegundoJugador.length>=2){
+	if (this.cartasPrimerJugador.length>=1&&this.cartasSegundoJugador.length>=1){	
   if(this.cartasPrimerJugador[0].weight <this.cartasSegundoJugador[0].weight){ganadorPrimera=this.game.player2;};
   if(this.cartasPrimerJugador[0].weight >this.cartasSegundoJugador[0].weight){ganadorPrimera=this.game.player1;};
   if(this.cartasPrimerJugador[0].weight ==this.cartasSegundoJugador[0].weight){ganadorPrimera="Pardas";};
+	}
 
+  if (this.cartasPrimerJugador.length>=2&&this.cartasSegundoJugador.length>=2){
   if(this.cartasPrimerJugador[1].weight <this.cartasSegundoJugador[1].weight){ganadorSegunda=this.game.player2;};
   if(this.cartasPrimerJugador[1].weight >this.cartasSegundoJugador[1].weight){ganadorSegunda=this.game.player1;};
   if(this.cartasPrimerJugador[1].weight ==this.cartasSegundoJugador[1].weight){ganadorSegunda="Pardas";};
   };
+  
+
   if (this.cartasPrimerJugador.length==3&&this.cartasSegundoJugador.length==3){
   if(this.cartasPrimerJugador[2].weight <this.cartasSegundoJugador[2].weight){ganadorTercera=this.game.player2;};
   if(this.cartasPrimerJugador[2].weight >this.cartasSegundoJugador[2].weight){ganadorTercera=this.game.player1;};
   if(this.cartasPrimerJugador[2].weight ==this.cartasSegundoJugador[2].weight){ganadorTercera="Pardas";};
-  }
+  };
+
+
+
 
   if (this.cartasPrimerJugador.length==2&&this.cartasSegundoJugador.length==2){
     if ((ganadorPrimera===ganadorSegunda)&&(ganadorPrimera!=="Pardas")){return ganadorPrimera;};
@@ -240,6 +255,13 @@ var ganadorTercera;
 
      } 
   }
+  if ((this.cartasPrimerJugador.length==1&&this.cartasSegundoJugador.length==1)&& (ganadorPrimera!=="Pardas")){
+  	this.currentTurn = this.switchPlayer(ganadorPrimera);
+  };
+if ((this.cartasPrimerJugador.length==2&&this.cartasSegundoJugador.length==2)&& (ganadorSegunda!=="Pardas")){
+  	this.currentTurn = this.switchPlayer(ganadorSegunda);
+  };
+
 
 return undefined;
 };

@@ -14,7 +14,7 @@ var roundModel = require("./round");
 var Player = playerModel.player;
 var Round  = roundModel.round;
 
-function Game(player1, player2){
+function Game(){                   //   player1, player2){
   /*
    * Player 1
    */
@@ -56,8 +56,8 @@ Game.prototype.play = function(player, action, value){
 
   if(this.currentRound.fsm.cannot(action))
     throw new Error("[ERROR] INVALID MOVE...");
-  if (action=='envido'){this.currentRound.jugadorCantoEnvido=convertStringToPlayer(player);};
-  if (action=='truco'){this.currentRound.jugadorCantoTruco=convertStringToPlayer(player);};
+  if (action=='envido'){this.currentRound.jugadorCantoEnvido=this.currentRound.currentTurn;};        //convertStringToPlayer(player);};
+  if (action=='truco'){this.currentRound.jugadorCantoTruco=this.currentRound.currentTurn;};                                     //convertStringToPlayer(player);};
 
 
 
@@ -80,11 +80,11 @@ Game.prototype.newRound = function(){
  * returns the oposite player
  */
 function switchPlayer(player) {
-  return this.player1 === player ? this.player2 : this.player1;
+  if (this.player1 == player){ return this.player2;}else{return this.player1;} ;
 };
 
 function convertStringToPlayer (nombre){
-if (this.player1.getname()==nombre){return this.player1;}else{return this.player2;}
+if (this.player1.name===nombre){return this.player1;}else{return this.player2;}
 
 }
 
