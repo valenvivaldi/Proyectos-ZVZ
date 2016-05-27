@@ -25,12 +25,19 @@ function newTrucoFSM(){
     { name: 'fin-ronda', from: ['played-card','no-quiero'],      to:'estado-final' },  
   ],
    callbacks: {
-    "onplayed-card":  function(event,from, to) { this.winnerOfRound = this.checkWinnerOfRound();
-                                                if (this.winnerOfRound!==undefined){this.cargarPuntosJugador(this.winnerOfRound,this.puntosDelTruco());this.fsm["fin-ronda"];
-                                            	}
+    "onplayed-card":  function(event,from, to, round) { 
+    	//console.log(round);
+    	//console.log(round.checkWinnerOfRound());
+    										round.winnerOfRound = round.checkWinnerOfRound();
+                                            if (round.winnerOfRound!==undefined){
+                                            round.cargarPuntosJugador(round.winnerOfRound,round.puntosDelTruco());
+                                          	round.fsm["fin-ronda"](round);
+                                            }
                                                 
    											//preguntar ERRROR !!!
-  						}
+  						
+
+  					}
   	
 
   	}
@@ -75,6 +82,10 @@ function Round(game, turn){
 
 	this.historialDeAcciones=[];
   this.winnerOfRound = undefined;
+
+this.ganadorPrimera;
+this.ganadorSegunda;
+this.ganadorTercera;
 
 
 
@@ -152,11 +163,11 @@ Round.prototype.calculateScore = function(action){
     if (this.jugadorCantoTruco == this.game.player1) {this.score[0]+=1;};
     if (this.jugadorCantoTruco == this.game.player2) {this.score[1]+=1;};
     this.winnerOfRound=this.jugadorCantoTruco;
-    this.fsm["fin-ronda"]();
+    this.fsm["fin-ronda"](this);
     
   };
   var aux = this.calculateRealPoints();  //verificamos que alguno haya llegado a los treinta por haber ganado el envido
-  if (aux[0]>=30 || aux[1]>=30){this.fsm["fin-ronda"]};
+  if (aux[0]>=30 || aux[1]>=30){this.fsm["fin-ronda"](this)};
 
 
 
@@ -173,7 +184,8 @@ Round.prototype.play = function(action, value) {
 
   // move to the next state
   
-  this.fsm[action]();
+  this.fsm[action](this);
+  
   this.historialDeAcciones.push(action);
   	
   // check if is needed sum score
@@ -214,56 +226,54 @@ if(this.game.player2.cards[i]==carta){
 };
 
 Round.prototype.checkWinnerOfRound =function(){
-var ganadorPrimera;
-var ganadorSegunda;
-var ganadorTercera;
 	
 
 	if (this.cartasPrimerJugador.length>=1&&this.cartasSegundoJugador.length>=1){	
-  if(this.cartasPrimerJugador[0].weight <this.cartasSegundoJugador[0].weight){ganadorPrimera=this.game.player2;};
-  if(this.cartasPrimerJugador[0].weight >this.cartasSegundoJugador[0].weight){ganadorPrimera=this.game.player1;};
-  if(this.cartasPrimerJugador[0].weight ==this.cartasSegundoJugador[0].weight){ganadorPrimera="Pardas";};
+  if(this.cartasPrimerJugador[0].weight <this.cartasSegundoJugador[0].weight){this.ganadorPrimera=this.game.player2;};
+  if(this.cartasPrimerJugador[0].weight >this.cartasSegundoJugador[0].weight){this.ganadorPrimera=this.game.player1;};
+  if(this.cartasPrimerJugador[0].weight ==this.cartasSegundoJugador[0].weight){this.ganadorPrimera="Pardas";};
 	}
 
   if (this.cartasPrimerJugador.length>=2&&this.cartasSegundoJugador.length>=2){
-  if(this.cartasPrimerJugador[1].weight <this.cartasSegundoJugador[1].weight){ganadorSegunda=this.game.player2;};
-  if(this.cartasPrimerJugador[1].weight >this.cartasSegundoJugador[1].weight){ganadorSegunda=this.game.player1;};
-  if(this.cartasPrimerJugador[1].weight ==this.cartasSegundoJugador[1].weight){ganadorSegunda="Pardas";};
+  if(this.cartasPrimerJugador[1].weight <this.cartasSegundoJugador[1].weight){this.ganadorSegunda=this.game.player2;};
+  if(this.cartasPrimerJugador[1].weight >this.cartasSegundoJugador[1].weight){this.ganadorSegunda=this.game.player1;};
+  if(this.cartasPrimerJugador[1].weight ==this.cartasSegundoJugador[1].weight){this.ganadorSegunda="Pardas";};
   };
   
 
   if (this.cartasPrimerJugador.length==3&&this.cartasSegundoJugador.length==3){
-  if(this.cartasPrimerJugador[2].weight <this.cartasSegundoJugador[2].weight){ganadorTercera=this.game.player2;};
-  if(this.cartasPrimerJugador[2].weight >this.cartasSegundoJugador[2].weight){ganadorTercera=this.game.player1;};
-  if(this.cartasPrimerJugador[2].weight ==this.cartasSegundoJugador[2].weight){ganadorTercera="Pardas";};
+  if(this.cartasPrimerJugador[2].weight <this.cartasSegundoJugador[2].weight){this.ganadorTercera=this.game.player2;};
+  if(this.cartasPrimerJugador[2].weight >this.cartasSegundoJugador[2].weight){this.ganadorTercera=this.game.player1;};
+  if(this.cartasPrimerJugador[2].weight ==this.cartasSegundoJugador[2].weight){this.ganadorTercera="Pardas";};
   };
 
 
 
 
   if (this.cartasPrimerJugador.length==2&&this.cartasSegundoJugador.length==2){
-    if ((ganadorPrimera===ganadorSegunda)&&(ganadorPrimera!=="Pardas")){return ganadorPrimera;};
-    if ((ganadorPrimera==="Pardas" )&&(ganadorSegunda!=="Pardas")){return ganadorSegunda;};
-    if ((ganadorPrimera!=="Pardas")&&(ganadorSegunda==="Pardas")){return ganadorPrimera;};
+    if ((this.ganadorPrimera===ganadorSegunda)&&(this.ganadorPrimera!=="Pardas")){return this.ganadorPrimera;};
+    if ((this.ganadorPrimera==="Pardas" )&&(this.ganadorSegunda!=="Pardas")){return this.ganadorSegunda;};
+    if ((this.ganadorPrimera!=="Pardas")&&(this.ganadorSegunda==="Pardas")){return this.ganadorPrimera;};
   }
   if (this.cartasPrimerJugador.length==3&&this.cartasSegundoJugador.length==3){
-    if ((ganadorPrimera===ganadorSegunda)&&(ganadorTercera!=="Pardas")){return ganadorTercera;};
-    if ((ganadorPrimera===ganadorSegunda)&&(ganadorTercera==="Pardas")){return this.jugadorMano;};
-     if ((ganadorPrimera!=="Pardas")&&(ganadorSegunda!=="Pardas")){
-        if (ganadorTercera==="Pardas"){return ganadorPrimera;};
-        return ganadorTercera;
+    if ((this.ganadorPrimera===this.ganadorSegunda)&&(this.ganadorTercera!=="Pardas")){return this.ganadorTercera;};
+    if ((this.ganadorPrimera===this.ganadorSegunda)&&(this.ganadorTercera==="Pardas")){return this.jugadorMano;};
+     if ((this.ganadorPrimera!=="Pardas")&&(this.ganadorSegunda!=="Pardas")){
+        if (this.ganadorTercera==="Pardas"){return this.ganadorPrimera;};
+        return this.ganadorTercera;
 
      } 
   }
-  if ((this.cartasPrimerJugador.length==1&&this.cartasSegundoJugador.length==1)&& (ganadorPrimera!=="Pardas")){
-  	this.currentTurn = this.switchPlayer(ganadorPrimera);
+  if ((this.cartasPrimerJugador.length==1&&this.cartasSegundoJugador.length==1)&& (this.ganadorPrimera!=="Pardas")){
+  	this.currentTurn = this.switchPlayer(this.ganadorPrimera);
   };
-if ((this.cartasPrimerJugador.length==2&&this.cartasSegundoJugador.length==2)&& (ganadorSegunda!=="Pardas")){
-  	this.currentTurn = this.switchPlayer(ganadorSegunda);
-  };
+  if ((this.cartasPrimerJugador.length==2&&this.cartasSegundoJugador.length==2)&& (this.ganadorSegunda!=="Pardas")){
+  	this.currentTurn = this.switchPlayer(this.ganadorSegunda);
+   };
 
 
 return undefined;
+
 };
 
 Round.prototype.puntosDelTruco=function(){

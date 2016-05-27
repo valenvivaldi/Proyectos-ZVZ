@@ -45,15 +45,18 @@ game.player2.envidopoints =game.player2.points();
     expect(game.currentRound.calculateRealPoints()).to.deep.equal([0, 2]);
   });
 
-  it('plays [envido, quiero] should gives 2 points to winner', function(){
+  it('plays 2 hands should gives 2 to p2 and 1 point to player 1 ', function(){
     game.play('Player 1', 'envido');
     game.play('Player 2', 'quiero');
-    game.play('Player 1', 'play-card',game.player1.cards[2]);
-    game.play('Player 2', 'play-card',game.player2.cards[2]);
     
     game.play('Player 1', 'play-card',game.player1.cards[1]);
     game.play('Player 2', 'play-card',game.player2.cards[1]);
-    expect(game.currentRound.calculateRealPoints()).to.deep.equal([1, 2]);
+    
+
+    game.play('Player 1', 'play-card',game.player1.cards[2]);
+    game.play('Player 2', 'play-card',game.player2.cards[2]);
+    
+   expect(game.currentRound.calculateRealPoints()).equal([1, 2]);
   });
 
 
