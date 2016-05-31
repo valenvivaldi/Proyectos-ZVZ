@@ -22,25 +22,27 @@ function newTrucoFSM(){
                                 'primer carta', 'played-card'],  to: 'played-card' },
     { name: 'quiero',    from: ['envido', 'truco'],              to: 'quiero'  },
     { name: 'no-quiero', from: ['envido', 'truco'],              to: 'no-quiero' },
+    
     { name: 'fin-ronda', from: ['played-card','no-quiero'],      to:'estado-final' },  
-  ],
-   callbacks: {
-    "onplayed-card":  function(event,from, to, round) { 
+  ]//,
+   //callbacks: {
+    //"onplayed-card":  function(event,from, to, round) { 
     	//console.log(round);
     	//console.log(round.checkWinnerOfRound());
-    										round.winnerOfRound = round.checkWinnerOfRound();
-                                            if (round.winnerOfRound!==undefined){
-                                            round.cargarPuntosJugador(round.winnerOfRound,round.puntosDelTruco());
-                                          	round.fsm["fin-ronda"](round);
-                                            }
+    	//									round.winnerOfRound = round.checkWinnerOfRound();
+          //                                  
+            //                                if (round.winnerOfRound!=undefined){
+              //                              round.cargarPuntosJugador(round.winnerOfRound,round.puntosDelTruco());
+                //                          	round.fsm["fin-ronda"](round);
+                  //                          }
                                                 
    											//preguntar ERRROR !!!
   						
 
-  					}
+  //					}
   	
 
-  	}
+  	//}
 
   	
 	});
@@ -154,7 +156,7 @@ Round.prototype.calculateScore = function(action){
 
     if (this.jugadorCantoEnvido == this.game.player1) {this.score[0]+=1;};
   	if (this.jugadorCantoEnvido == this.game.player2) {this.score[1]+=1;};
-  
+	this.game.currentTurn = this.switchPlayer(this.jugadorCantoEnvido);  
   };
 
 
@@ -179,7 +181,6 @@ Round.prototype.calculateScore = function(action){
  */
 Round.prototype.play = function(action, value) {
   
-  if(action=="play-card"){this.seJuegaCarta(value);}
 
 
   // move to the next state
@@ -190,6 +191,12 @@ Round.prototype.play = function(action, value) {
   	
   // check if is needed sum score
   this.calculateScore(action);
+
+	if(action=="play-card"){
+		this.seJuegaCarta(value);
+		this.verificarGanador();
+	}
+
 
   // Change player's turn
   return this.changeTurn();
@@ -226,18 +233,24 @@ if(this.game.player2.cards[i]==carta){
 };
 
 Round.prototype.checkWinnerOfRound =function(){
-	
+
+
+
+
 
 	if (this.cartasPrimerJugador.length>=1&&this.cartasSegundoJugador.length>=1){	
   if(this.cartasPrimerJugador[0].weight <this.cartasSegundoJugador[0].weight){this.ganadorPrimera=this.game.player2;};
   if(this.cartasPrimerJugador[0].weight >this.cartasSegundoJugador[0].weight){this.ganadorPrimera=this.game.player1;};
-  if(this.cartasPrimerJugador[0].weight ==this.cartasSegundoJugador[0].weight){this.ganadorPrimera="Pardas";};
+  if(this.cartasPrimerJugador[0].weight == this.cartasSegundoJugador[0].weight){this.ganadorPrimera="Pardas";};
 	}
+
 
   if (this.cartasPrimerJugador.length>=2&&this.cartasSegundoJugador.length>=2){
   if(this.cartasPrimerJugador[1].weight <this.cartasSegundoJugador[1].weight){this.ganadorSegunda=this.game.player2;};
   if(this.cartasPrimerJugador[1].weight >this.cartasSegundoJugador[1].weight){this.ganadorSegunda=this.game.player1;};
   if(this.cartasPrimerJugador[1].weight ==this.cartasSegundoJugador[1].weight){this.ganadorSegunda="Pardas";};
+    
+
   };
   
 
@@ -248,22 +261,6 @@ Round.prototype.checkWinnerOfRound =function(){
   };
 
 
-
-
-  if (this.cartasPrimerJugador.length==2&&this.cartasSegundoJugador.length==2){
-    if ((this.ganadorPrimera===ganadorSegunda)&&(this.ganadorPrimera!=="Pardas")){return this.ganadorPrimera;};
-    if ((this.ganadorPrimera==="Pardas" )&&(this.ganadorSegunda!=="Pardas")){return this.ganadorSegunda;};
-    if ((this.ganadorPrimera!=="Pardas")&&(this.ganadorSegunda==="Pardas")){return this.ganadorPrimera;};
-  }
-  if (this.cartasPrimerJugador.length==3&&this.cartasSegundoJugador.length==3){
-    if ((this.ganadorPrimera===this.ganadorSegunda)&&(this.ganadorTercera!=="Pardas")){return this.ganadorTercera;};
-    if ((this.ganadorPrimera===this.ganadorSegunda)&&(this.ganadorTercera==="Pardas")){return this.jugadorMano;};
-     if ((this.ganadorPrimera!=="Pardas")&&(this.ganadorSegunda!=="Pardas")){
-        if (this.ganadorTercera==="Pardas"){return this.ganadorPrimera;};
-        return this.ganadorTercera;
-
-     } 
-  }
   if ((this.cartasPrimerJugador.length==1&&this.cartasSegundoJugador.length==1)&& (this.ganadorPrimera!=="Pardas")){
   	this.currentTurn = this.switchPlayer(this.ganadorPrimera);
   };
@@ -272,16 +269,48 @@ Round.prototype.checkWinnerOfRound =function(){
    };
 
 
+
+
+
+  if ((this.cartasPrimerJugador.length==2)&&(this.cartasSegundoJugador.length==2)){
+    if ((this.ganadorPrimera===this.ganadorSegunda)&&(this.ganadorPrimera!=="Pardas")){return this.ganadorPrimera;};
+    if ((this.ganadorPrimera==="Pardas" )&&(this.ganadorSegunda!=="Pardas")){return this.ganadorSegunda;};
+    if ((this.ganadorPrimera!="Pardas")&&(this.ganadorSegunda=="Pardas")){return this.ganadorPrimera;};
+  };
+
+
+
+  if (this.cartasPrimerJugador.length==3&&this.cartasSegundoJugador.length==3){
+
+
+    if ((this.ganadorPrimera===this.ganadorSegunda)&&(this.ganadorTercera!=="Pardas")){return this.ganadorTercera;};
+    if ((this.ganadorPrimera===this.ganadorSegunda)&&(this.ganadorTercera==="Pardas")){return this.jugadorMano;};
+     if ((this.ganadorPrimera!=="Pardas")&&(this.ganadorSegunda!=="Pardas")){
+        if (this.ganadorTercera==="Pardas"){return this.ganadorPrimera;};
+        return this.ganadorTercera;
+
+     }; 
+  }
+
+  
+
 return undefined;
 
 };
 
 Round.prototype.puntosDelTruco=function(){
-if(this.jugadorCantoTruco !== undefined){return 1;
+if(this.jugadorCantoTruco == undefined){return 1;
 }
 return 2;
+};
 
+Round.prototype.verificarGanador = function(){
+	this.winnerOfRound = this.checkWinnerOfRound();
+ 	if (this.winnerOfRound!=undefined){
+ 		this.cargarPuntosJugador(this.winnerOfRound,this.puntosDelTruco());
+        this.fsm["fin-ronda"];
 
+}
 };
 
 

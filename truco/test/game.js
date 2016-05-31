@@ -56,7 +56,73 @@ game.player2.envidopoints =game.player2.points();
     game.play('Player 1', 'play-card',game.player1.cards[2]);
     game.play('Player 2', 'play-card',game.player2.cards[2]);
     
-   expect(game.currentRound.calculateRealPoints()).equal([1, 2]);
+   expect(game.currentRound.calculateRealPoints()).to.deep.equal([1, 2]);
+  });
+
+  it('plays 3 hands  and envido and truco should gives 2 to p2 and 2 point to player 1 ', function(){
+    game.play('Player 1', 'envido');
+    game.play('Player 2', 'quiero');
+    
+    game.play('Player 1', 'play-card',game.player1.cards[2]);
+    game.play('Player 2', 'play-card',game.player2.cards[2]);
+
+     game.play('Player 1', 'truco');
+    game.play('Player 2', 'quiero');
+    game.play('Player 1', 'play-card',game.player1.cards[1]);
+    game.play('Player 2', 'play-card',game.player2.cards[1]);
+    
+
+    
+    
+   expect(game.currentRound.calculateRealPoints()).to.deep.equal([2, 2]);
+  });
+  it('plays 1 hands  and envido and truco should gives 2 to p2 and 1 point to player 1 ', function(){
+    game.play('Player 1', 'envido');
+    game.play('Player 2', 'quiero');
+    
+    game.play('Player 1', 'play-card',game.player1.cards[2]);
+    game.play('Player 2', 'play-card',game.player2.cards[2]);
+
+    game.play('Player 1', 'truco');
+    game.play('Player 2', 'no-quiero');
+
+    
+    
+   expect(game.currentRound.calculateRealPoints()).to.deep.equal([1, 2]);
+  });
+
+  it('plays 3 hands  and envido and truco should gives 3 to p2 and 1 point to player 1 ', function(){
+    game.play('Player 1', 'envido');
+    game.play('Player 2', 'quiero');
+    
+    game.play('Player 1', 'play-card',game.player1.cards[2]);
+    game.play('Player 2', 'play-card',game.player2.cards[2]);
+    game.play('Player 1', 'play-card',game.player1.cards[1]);
+     game.play('Player 2', 'truco');
+    game.play('Player 1', 'no-quiero');
+    
+    
+    
+
+    
+    
+   expect(game.currentRound.calculateRealPoints()).to.deep.equal([0, 3]);
+  });
+
+  it('plays 0 hands  and envido and truco should gives 0 to p2 and 2 point to player 1 ', function(){
+    game.play('Player 1', 'envido');
+    console.log(game.currentRound.currentTurn.getname());
+
+    game.play('Player 2', 'no-quiero');
+    console.log(game.currentRound.currentTurn.getname());
+    game.play('Player 1', 'truco');
+    console.log(game.currentRound.currentTurn.getname());
+    game.play('Player 2', 'no-quiero');
+    
+
+    
+    
+   expect(game.currentRound.calculateRealPoints()).to.deep.equal([2, 0]);
   });
 
 
