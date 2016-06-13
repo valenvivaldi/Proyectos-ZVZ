@@ -1,10 +1,11 @@
-/*
- *
- * Represents a game
- * @param player1 [String]: name of player 1
- * @param player2 [String]: name of player 2
- *
- */
+var mongoose= require('mongoose');
+mongoose.connect('mongodb://localhost/truco');
+var db=mongoose.connection;
+
+db.on('error',console.error.bind(console,'connection error'));
+db.once('open',function(){
+  console.log('we are connected!!!');
+});
 
 var _ = require('lodash');
 var playerModel = require("./player");
@@ -14,38 +15,79 @@ var roundModel = require("./round");
 var Player = playerModel.player;
 var Round  = roundModel.round;
 
-function Game(){                   //   player1, player2){
+
+
+
+
+
+
+var ObjectId=  mongoose.Schema.Types.ObjectId;
+
+var GameSchema= mongoose.Schema({ //vamos cargando los atributos en el schema
+    //player1:ObjectId,
+    //player2:ObjectId,
+    //rounds:Array,
+    //currenHand:ObjectId,
+    //currentRound:ObjectId,
+    //score:Array,
+    player1:{type: ObjectId,ref: 'Player'},
+    player2:{type: ObjectId, ref: 'Player'},
+    rounds:Array,
+    currenHand:{type:ObjectId, ref: 'Player'},
+    currentRound:{type:ObjectId, ref: 'Round'},
+    score:Array,
+
+
+
+});
+
+var Game = mongoose.model ('Game',GameSchema);
+
+
+
+
+
+/*
+ *
+ * Represents a game
+ * @param player1 [String]: name of player 1
+ * @param player2 [String]: name of player 2
+ *
+ */
+
+
+//function Game(){                   //   player1, player2){
   /*
    * Player 1
    */
-  this.player1 = new Player('Player 1');
+ // this.player1 = new Player('Player 1');
 
   /*
    * Player 2
    */
-  this.player2 = new Player('Player 2');
+ // this.player2 = new Player('Player 2');
 
   /*
    * sequence of previous Rounds
    */
-  this.rounds = [];
+ // this.rounds = [];
 
   /*
    * Game's hand
    */
-  this.currentHand = this.player1;
+ // this.currentHand = this.player1;
 
   /*
    * Game's hand
    */
-  this.currentRound = undefined;
+  //this.currentRound = undefined;
 
   /*
    * Game' score
    */
-  this.score = [0, 0];
+ // this.score = [0, 0];
 
-}
+//}
 
 /*
  * Check if it's valid move and play in the current round
@@ -88,6 +130,6 @@ if (this.player1.name===nombre){return this.player1;}else{return this.player2;}
 
 }
 
-
+//Game.prototype.returndb
 
 module.exports.game = Game;

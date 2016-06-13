@@ -1,25 +1,42 @@
+var mongoose = require ("mongoose"); 
+//mongoose.connect("mongodb://localhost/truco");
+//var db=mongoose.connection;
+
+
+var PlayerSchema= mongoose.Schema({ //vamos cargando los atributos en el schema
+  name: String,
+  password:String,
+  cards:Array,
+  envidoPoints:Number
+});
+
+var Player = mongoose.model ('Player',PlayerSchema);
+
+
+
+
 /*
  * Represents a player in the game
  * @param name [String]: old state to intialize the new state
  */
 var _ = require('lodash');
 
-function Player(name) {
+//function Player(name) {
   /*
    * the player's name
    */
-  this.name = name;
+// this.name = name;
 
   /*
    * cards of this user
    */
-  this.cards = [];
+//  this.cards = [];
 
   /*
    * user envido points
    */
-  this.envidoPoints = 0;
-}
+//  this.envidoPoints = 0;
+//}
 
 /*
  * Add cards to user and calculate the user points
