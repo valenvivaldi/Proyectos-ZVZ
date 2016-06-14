@@ -1,11 +1,11 @@
 var mongoose= require('mongoose');
-mongoose.connect('mongodb://localhost/truco');
-var db=mongoose.connection;
+//mongoose.connect('mongodb://localhost/truco');
+//var db=mongoose.connection;
 
-db.on('error',console.error.bind(console,'connection error'));
-db.once('open',function(){
-  console.log('we are connected!!!');
-});
+//db.on('error',console.error.bind(console,'connection error'));
+//db.once('open',function(){
+ // console.log('we are connected!!!');
+//});
 
 var _ = require('lodash');
 var playerModel = require("./player");
@@ -30,11 +30,16 @@ var GameSchema= mongoose.Schema({ //vamos cargando los atributos en el schema
     //currenHand:ObjectId,
     //currentRound:ObjectId,
     //score:Array,
-    player1:{type: ObjectId,ref: 'Player'},
-    player2:{type: ObjectId, ref: 'Player'},
+   // player1:{type: ObjectId,ref: 'Player'},
+    //player2:{type: ObjectId, ref: 'Player'},
+    player1:Object,
+    player2:Object,
+   
     rounds:Array,
-    currenHand:{type:ObjectId, ref: 'Player'},
-    currentRound:{type:ObjectId, ref: 'Round'},
+    //currenHand:{type:ObjectId, ref: 'Player'},
+   // currentRound:{type:ObjectId, ref: 'Round'},
+    currenHand:Object,
+    currentRound:Object,
     score:Array,
 
 

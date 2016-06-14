@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  if (!user)
+    a(href="/login") Login
+  if(idgame)
+    p YA TENES EL JUEGO CARGADO!!!!!!!!!!!! PUTO 
+
+
+  if (user)
+    p Ya te logeaste como: #{user.username}
+    a(href="/logout") Logout
+    br
+    br
+    br
+    br
+    a(href="/newgame") NUEVO JUEGO!!!!!!!!!!!!!!!!!!!!!!!!1!
+
+    br
+    br
+    br
+    br
+    a(href="/ayuda") Nose jugar, AIUDAAAA!
