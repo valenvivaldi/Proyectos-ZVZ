@@ -1,4 +1,8 @@
+var mongoose= require('mongoose');
+
+
 /*
+
  *
  * Represents a game's round
  *
@@ -11,45 +15,33 @@ var StateMachine = require("../node_modules/javascript-state-machine/state-machi
 var deckModel = require("./deck");
 var Deck  = deckModel.deck;
 
-function newTrucoFSM(){
-  var fsm = StateMachine.create({
-  initial: 'init',
-  events: [
-    { name: 'play-card', from: 'init',                           to: 'primer-carta' },
-    { name: 'envido',    from: ['init', 'primer-carta'],         to: 'envido' },
-    { name: 'truco',     from: ['init', 'played-card'],          to: 'truco'  },
-    { name: 'play-card', from: ['quiero', 'no-quiero',
-                                'primer carta', 'played-card'],  to: 'played-card' },
-    { name: 'quiero',    from: ['envido', 'truco'],              to: 'quiero'  },
-    { name: 'no-quiero', from: ['envido', 'truco'],              to: 'no-quiero' },
-    
-    { name: 'fin-ronda', from: ['played-card','no-quiero'],      to:'estado-final' },  
-  ]//,
-   //callbacks: {
-    //"onplayed-card":  function(event,from, to, round) { 
-    	//console.log(round);
-    	//console.log(round.checkWinnerOfRound());
-    	//									round.winnerOfRound = round.checkWinnerOfRound();
-          //                                  
-            //                                if (round.winnerOfRound!=undefined){
-              //                              round.cargarPuntosJugador(round.winnerOfRound,round.puntosDelTruco());
-                //                          	round.fsm["fin-ronda"](round);
-                  //                          }
-                                                
-   											//preguntar ERRROR !!!
-  						
 
-  //					}
-  	
 
-  	//}
 
-  	
-	});
-	return fsm;
-}
+var RoundSchema= mongoose.Schema({
+  currentTurn:Object,
+  jugadorMano:Object,
+  player1:Object,
+  player2:Object, 
+  fsm:Object,
+  status:String,
+  score:Array,
+  cartasPrimerJugador:Array,
+  cartasSegundoJugador:Array,
+  jugadorCantoEnvido:Object,
+  jugadorCantoTruco:Object,
+  historialDeAcciones:Array,
+  winnerOfRound : Object,
 
-function Round(game,turn){
+  ganadorPrimera:Object,
+  ganadorSegunda:Object,
+  ganadorTercera:Object
+
+});
+
+var Round = mongoose.model ('Round',RoundSchema);
+
+//function Round(game,turn){
   /*
    * Game
    */
@@ -58,48 +50,48 @@ function Round(game,turn){
   /*
    * next turn
    */
-  this.currentTurn = turn;
-  this.jugadorMano = turn;
+  //this.currentTurn = turn;
+  //this.jugadorMano = turn;
   
 
-  this.player1=game.player1;
-  this.player2=game.player2;
+  //this.player1=game.player1;
+  //this.player2=game.player2;
   /*
    * here is a FSM to perform user's actions
    */
-  this.fsm = newTrucoFSM();
+  //this.fsm = newTrucoFSM();
 
   /*
    *
    */
-  this.status = 'running';
+  //this.status = 'running';
 
   /*
    * Round' score
    */
-  this.score = game.score;
+  //this.score = game.score;
 
 
 
 //cartas jugadas por los jugadores
-  this.cartasPrimerJugador=[];
-  this.cartasSegundoJugador=[];
+ // this.cartasPrimerJugador=[];
+  //this.cartasSegundoJugador=[];
 
 
-  this.jugadorCantoEnvido=undefined;
-  this.jugadorCantoTruco=undefined;
+  //this.jugadorCantoEnvido=undefined;
+  //this.jugadorCantoTruco=undefined;
 
-	this.historialDeAcciones=[];
-  this.winnerOfRound = undefined;
+	//this.historialDeAcciones=[];
+  //this.winnerOfRound = undefined;
 
-  this.ganadorPrimera;
-  this.ganadorSegunda;
-  this.ganadorTercera;
-
-
+  //this.ganadorPrimera;
+  //this.ganadorSegunda;
+  //this.ganadorTercera;
 
 
-}
+
+
+//}
 
 
 /*
@@ -320,6 +312,26 @@ Round.prototype.verificarGanador = function(){
 
 }
 };
+
+
+Round.prototype.newTrucoFSM = function(){
+  var fsm = StateMachine.create({
+  initial: 'init',
+  events: [
+    { name: 'play-card', from: 'init',                           to: 'primer-carta' },
+    { name: 'envido',    from: ['init', 'primer-carta'],         to: 'envido' },
+    { name: 'truco',     from: ['init', 'played-card'],          to: 'truco'  },
+    { name: 'play-card', from: ['quiero', 'no-quiero',
+                                'primer carta', 'played-card'],  to: 'played-card' },
+    { name: 'quiero',    from: ['envido', 'truco'],              to: 'quiero'  },
+    { name: 'no-quiero', from: ['envido', 'truco'],              to: 'no-quiero' },
+    
+    { name: 'fin-ronda', from: ['played-card','no-quiero'],      to:'estado-final' },  
+  ] 
+  });
+  return fsm;
+}
+
 
 
 module.exports.round = Round;

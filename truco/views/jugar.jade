@@ -2,8 +2,43 @@ extends layout
 
 block content
   
-  if(idgame)
-    p 
+  
+  p <h3>DATOS ACTUALES DEL JUEGO
+    p PUNTOS: 
+    p #{game.player1.name} : #{game.currentRound.score[0]} 
+    p #{game.player2.name} : #{game.currentRound.score[1]} 
+    <hr>
+    <h3>EL TURNO ES DE: #{game.currentRound.currentTurn.name}  <h3>
+    <hr>
+  p Cartas en mesa:
+  &nbsp; 
+  p #{game.player1.name}:
+    img(src= '#{c1j1}')
+    img(src= '#{c2j1}')
+    img(src= '#{c3j1}')
+    &nbsp; #{game.player2.name}:
+    img(src= '#{c1j2}')
+    img(src= '#{c2j2}')
+    img(src= '#{c3j2}')
+    
 
 
   
+  &nbsp; PUNTOS PARA EL ENVIDO: #{penvido}
+  
+
+  p Que desea hacer????
+    if(estadoCantarEnvido)   
+      form(role='form', action="/cantarEnvido",method="post", style='max-width: 300px;')      
+      button.btn.btn-default(type='submit',disable ) Cantar Envido
+    form(role='form', action="/cantarTruco",method="post", style='max-width: 300px;')      
+      button.btn.btn-default(type='submit') Cantar Truco
+
+    form(role='form', action="/jugarcarta",method="post")
+    input.form-control(type='image', src='#{c1j1}')
+    &nbsp;
+    form(role='form', action="/jugarcarta",method="post")
+    input.form-control(type='image', src='#{c2j1}')
+    &nbsp;
+    form(role='form', action="/jugarcarta",method="post")
+    input.form-control(type='image', src='#{c3j1}')
