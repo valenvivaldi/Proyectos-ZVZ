@@ -32,7 +32,6 @@ var GameSchema= mongoose.Schema({ //vamos cargando los atributos en el schema
     //score:Array,
    // player1:{type: ObjectId,ref: 'Player'},
     //player2:{type: ObjectId, ref: 'Player'},
-    name:String,
     player1:Object,
     player2:Object,
    
@@ -41,10 +40,6 @@ var GameSchema= mongoose.Schema({ //vamos cargando los atributos en el schema
    // currentRound:{type:ObjectId, ref: 'Round'},
     currentHand:Object,
     currentRound:Object,
-
-
-
-
     score:Array,
 
 
@@ -122,9 +117,10 @@ Game.prototype.play = function(player, action, value){
  */
 Game.prototype.newRound = function(){
   var round = new Round(this, this.currentHand);
-  this.rounds.push(round);
-  this.currentHand = switchPlayer(this.currentHand);
+  
   this.currentRound = round;
+  this.currentHand = switchPlayer(this.currentHand);
+  this.rounds.push(round);
 
   return this;
 }

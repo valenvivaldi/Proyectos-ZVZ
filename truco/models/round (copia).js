@@ -49,21 +49,17 @@ function newTrucoFSM(){
 	return fsm;
 }
 
-function Round(game,turn){
+function Round(game, turn){
   /*
    * Game
    */
-  //this.game = game;
+  this.game = game;
 
   /*
    * next turn
    */
   this.currentTurn = turn;
   this.jugadorMano = turn;
-  
-
-  this.player1=game.player1;
-  this.player2=game.player2;
   /*
    * here is a FSM to perform user's actions
    */
@@ -77,10 +73,7 @@ function Round(game,turn){
   /*
    * Round' score
    */
-  this.score = game.score;
-
-
-
+  this.score = [0, 0];
 //cartas jugadas por los jugadores
   this.cartasPrimerJugador=[];
   this.cartasSegundoJugador=[];
@@ -108,11 +101,11 @@ function Round(game,turn){
 Round.prototype.deal = function(){
   var deck = new Deck().mix();
 
-  this.player1.setCards(_.pullAt(deck, 0, 2, 4));
-  this.player2.setCards(_.pullAt(deck, 1, 3, 5));
+  this.game.player1.setCards(_.pullAt(deck, 0, 2, 4));
+  this.game.player2.setCards(_.pullAt(deck, 1, 3, 5));
 
-	this.player1.envidopoints =this.player1.points();
-  	this.player2.envidopoints =this.player2.points();
+	this.game.player1.envidopoints =this.game.player1.points();
+  	this.game.player2.envidopoints =this.game.player2.points();
 };
 
 /*
@@ -134,15 +127,15 @@ Round.prototype.deal = function(){
  * returns the oposite player
  */
 Round.prototype.switchPlayer= function(player) {
-  return this.player1 === player ? this.player2 : this.player1;
+  return this.game.player1 === player ? this.game.player2 : this.game.player1;
 };
 
 /*
  * ToDo: Calculate the real score
  */
 Round.prototype.calculateRealPoints =function(){
-var puntosp1 = this.score[0] //+this.score[0];
-var puntosp2 = this.score[1] //+this.score[1];
+var puntosp1 = this.game.score[0] +this.score[0];
+var puntosp2 = this.game.score[1] +this.score[1];
 
 return [puntosp1,puntosp2];
 }
@@ -154,24 +147,24 @@ Round.prototype.calculateScore = function(action){
   var accionAnterior = this.historialDeAcciones.length-2
   
   if(action == "quiero" &&this.historialDeAcciones[accionAnterior] =="envido" ){
-    if (this.player1.envidopoints <this.player2.envidopoints){this.score[1]+=2;};
-    if (this.player1.envidopoints >this.player2.envidopoints){this.score[0]+=2;};
-    if (this.player1.envidopoints ==this.player2.envidopoints){this.cargarPuntosJugador(this.jugadorMano,2);};
+    if (this.game.player1.envidopoints <this.game.player2.envidopoints){this.score[1]+=2;};
+    if (this.game.player1.envidopoints >this.game.player2.envidopoints){this.score[0]+=2;};
+    if (this.game.player1.envidopoints ==this.game.player2.envidopoints){this.cargarPuntosJugador(this.jugadorMano,2);};
 
   
   };
   if(action == "no-quiero" &&this.historialDeAcciones[accionAnterior] =="envido" ){
 
-    if (this.jugadorCantoEnvido == this.player1) {this.score[0]+=1;};
-  	if (this.jugadorCantoEnvido == this.player2) {this.score[1]+=1;};
-	this.currentTurn = this.switchPlayer(this.jugadorCantoEnvido);  
+    if (this.jugadorCantoEnvido == this.game.player1) {this.score[0]+=1;};
+  	if (this.jugadorCantoEnvido == this.game.player2) {this.score[1]+=1;};
+	this.game.currentTurn = this.switchPlayer(this.jugadorCantoEnvido);  
   };
 
 
 //esto tendir que ser un callback en el no-quiero
   if(action == "no-quiero" && this.historialDeAcciones[accionAnterior]=="truco"){
-    if (this.jugadorCantoTruco == this.player1) {this.score[0]+=1;};
-    if (this.jugadorCantoTruco == this.player2) {this.score[1]+=1;};
+    if (this.jugadorCantoTruco == this.game.player1) {this.score[0]+=1;};
+    if (this.jugadorCantoTruco == this.game.player2) {this.score[1]+=1;};
     this.winnerOfRound=this.jugadorCantoTruco;
     this.fsm["fin-ronda"](this);
     
@@ -213,26 +206,26 @@ Round.prototype.play = function(action, value) {
 };
 
 Round.prototype.cargarPuntosJugador = function(player,puntos){
-if (player ==this.player1){this.score[0]+=puntos;}
-if (player ==this.player2){this.score[1]+=puntos;}
+if (player ==this.game.player1){this.score[0]+=puntos;}
+if (player ==this.game.player2){this.score[1]+=puntos;}
 
 }
 
 Round.prototype.showRealPoints = function (){
-console.log ('El jugador:'+this.player1.getname()+' tiene '+this.score[0]+' actualmente \n');
-console.log ('El jugador:'+this.player2.getname()+' tiene '+this.score[1]+' actualmente \n');
+console.log ('El jugador:'+this.game.player1.getname()+' tiene '+this.score[0]+' actualmente \n');
+console.log ('El jugador:'+this.game.player2.getname()+' tiene '+this.score[1]+' actualmente \n');
 } 
 
 Round.prototype.seJuegaCarta=function(carta){
 
 for (var i=0; i < 3; i++) { 
-if(this.player1.cards[i]==carta){
-  this.player1.cards[i]=undefined;
+if(this.game.player1.cards[i]==carta){
+  this.game.player1.cards[i]=undefined;
   this.cartasPrimerJugador.push(carta);
   };
 
-if(this.player2.cards[i]==carta){
-  this.player2.cards[i]=undefined;
+if(this.game.player2.cards[i]==carta){
+  this.game.player2.cards[i]=undefined;
   this.cartasSegundoJugador.push(carta);
   };
 

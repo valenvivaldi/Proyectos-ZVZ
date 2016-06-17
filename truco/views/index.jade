@@ -1,23 +1,21 @@
 extends layout
 
 block content
+  
   if (!user)
-    a(href="/login") Login
-  if(idgame)
-    p YA TENES EL JUEGO CARGADO!!!!!!!!!!!! PUTO 
+    br
+    a(href="/login") <h1><b>Login<b><h1>
+
+  
 
 
   if (user)
     p Ya te logeaste como: #{user.username}
-    a(href="/logout") Logout
+    a(href="/logout") <h3><b>Logout<b><h3>
     br
     br
-    br
-    br
-    a(href="/newgame") NUEVO JUEGO!!!!!!!!!!!!!!!!!!!!!!!!1!
+    a(href="/newgame") <h3><b>NUEVO JUEGO!<b><h3>
 
     br
     br
-    br
-    br
-    a(href="/ayuda") Nose jugar, AIUDAAAA!
+    a(href="/ayuda") <h3><b>No se jugar<b><h3>
