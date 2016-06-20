@@ -40,15 +40,30 @@ router.get('/jugar',function(req,res){
       var carta1Jugador = './cartas/'+result.currentRound.currentTurn.cards[0].suit+'/'+result.currentRound.currentTurn.cards[0].number+'.jpg';
       var carta2Jugador='./cartas/'+result.currentRound.currentTurn.cards[1].suit+'/'+result.currentRound.currentTurn.cards[1].number+'.jpg';
       var carta3Jugador='./cartas/'+result.currentRound.currentTurn.cards[2].suit+'/'+result.currentRound.currentTurn.cards[2].number+'.jpg';
-      //var carta1Jugador2= './cartas/'+result.currentRound.player2.cards[0].suit+'/'+result.currentRound.player2.cards[0].number+'.jpg';
-      //var carta2Jugador2='./cartas/'+result.currentRound.player2.cards[1].suit+'/'+result.currentRound.player2.cards[1].number+'.jpg';
-      //var carta3Jugador2='./cartas/'+result.currentRound.player2.cards[2].suit+'/'+result.currentRound.player2.cards[2].number+'.jpg';
+      
       var estadoCantarEnvido= false;
-      if(result.currentRound.jugadorCantoEnvido==undefined&&(result.currentRound.fsm.current='init'||result.currentRound.fsm.current='primer-carta')){estadoCantarEnvido=true};
+      if(result.currentRound.jugadorCantoEnvido==undefined&&(result.currentRound.fsm.current=='init'||result.currentRound.fsm.current=='primer-carta')){estadoCantarEnvido=true};
       var estadoCantarTruco= false;
       if(result.currentRound.jugadorCantoTruco==undefined){estadoCantarTruco=true};
+      var jugadas11=undefined;
+      var jugadas12=undefined;
+      var jugadas13=undefined;
+      var jugadas21=undefined;
+      var jugadas22=undefined;
+      var jugadas23=undefined;
 
-      res.render('jugar',{game:result,c1jt:carta1Jugador,c2jt:carta2Jugador,c3jt:carta3Jugador,penvido:result.currentRound.currentTurn.envidoPoints,estadoCantarEnvido:estadoCantarEnvido,estadoCantarTruco:estadoCantarTruco});
+      if(result.currentRound.cartasPrimerJugador[0]!=undefined){jugadas11 = './cartas/'+result.currentRound.cartasPrimerJugador[0].suit+'/'+result.currentRound.cartasPrimerJugador[0].number+'.jpg';}
+      if(result.currentRound.cartasPrimerJugador[1]!=undefined){jugadas12='./cartas/'+result.currentRound.cartasPrimerJugador[1].suit+'/'+result.currentRound.cartasPrimerJugador[1].number+'.jpg';}
+      if(result.currentRound.cartasPrimerJugador[2]!=undefined){jugadas13='./cartas/'+result.currentRound.cartasPrimerJugador[2].suit+'/'+result.currentRound.cartasPrimerJugador[2].number+'.jpg';}
+      if(result.currentRound.cartasSegundoJugador[0]!=undefined){jugadas21= './cartas/'+result.currentRound.cartasSegundoJugador[0].suit+'/'+result.currentRound.cartasSegundoJugador[0].number+'.jpg';}
+      if(result.currentRound.cartasSegundoJugador[1]!=undefined){jugadas22='./cartas/'+result.currentRound.cartasSegundoJugador[1].suit+'/'+result.currentRound.cartasSegundoJugador[1].number+'.jpg';}
+      if(result.currentRound.cartasSegundoJugador[2]!=undefined){jugadas23='./cartas/'+result.currentRound.cartasSegundoJugador[2].suit+'/'+result.currentRound.cartasSegundoJugador[2].number+'.jpg';}
+
+      var estadoQuiero=false;
+      var estadoNoQuiero=false;
+      if(result.currentRound.fsm.current=='envido'||result.currentRound.fsm.current=='truco'){estadoQuiero=true;estadoNoQuiero=true;}
+
+      res.render('jugar',{game:result,c1jt:carta1Jugador,c2jt:carta2Jugador,c3jt:carta3Jugador,penvido:result.currentRound.currentTurn.envidoPoints,estadoCantarEnvido:estadoCantarEnvido,estadoCantarTruco:estadoCantarTruco,jugadas11:jugadas11,jugadas12:jugadas12,jugadas13:jugadas13,jugadas21:jugadas21,jugadas22:jugadas22,jugadas23:jugadas23});
     }
   });
 
@@ -71,6 +86,17 @@ router.post('/register', function(req, res) {
         });
     });
 });
+
+
+router.post('/cantarEnvido', function(req, res) {
+    console.log(req.body);
+    res.redirect('/jugaar?idgame='+req.body.idgame);
+});
+
+router.get('/jugaar', function(req, res) {
+    res.redirect('/jugar?idgame='+req.query.idgame);;
+});
+
 
 router.get('/newgame', function(req, res) {
     res.render('newgame', { });
