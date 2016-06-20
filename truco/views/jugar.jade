@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  
+  p ESTADO DE LA MAQUINA DE ESTADOS!: #{game.currentRound.fsm.current}
   
   p <h3>DATOS ACTUALES DEL JUEGO
     p PUNTOS: 
@@ -13,13 +13,14 @@ block content
   p Cartas en mesa:
   &nbsp; 
   p #{game.player1.name}:
-    img(src= '#{jugada11}')
-    img(src= '#{jugada12}')
-    img(src= '#{jugada13}')
+    img(src= '#{jugadas11}')
+    
+    img(src= '#{jugadas12}')
+    img(src= '#{jugadas13}')
     &nbsp; #{game.player2.name}:
-    img(src= '#{jugada21}')
-    img(src= '#{jugada22}')
-    img(src= '#{jugada23}')
+    img(src= '#{jugadas21}')
+    img(src= '#{jugadas22}')
+    img(src= '#{jugadas23}')
     
 
 
@@ -29,39 +30,36 @@ block content
 
   p Que desea hacer????
       
-      if(estadoCantarEnvido)  
-      form(role='form', action="/cantarTruco",method="post", style='max-width: 300px;',)
-        input.form(type='hidden', name="idgame",value='#{game._id}')
-        button.btn.btn-default(type='submit') Cantar Truco
-
+      if(estadoCantarTruco)  
+        form(role='form', action="/cantarTruco",method="post")
+         input.form(type='hidden', name="idgame",value='#{game._id}')
+         button.btn.btn-default(type='submit') Cantar Truco
       
       if(estadoCantarEnvido)  
-        form(role='form', action="/cantarEnvido",method="post", style='max-width: 300px;',)
+        form(role='form', action="/cantarEnvido",method="post")
           input.form(type='hidden', name="idgame",value='#{game._id}')
           button.btn.btn-default(type='submit') Cantar Envido
       
       if(estadoQuiero)  
-        form(role='form', action="/quiero",method="post", style='max-width: 300px;',)
+        form(role='form', action="/quiero",method="post")
           input.form(type='hidden', name="idgame",value='#{game._id}')
           button.btn.btn-default(type='submit') QUIERO
-      &nbsp;
+      
       if(estadoNoQuiero)  
-        form(role='form', action="/no-quiero",method="post", style='max-width: 300px;',)
+        form(role='form', action="/no-quiero",method="post")
           input.form(type='hidden', name="idgame",value='#{game._id}')
           button.btn.btn-default(type='submit') NO QUIERO
       
 
-
-      form(role='form', action="/jugarcarta1",method="post")
+      &nbsp;
+      &nbsp;
+      &nbsp;
+      form(role='form', action="/jugarcarta1",method="post", style='max-width: 300px;')
         input.form(type='hidden', name="idgame",value='#{game._id}')
         input.form(type='image', src='#{c1jt}')
-        
-      
-
-      form(role='form', action="/jugarcarta2",method="post")
+      form(role='form', action="/jugarcarta2",method="post", style='max-width: 300px;')
         input.form(type='hidden', name="idgame",value='#{game._id}')
         input.form(type='image', src='#{c2jt}')
-
-      form(role='form', action="/jugarcarta3",method="post")
+      form(role='form', action="/jugarcarta3",method="post", style='max-width: 300px;')
         input.form(type='hidden', name="idgame",value='#{game._id}')
         input.form(type='image', src='#{c3jt}')

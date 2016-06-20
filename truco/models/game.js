@@ -104,11 +104,11 @@ var Game = mongoose.model ('Game',GameSchema);
  * Check if it's valid move and play in the current round
  */
 Game.prototype.play = function(player, action, value){
-  if(this.currentRound.currentTurn.getname() !== player)
+  if(this.currentRound.currentTurn.name !== player)
     throw new Error("[ERROR] INVALID TURN...");
-
-  if(this.currentRound.fsm.cannot(action))
-    throw new Error("[ERROR] INVALID MOVE...");
+console.log(this.currentRound.fsm.cannot);
+  //if(this.currentRound.fsm.cannot(action))
+    //throw new Error("[ERROR] INVALID MOVE...");
   if (action=='envido'){this.currentRound.jugadorCantoEnvido=this.currentRound.currentTurn;};        //convertStringToPlayer(player);};
   if (action=='truco'){this.currentRound.jugadorCantoTruco=this.currentRound.currentTurn;};                                     //convertStringToPlayer(player);};
 
@@ -132,8 +132,8 @@ Game.prototype.newRound = function(){
 /*
  * returns the oposite player
  */
-function switchPlayer(player) {
-  if (this.player1 == player){ return this.player2;}else{return this.player1;} ;
+Game.prototype.switchPlayer=function(player) {
+  if (this.player1.name == player.name){ return this.player2;}else{return this.player1;} ;
 };
 
 function convertStringToPlayer (nombre){

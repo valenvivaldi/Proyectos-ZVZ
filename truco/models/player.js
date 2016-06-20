@@ -7,7 +7,7 @@ var PlayerSchema= mongoose.Schema({ //vamos cargando los atributos en el schema
   name: String,
   password:String,
   cards:Array,
-  envidoPoints:Number
+  envidopoints:Number
 });
 
 var Player = mongoose.model ('Player',PlayerSchema);
