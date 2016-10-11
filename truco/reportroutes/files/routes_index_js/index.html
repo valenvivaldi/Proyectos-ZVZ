@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Plato - routes/index.js</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/es-analysis/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>routes/index.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
+      <p class="stat">59.81</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
+      <p class="stat">534</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
+      <p class="stat">84.43</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
+      <p class="stat">6.85</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity" data-container="body"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">var express = require(&#039;express&#039;);
+var passport = require(&#039;passport&#039;);
+var User = require(&#039;../models/user&#039;);
+var router = express.Router();
+
+
+var lodash = require(&#039;lodash&#039;);
+
+var player_model = require(&quot;../models/player&quot;);
+var game_model   = require(&quot;../models/game&quot;);
+var game_card    = require(&quot;../models/card&quot;);
+
+var round_model = require(&quot;../models/round&quot;);
+
+var Round = round_model.round;
+var Game = game_model.game;
+var Card = game_card.card;
+var Player = player_model.player;
+
+
+
+
+/* GET home page. */
+router.get(&#039;/&#039;, function (req, res) {
+  res.render(&#039;index&#039;, { user : req.user ,idgame:req.idgame});
+});
+
+router.get(&#039;/register&#039;, function(req, res) {
+    res.render(&#039;register&#039;, { });
+});
+
+router.get(&#039;/jugar&#039;,function(req,res){
+  console.log(&quot;entro al get /jugar&quot;);
+  var id =req.query.idgame;
+  console.log(id);
+  Game.findOne({_id:id},function(err,result){
+    if(!err){
+      if(result.currentRound.fsm.current==&#039;estado-final&#039;){
+        if(result.score[0]&gt;=30 || result.score[1]&gt;=30){
+          var winner;
+          var p1=result.player1.name;
+          var p2=result.player2.name;
+          var puntosp1=result.currentRound.score[0];
+          var puntosp2=result.currentRound.score[1];
+          if(puntosp1 &gt;=30){winner=p1};
+          if(puntosp2 &gt;=30){winner=p2};
+        
+          return res.render (&#039;/winner&#039;,{winner:winner,p1:p1,p2:p2,puntosp1:puntosp1,puntosp2:puntosp2});
+
+          
+
+
+
+
+        };
+
+        var p1 = new Player({name:result.player1.name});
+        var p2 = new Player({name:result.player2.name});
+        var rondanueva = new Round({
+
+          currentTurn :result.switchPlayer(result.currentHand),
+          jugadorMano: result.switchPlayer(result.currentHand),
+          player1: p1,
+          player2: p2,
+          fsm:undefined,
+          status: &#039;running&#039;,
+          score: result.currentRound.score,
+          cartasPrimerJugador: [],
+          cartasSegundoJugador: [],
+          jugadorCantoEnvido:undefined,
+          jugadorCantoTruco:undefined,
+          historialDeAcciones:[],
+          winnerOfRound:undefined,
+          ganadorPrimera:undefined,
+          ganadorSegunda:undefined,
+          ganadorTercera:undefined        
+        });
+        
+        rondanueva.deal();
+        rondanueva.currentTurn=rondanueva.switchPlayer(result.currentHand);
+        rondanueva.jugadorMano=rondanueva.switchPlayer(result.currentHand);
+
+        rondanueva.fsm=rondanueva.newTrucoFSM(&#039;init&#039;); 
+        
+        
+        result.currentRound=rondanueva;
+        result.rounds=result.rounds+rondanueva;
+        result.save(function(err,r){
+          if(err){console.log(err);}
+          if(!err){
+            var carta1Jugador;
+            var carta2Jugador;
+            var carta3Jugador;
+            if(result.currentRound.currentTurn.cards[0]!=undefined){carta1Jugador = &#039;./cartas/&#039;+result.currentRound.currentTurn.cards[0].suit+&#039;/&#039;+result.currentRound.currentTurn.cards[0].number+&#039;.jpg&#039;;}
+            if(result.currentRound.currentTurn.cards[1]!=undefined){carta2Jugador=&#039;./cartas/&#039;+result.currentRound.currentTurn.cards[1].suit+&#039;/&#039;+result.currentRound.currentTurn.cards[1].number+&#039;.jpg&#039;;}
+            if(result.currentRound.currentTurn.cards[2]!=undefined){carta3Jugador=&#039;./cartas/&#039;+result.currentRound.currentTurn.cards[2].suit+&#039;/&#039;+result.currentRound.currentTurn.cards[2].number+&#039;.jpg&#039;;}
+            
+            var estadoCantarEnvido= false;
+            if(result.currentRound.jugadorCantoEnvido==undefined&amp;&amp;(result.currentRound.fsm.current==&#039;init&#039;||result.currentRound.fsm.current==&#039;primer-carta&#039;)){estadoCantarEnvido=true};
+            var estadoCantarTruco= false;
+            if(result.currentRound.jugadorCantoTruco==undefined){estadoCantarTruco=true};
+            var jugadas11=undefined;
+            var jugadas12=undefined;
+            var jugadas13=undefined;
+            var jugadas21=undefined;
+            var jugadas22=undefined;
+            var jugadas23=undefined;
+
+
+
+            console.log(result.currentRound.cartasPrimerJugador[0]);
+            if(result.currentRound.cartasPrimerJugador[0]!=undefined){jugadas11 = &#039;./cartas/&#039;+result.currentRound.cartasPrimerJugador[0].suit+&#039;/&#039;+result.currentRound.cartasPrimerJugador[0].number+&#039;.jpg&#039;;}
+
+            if(result.currentRound.cartasPrimerJugador[1]!=undefined){jugadas12=&#039;./cartas/&#039;+result.currentRound.cartasPrimerJugador[1].suit+&#039;/&#039;+result.currentRound.cartasPrimerJugador[1].number+&#039;.jpg&#039;;}
+            if(result.currentRound.cartasPrimerJugador[2]!=undefined){jugadas13=&#039;./cartas/&#039;+result.currentRound.cartasPrimerJugador[2].suit+&#039;/&#039;+result.currentRound.cartasPrimerJugador[2].number+&#039;.jpg&#039;;}
+            if(result.currentRound.cartasSegundoJugador[0]!=undefined){jugadas21= &#039;./cartas/&#039;+result.currentRound.cartasSegundoJugador[0].suit+&#039;/&#039;+result.currentRound.cartasSegundoJugador[0].number+&#039;.jpg&#039;;}
+            if(result.currentRound.cartasSegundoJugador[1]!=undefined){jugadas22=&#039;./cartas/&#039;+result.currentRound.cartasSegundoJugador[1].suit+&#039;/&#039;+result.currentRound.cartasSegundoJugador[1].number+&#039;.jpg&#039;;}
+            if(result.currentRound.cartasSegundoJugador[2]!=undefined){jugadas23=&#039;./cartas/&#039;+result.currentRound.cartasSegundoJugador[2].suit+&#039;/&#039;+result.currentRound.cartasSegundoJugador[2].number+&#039;.jpg&#039;;}
+
+            var estadoQuiero=false;
+            var estadoNoQuiero=false;
+            if(result.currentRound.fsm.current==&#039;envido&#039;||result.currentRound.fsm.current==&#039;truco&#039;){estadoQuiero=true;estadoNoQuiero=true;}
+            console.log(estadoQuiero);
+            res.render(&#039;jugar&#039;,{game:result,c1jt:carta1Jugador,c2jt:carta2Jugador,c3jt:carta3Jugador,penvido:result.currentRound.currentTurn.envidopoints,estadoCantarEnvido:estadoCantarEnvido,estadoCantarTruco:estadoCantarTruco,jugadas11:jugadas11,jugadas12:jugadas12,jugadas13:jugadas13,jugadas21:jugadas21,jugadas22:jugadas22,jugadas23:jugadas23,estadoQuiero:estadoQuiero,estadoNoQuiero:estadoNoQuiero});                        
+          };
+        });
+
+        };
+
+
+
+
+if(result.currentRound.fsm.current!=&#039;estado-final&#039;){
+      var carta1Jugador;
+      var carta2Jugador;
+      var carta3Jugador;
+      if(result.currentRound.currentTurn.cards[0]!=undefined){carta1Jugador = &#039;./cartas/&#039;+result.currentRound.currentTurn.cards[0].suit+&#039;/&#039;+result.currentRound.currentTurn.cards[0].number+&#039;.jpg&#039;;}
+      if(result.currentRound.currentTurn.cards[1]!=undefined){carta2Jugador=&#039;./cartas/&#039;+result.currentRound.currentTurn.cards[1].suit+&#039;/&#039;+result.currentRound.currentTurn.cards[1].number+&#039;.jpg&#039;;}
+      if(result.currentRound.currentTurn.cards[2]!=undefined){carta3Jugador=&#039;./cartas/&#039;+result.currentRound.currentTurn.cards[2].suit+&#039;/&#039;+result.currentRound.currentTurn.cards[2].number+&#039;.jpg&#039;;}
+      
+      var estadoCantarEnvido= false;
+      if(result.currentRound.jugadorCantoEnvido==undefined&amp;&amp;(result.currentRound.fsm.current==&#039;init&#039;||result.currentRound.fsm.current==&#039;primer-carta&#039;)){estadoCantarEnvido=true};
+      var estadoCantarTruco= false;
+      if(result.currentRound.jugadorCantoTruco==undefined){estadoCantarTruco=true};
+      var jugadas11=undefined;
+      var jugadas12=undefined;
+      var jugadas13=undefined;
+      var jugadas21=undefined;
+      var jugadas22=undefined;
+      var jugadas23=undefined;
+
+
+
+      console.log(result.currentRound.currentTurn);
+      console.log(result.currentRound.player2);
+
+      if(result.currentRound.cartasPrimerJugador[0]!=undefined){jugadas11 = &#039;./cartas/&#039;+result.currentRound.cartasPrimerJugador[0].suit+&#039;/&#039;+result.currentRound.cartasPrimerJugador[0].number+&#039;.jpg&#039;;}
+      if(result.currentRound.cartasPrimerJugador[1]!=undefined){jugadas12=&#039;./cartas/&#039;+result.currentRound.cartasPrimerJugador[1].suit+&#039;/&#039;+result.currentRound.cartasPrimerJugador[1].number+&#039;.jpg&#039;;}
+      if(result.currentRound.cartasPrimerJugador[2]!=undefined){jugadas13=&#039;./cartas/&#039;+result.currentRound.cartasPrimerJugador[2].suit+&#039;/&#039;+result.currentRound.cartasPrimerJugador[2].number+&#039;.jpg&#039;;}
+      if(result.currentRound.cartasSegundoJugador[0]!=undefined){jugadas21= &#039;./cartas/&#039;+result.currentRound.cartasSegundoJugador[0].suit+&#039;/&#039;+result.currentRound.cartasSegundoJugador[0].number+&#039;.jpg&#039;;}
+      if(result.currentRound.cartasSegundoJugador[1]!=undefined){jugadas22=&#039;./cartas/&#039;+result.currentRound.cartasSegundoJugador[1].suit+&#039;/&#039;+result.currentRound.cartasSegundoJugador[1].number+&#039;.jpg&#039;;}
+      if(result.currentRound.cartasSegundoJugador[2]!=undefined){jugadas23=&#039;./cartas/&#039;+result.currentRound.cartasSegundoJugador[2].suit+&#039;/&#039;+result.currentRound.cartasSegundoJugador[2].number+&#039;.jpg&#039;;}
+
+      var estadoQuiero=false;
+      var estadoNoQuiero=false;
+      if(result.currentRound.fsm.current==&#039;envido&#039;||result.currentRound.fsm.current==&#039;truco&#039;){estadoQuiero=true;estadoNoQuiero=true;}
+      console.log(estadoQuiero);
+      res.render(&#039;jugar&#039;,{game:result,c1jt:carta1Jugador,c2jt:carta2Jugador,c3jt:carta3Jugador,penvido:result.currentRound.currentTurn.envidopoints,estadoCantarEnvido:estadoCantarEnvido,estadoCantarTruco:estadoCantarTruco,jugadas11:jugadas11,jugadas12:jugadas12,jugadas13:jugadas13,jugadas21:jugadas21,jugadas22:jugadas22,jugadas23:jugadas23,estadoQuiero:estadoQuiero,estadoNoQuiero:estadoNoQuiero});
+  }  
+    }
+  });
+
+
+  
+
+
+
+});
+
+
+
+
+
+
+
+
+router.post(&#039;/register&#039;, function(req, res) {
+    User.register(new User({ username : req.body.username }), req.body.password, function(err, user) {
+        if (err) {
+            return res.render(&#039;register&#039;, { user : user });
+        }
+
+        passport.authenticate(&#039;local&#039;)(req, res, function () {
+            res.redirect(&#039;/&#039;);
+        });
+    });
+});
+
+
+router.post(&#039;/cantarEnvido&#039;, function(req, res) {
+    Game.findOne({_id:req.body.idgame},function(err,result){
+    	if(err){console.log(err)}
+      if(!err){
+        var p = result.currentRound.currentTurn.name;
+        
+        var ronda = new Round(result.currentRound);
+        ronda.fsm=ronda.newTrucoFSM(ronda.fsm.current);
+        result.currentRound=ronda;
+        console.log(ronda);
+
+
+
+
+        result.play(p,&#039;envido&#039;);
+        console.log(result);
+        result.save(function(err,result){
+          if(err){console.log(err)}
+
+          if(!err){res.redirect(&#039;/jugar?idgame=&#039;+req.body.idgame);}
+
+        });
+
+      }
+
+
+    });
+
+
+});
+
+router.post(&#039;/cantarTruco&#039;, function(req, res) {
+    Game.findOne({_id:req.body.idgame},function(err,result){
+      if(err){console.log(err)}
+      if(!err){
+        var p = result.currentRound.currentTurn.name;
+        
+        var ronda = new Round(result.currentRound);
+        ronda.fsm=ronda.newTrucoFSM(ronda.fsm.current);
+        result.currentRound=ronda;
+        console.log(ronda);
+
+
+
+
+        result.play(p,&#039;truco&#039;);
+        console.log(result);
+        result.save(function(err,result){
+          if(err){console.log(err)}
+
+          if(!err){res.redirect(&#039;/jugar?idgame=&#039;+req.body.idgame);}
+
+        });
+
+      }
+
+
+    });
+
+
+});
+
+router.post(&#039;/jugarcarta1&#039;, function(req, res) {
+    Game.findOne({_id:req.body.idgame},function(err,result){
+      if(err){console.log(err)}
+      if(!err){
+        var p = result.currentRound.currentTurn.name;
+        
+        var ronda = new Round(result.currentRound);
+        ronda.fsm=ronda.newTrucoFSM(ronda.fsm.current);
+        result.currentRound=ronda;
+        console.log(ronda);
+
+
+
+        var carta =result.currentRound.currentTurn.cards[0];
+        console.log(carta);
+        result.play(p,&#039;play-card&#039;,carta);
+        console.log(result.currentRound);
+        result.save(function(err,result){
+          if(err){console.log(err)}
+
+          if(!err){res.redirect(&#039;/jugar?idgame=&#039;+req.body.idgame);}
+
+        });
+
+      }
+
+
+    });
+
+
+});
+
+router.post(&#039;/jugarcarta2&#039;, function(req, res) {
+    Game.findOne({_id:req.body.idgame},function(err,result){
+      if(err){console.log(err)}
+      if(!err){
+        var p = result.currentRound.currentTurn.name;
+        
+        var ronda = new Round(result.currentRound);
+        ronda.fsm=ronda.newTrucoFSM(ronda.fsm.current);
+        result.currentRound=ronda;
+        console.log(ronda);
+
+
+
+        var carta =result.currentRound.currentTurn.cards[1];
+        console.log(carta);
+        result.play(p,&#039;play-card&#039;,carta);
+        console.log(result.currentRound);
+        result.save(function(err,result){
+          if(err){console.log(err)}
+
+          if(!err){res.redirect(&#039;/jugar?idgame=&#039;+req.body.idgame);}
+
+        });
+
+      }
+
+
+    });
+
+
+});
+
+router.post(&#039;/jugarcarta3&#039;, function(req, res) {
+    Game.findOne({_id:req.body.idgame},function(err,result){
+      if(err){console.log(err)}
+      if(!err){
+        var p = result.currentRound.currentTurn.name;
+        
+        var ronda = new Round(result.currentRound);
+        ronda.fsm=ronda.newTrucoFSM(ronda.fsm.current);
+        result.currentRound=ronda;
+        console.log(ronda);
+
+
+
+        var carta =result.currentRound.currentTurn.cards[2];
+        console.log(carta);
+        result.play(p,&#039;play-card&#039;,carta);
+        console.log(result.currentRound);
+        result.save(function(err,result){
+          if(err){console.log(err)}
+
+          if(!err){res.redirect(&#039;/jugar?idgame=&#039;+req.body.idgame);}
+
+        });
+
+      }
+
+
+    });
+
+
+});
+
+
+
+router.post(&#039;/quiero&#039;, function(req, res) {
+    Game.findOne({_id:req.body.idgame},function(err,result){
+      if(err){console.log(err)}
+      if(!err){
+        var p = result.currentRound.currentTurn.name;
+        
+        var ronda = new Round(result.currentRound);
+        ronda.fsm=ronda.newTrucoFSM(ronda.fsm.current);
+        result.currentRound=ronda;
+        console.log(ronda);
+
+
+
+
+        result.play(p,&#039;quiero&#039;);
+        console.log(result);
+        result.save(function(err,result){
+          if(err){console.log(err)}
+
+          if(!err){res.redirect(&#039;/jugar?idgame=&#039;+req.body.idgame);}
+
+        });
+
+      }
+
+
+    });
+
+
+});
+
+router.post(&#039;/no-quiero&#039;, function(req, res) {
+    Game.findOne({_id:req.body.idgame},function(err,result){
+      if(err){console.log(err)}
+      if(!err){
+        var p = result.currentRound.currentTurn.name;
+        
+        var ronda = new Round(result.currentRound);
+        ronda.fsm=ronda.newTrucoFSM(ronda.fsm.current);
+        result.currentRound=ronda;
+        console.log(ronda);
+
+
+
+
+        result.play(p,&#039;no-quiero&#039;);
+        console.log(result);
+        result.save(function(err,result){
+          if(err){console.log(err)}
+
+          if(!err){res.redirect(&#039;/jugar?idgame=&#039;+req.body.idgame);}
+
+        });
+
+      }
+
+
+    });
+
+
+});
+
+
+
+
+
+router.get(&#039;/newgame&#039;, function(req, res) {
+    res.render(&#039;newgame&#039;, { });
+});
+
+router.post(&#039;/newgame&#039;, function(req, res) {
+    
+    var p1=new Player({name:req.body.nombrejug1});
+    var p2=new Player({name:req.body.nombrejug2});
+     
+
+    
+
+
+
+
+
+
+
+    var newround = new Round({
+      currentTurn : p1,
+      jugadorMano: p1,
+      player1: p1,
+      player2: p2,
+      fsm:undefined,
+      status: &#039;running&#039;,
+      score: [0,0],
+      cartasPrimerJugador: [],
+      cartasSegundoJugador: [],
+      jugadorCantoEnvido:undefined,
+      jugadorCantoTruco:undefined,
+      historialDeAcciones:[],
+      winnerOfRound:undefined,
+      ganadorPrimera:undefined,
+      ganadorSegunda:undefined,
+      ganadorTercera:undefined
+
+    });
+
+    
+    newround.fsm=newround.newTrucoFSM();
+    console.log(newround);
+    var game = new Game ({
+       player1:p1,
+       player2:p2,
+       rounds:[newround],
+       currentHand:p1,
+       currentRound:newround,
+       score:[0,0]
+    });
+    
+    console.log(&quot;ANTES DEL NEWROUND&quot;);
+    console.log(game);
+  
+
+
+
+    game.currentRound.deal();
+    console.log(game._id);    
+
+
+    game.save(function(err,game){
+     if(err){console.log(err);}
+     if(!err){
+      console.log(&#039;nuevo juego cargado&#039;);
+      res.redirect(&#039;/jugar?idgame=&#039;+game._id);
+      }       
+
+    });
+});
+
+
+
+
+   
+    
+
+
+
+        
+
+
+
+
+
+router.get(&#039;/login&#039;, function(req, res) {
+    console.log(req.user);
+    res.render(&#039;login&#039;, { user : req.user });
+});
+
+router.get(&#039;/ayuda&#039;, function(req, res) {
+    res.render(&#039;ayuda&#039;);
+});
+
+
+router.post(&#039;/login&#039;, passport.authenticate(&#039;local&#039;), function(req, res) {
+
+    res.redirect(&#039;/&#039;);
+});
+
+router.get(&#039;/logout&#039;, function(req, res) {
+    req.logout();
+    res.redirect(&#039;/&#039;);
+});
+
+router.get(&#039;/ping&#039;, function(req, res){
+    res.status(200).send(&quot;pong!&quot;);
+});
+
+module.exports = router;</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ cyclomatic }} <br>
+    Length : {{ halstead.length }} <br>
+    Difficulty : {{ halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>
