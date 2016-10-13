@@ -30,9 +30,12 @@ router.get('/register', function(req, res) {
 });
 
 router.get('/jugar',function(req,res){
+  
   console.log("entro al get /jugar");
   var id =req.query.idgame;
-  console.log(id);
+  console.log(req);
+  console.log("ACA ME TENDRIA QUE MOSTRAR EL USUARIO DE passport");
+  console.log(req.user.username);
   Game.findOne({_id:id},function(err,result){
     if(!err){
       if(result.currentRound.fsm.current=='estado-final'){
@@ -108,7 +111,6 @@ router.get('/jugar',function(req,res){
 
 
 
-            console.log(result.currentRound.cartasPrimerJugador[0]);
             if(result.currentRound.cartasPrimerJugador[0]!=undefined){jugadas11 = './cartas/'+result.currentRound.cartasPrimerJugador[0].suit+'/'+result.currentRound.cartasPrimerJugador[0].number+'.jpg';}
 
             if(result.currentRound.cartasPrimerJugador[1]!=undefined){jugadas12='./cartas/'+result.currentRound.cartasPrimerJugador[1].suit+'/'+result.currentRound.cartasPrimerJugador[1].number+'.jpg';}
@@ -120,8 +122,8 @@ router.get('/jugar',function(req,res){
             var estadoQuiero=false;
             var estadoNoQuiero=false;
             if(result.currentRound.fsm.current=='envido'||result.currentRound.fsm.current=='truco'){estadoQuiero=true;estadoNoQuiero=true;}
-            console.log(estadoQuiero);
-            res.render('jugar',{game:result,c1jt:carta1Jugador,c2jt:carta2Jugador,c3jt:carta3Jugador,penvido:result.currentRound.currentTurn.envidopoints,estadoCantarEnvido:estadoCantarEnvido,estadoCantarTruco:estadoCantarTruco,jugadas11:jugadas11,jugadas12:jugadas12,jugadas13:jugadas13,jugadas21:jugadas21,jugadas22:jugadas22,jugadas23:jugadas23,estadoQuiero:estadoQuiero,estadoNoQuiero:estadoNoQuiero});                        
+
+            res.render('jugar',{usuario:req.user,game:result,c1jt:carta1Jugador,c2jt:carta2Jugador,c3jt:carta3Jugador,penvido:result.currentRound.currentTurn.envidopoints,estadoCantarEnvido:estadoCantarEnvido,estadoCantarTruco:estadoCantarTruco,jugadas11:jugadas11,jugadas12:jugadas12,jugadas13:jugadas13,jugadas21:jugadas21,jugadas22:jugadas22,jugadas23:jugadas23,estadoQuiero:estadoQuiero,estadoNoQuiero:estadoNoQuiero});                        
           };
         });
 
