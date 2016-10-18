@@ -30,7 +30,7 @@ router.get('/register', function(req, res) {
 });
 
 router.get('/jugar',function(req,res){
-  console.log(req.session.passport.user);
+  console.log(req.session.passport.user);//MUESTRA EL USUARIO
   var id =req.query.idgame;
   
   Game.findOne({_id:id},function(err,result){
@@ -53,7 +53,7 @@ router.get('/jugar',function(req,res){
 
 
         };
-        console.log('POR AHORA NO GANO NADIE');
+        
         var p1 = new Player({name:result.player1.name});
         var p2 = new Player({name:result.player2.name});
         var rondanueva = new Round({
@@ -85,9 +85,14 @@ router.get('/jugar',function(req,res){
         
         result.currentRound=rondanueva;
         result.rounds=result.rounds+rondanueva;
-        result.save(function(err,r){
+
+            var nombresesion=req.session.passport.user;
+            console.log('1-NOMBRE DE SESION ES !!! '+nombresesion);
+        result.save(function(err,result){
           if(err){console.log(err);}
           if(!err){
+            var nombresesion=req.session.passport.user;
+            console.log('NOMBRE DE SESION ES !!! '+nombresesion);
             var carta1Jugador;
             var carta2Jugador;
             var carta3Jugador;
@@ -119,10 +124,9 @@ router.get('/jugar',function(req,res){
             var estadoQuiero=false;
             var estadoNoQuiero=false;
             if(result.currentRound.fsm.current=='envido'||result.currentRound.fsm.current=='truco'){estadoQuiero=true;estadoNoQuiero=true;}
-            console.log('ACA TENDRIA QUE MOSTRAR EL NOBRE!!!!!!');
-	        console.log(req.user);
-			var nombrejugador="usuariousuarioloco";
-            res.render('jugar',{usuario:nombrejugador,game:result,c1jt:carta1Jugador,c2jt:carta2Jugador,c3jt:carta3Jugador,penvido:result.currentRound.currentTurn.envidopoints,estadoCantarEnvido:estadoCantarEnvido,estadoCantarTruco:estadoCantarTruco,jugadas11:jugadas11,jugadas12:jugadas12,jugadas13:jugadas13,jugadas21:jugadas21,jugadas22:jugadas22,jugadas23:jugadas23,estadoQuiero:estadoQuiero,estadoNoQuiero:estadoNoQuiero});                        
+            
+			console.log('NOMBRE DE SESION ES !!! '+nombresesion);
+            res.render('jugar',{usuario:nombresesion,game:result,c1jt:carta1Jugador,c2jt:carta2Jugador,c3jt:carta3Jugador,penvido:result.currentRound.currentTurn.envidopoints,estadoCantarEnvido:estadoCantarEnvido,estadoCantarTruco:estadoCantarTruco,jugadas11:jugadas11,jugadas12:jugadas12,jugadas13:jugadas13,jugadas21:jugadas21,jugadas22:jugadas22,jugadas23:jugadas23,estadoQuiero:estadoQuiero,estadoNoQuiero:estadoNoQuiero});                        
           };
         });
 
@@ -164,7 +168,9 @@ if(result.currentRound.fsm.current!='estado-final'){
       var estadoNoQuiero=false;
       if(result.currentRound.fsm.current=='envido'||result.currentRound.fsm.current=='truco'){estadoQuiero=true;estadoNoQuiero=true;}
       
-      res.render('jugar',{game:result,c1jt:carta1Jugador,c2jt:carta2Jugador,c3jt:carta3Jugador,penvido:result.currentRound.currentTurn.envidopoints,estadoCantarEnvido:estadoCantarEnvido,estadoCantarTruco:estadoCantarTruco,jugadas11:jugadas11,jugadas12:jugadas12,jugadas13:jugadas13,jugadas21:jugadas21,jugadas22:jugadas22,jugadas23:jugadas23,estadoQuiero:estadoQuiero,estadoNoQuiero:estadoNoQuiero});
+            var nombresesion=req.session.passport.user;
+            
+      res.render('jugar',{usuario:nombresesion,game:result,c1jt:carta1Jugador,c2jt:carta2Jugador,c3jt:carta3Jugador,penvido:result.currentRound.currentTurn.envidopoints,estadoCantarEnvido:estadoCantarEnvido,estadoCantarTruco:estadoCantarTruco,jugadas11:jugadas11,jugadas12:jugadas12,jugadas13:jugadas13,jugadas21:jugadas21,jugadas22:jugadas22,jugadas23:jugadas23,estadoQuiero:estadoQuiero,estadoNoQuiero:estadoNoQuiero});
   }  
     }
   });
@@ -412,14 +418,12 @@ router.post('/no-quiero', function(req, res) {
 
 
 
-router.get('/newgame', function(req, res) {
-    res.render('newgame', { });
-});
 
-router.post('/newgame', function(req, res) {
+
+router.get('/newgame', function(req, res) {
     
-    var p1=new Player({name:req.body.nombrejug1});
-    var p2=new Player({name:req.body.nombrejug2});
+    var p1=new Player({name:req.session.passport.user});
+    var p2=new Player();
      
 
     

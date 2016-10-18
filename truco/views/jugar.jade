@@ -5,11 +5,16 @@ block content
   p <center>ESTADO DE LA MAQUINA DE ESTADOS!: #{game.currentRound.fsm.current}
     p <h3>DATOS ACTUALES DEL JUEGO
       p PUNTOS: 
+      
       p #{game.player1.name} : #{game.currentRound.score[0]} 
+    if(game.player2.name)
       p #{game.player2.name} : #{game.currentRound.score[1]} 
+    if(!game.player2.name)
+      p ESPERANDO AL OTRO JUGADOR :p
+      
       <hr>
-      <h3>EL TURNO ES DE: #{game.currentRound.currentTurn.name}  <h3>
-      <hr>
+    <h3>EL TURNO ES DE: #{game.currentRound.currentTurn.name}  <h3>
+    <hr>
     p Cartas en mesa:
     &nbsp; 
     p #{game.player1.name}:
