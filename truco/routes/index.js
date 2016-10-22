@@ -29,6 +29,48 @@ router.get('/register', function(req, res) {
     res.render('register', { });
 });
 
+
+router.get('/joingame', function(req, res) {
+    res.render('joingame', { });
+});
+
+router.post('/joingame',function(req,res){
+    ///TEMPORALMENTE LE AGREGAMOS UN CAMPO OWNER AL GAME
+    var dueno= req.body.owner;
+    
+  Game.findOne({owner:dueno,inicio:false},function(err,result){
+      if(err){console.log(err)};
+      
+      if(!err){
+        var paux= new Player(result.player2);
+        paux.name=req.session.passport.user;
+        
+        result.player2=paux;
+        result.inicio=true;
+        var roundaux= new Round(result.currentRound);
+        roundaux.player2=paux;
+        result.currentRound=roundaux;
+        
+
+        result.save(function(err,result){
+          if(err){console.log(err)}
+          console.log(result);  
+          if(!err){res.redirect('/jugar?idgame='+result._id);}
+
+        });
+
+
+
+
+        
+      }
+
+  });
+});
+
+
+
+
 router.get('/jugar',function(req,res){
   console.log(req.session.passport.user);//MUESTRA EL USUARIO
   var id =req.query.idgame;
@@ -170,7 +212,7 @@ if(result.currentRound.fsm.current!='estado-final'){
       
             var nombresesion=req.session.passport.user;
             
-      res.render('jugar',{usuario:nombresesion,game:result,c1jt:carta1Jugador,c2jt:carta2Jugador,c3jt:carta3Jugador,penvido:result.currentRound.currentTurn.envidopoints,estadoCantarEnvido:estadoCantarEnvido,estadoCantarTruco:estadoCantarTruco,jugadas11:jugadas11,jugadas12:jugadas12,jugadas13:jugadas13,jugadas21:jugadas21,jugadas22:jugadas22,jugadas23:jugadas23,estadoQuiero:estadoQuiero,estadoNoQuiero:estadoNoQuiero});
+      res.render('jugar',{usuario:nombresesion,nombrep2:result.player2.name,game:result,c1jt:carta1Jugador,c2jt:carta2Jugador,c3jt:carta3Jugador,penvido:result.currentRound.currentTurn.envidopoints,estadoCantarEnvido:estadoCantarEnvido,estadoCantarTruco:estadoCantarTruco,jugadas11:jugadas11,jugadas12:jugadas12,jugadas13:jugadas13,jugadas21:jugadas21,jugadas22:jugadas22,jugadas23:jugadas23,estadoQuiero:estadoQuiero,estadoNoQuiero:estadoNoQuiero});
   }  
     }
   });
@@ -424,15 +466,7 @@ router.get('/newgame', function(req, res) {
     
     var p1=new Player({name:req.session.passport.user});
     var p2=new Player();
-     
-
     
-
-
-
-
-
-
 
     var newround = new Round({
       currentTurn : p1,
@@ -457,8 +491,10 @@ router.get('/newgame', function(req, res) {
     
     newround.fsm=newround.newTrucoFSM();
     var game = new Game ({
+       owner:p1.name,
        player1:p1,
        player2:p2,
+       inicio:false,
        rounds:[newround],
        currentHand:p1,
        currentRound:newround,
@@ -466,9 +502,6 @@ router.get('/newgame', function(req, res) {
     });
     
     
-
-
-
     game.currentRound.deal();
      
 

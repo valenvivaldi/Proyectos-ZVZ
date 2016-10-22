@@ -32,7 +32,9 @@ var GameSchema= mongoose.Schema({ //vamos cargando los atributos en el schema
     //score:Array,
    // player1:{type: ObjectId,ref: 'Player'},
     //player2:{type: ObjectId, ref: 'Player'},
+    owner:String,
     name:String,
+    inicio:Boolean,
     player1:Object,
     player2:Object,
    

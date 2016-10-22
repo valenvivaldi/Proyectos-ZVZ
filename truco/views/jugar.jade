@@ -1,76 +1,72 @@
 extends layout
 
 block content
-  p vos sos #{usuario}
-  p <center>ESTADO DE LA MAQUINA DE ESTADOS!: #{game.currentRound.fsm.current}
-    p <h3>DATOS ACTUALES DEL JUEGO
-      p PUNTOS: 
-      
-      p #{game.player1.name} : #{game.currentRound.score[0]} 
-    if(game.player2.name)
-      p #{game.player2.name} : #{game.currentRound.score[1]} 
-    if(!game.player2.name)
-      p ESPERANDO AL OTRO JUGADOR :p
-      
+  p Estas jugando como: #{usuario} el jugador 2 se llama #{game.player2.name}
+  if(!game.player2.name)
+      p ESPERANDO AL OTRO JUGADOR :p 
+  if(game.player2.name)
+      p <h3>DATOS ACTUALES DEL JUEGO
+        p PUNTOS: 
+        
+        p #{game.player1.name} : #{game.currentRound.score[0]} 
+      if(game.player2.name)
+        p #{game.player2.name} : #{game.currentRound.score[1]} 
+        
+        <hr>
+      <h3>EL TURNO ES DE: #{game.currentRound.currentTurn.name}  <h3>
       <hr>
-    <h3>EL TURNO ES DE: #{game.currentRound.currentTurn.name}  <h3>
-    <hr>
-    p Cartas en mesa:
-    &nbsp; 
-    p #{game.player1.name}:
-      img(src= '#{jugadas11}')
+      p Cartas en mesa:
+      &nbsp; 
+      p #{game.player1.name}:
+        img(src= '#{jugadas11}')
+        img(src= '#{jugadas12}')
+        img(src= '#{jugadas13}')
+        &nbsp; #{game.player2.name}:
+        img(src= '#{jugadas21}')
+        img(src= '#{jugadas22}')
+        img(src= '#{jugadas23}')
       
-      img(src= '#{jugadas12}')
-      img(src= '#{jugadas13}')
-      &nbsp; #{game.player2.name}:
-      img(src= '#{jugadas21}')
-      img(src= '#{jugadas22}')
-      img(src= '#{jugadas23}')
-    
+      if(usuario == game.currentRound.currentTurn.name)
+          p PUNTOS PARA EL ENVIDO: #{penvido}
+          p Que desea hacer????
+              
+              if(estadoCantarTruco)  
+                form(role='form', action="/cantarTruco",method="post")
+                 input.form(type='hidden', name="idgame",value='#{game._id}')
+                 button.btn.btn-default(type='submit') Cantar Truco
+            
+              if(estadoCantarEnvido)  
+                form(role='form', action="/cantarEnvido",method="post")
+                  input.form(type='hidden', name="idgame",value='#{game._id}')
+                  button.btn.btn-default(type='submit') Cantar Envido
+              
+              if(estadoQuiero)  
+                form(role='form', action="/quiero",method="post")
+                  input.form(type='hidden', name="idgame",value='#{game._id}')
+                  button.btn.btn-default(type='submit') QUIERO
+              
+              if(estadoNoQuiero)  
+                form(role='form', action="/no-quiero",method="post")
+                  input.form(type='hidden', name="idgame",value='#{game._id}')
+                  button.btn.btn-default(type='submit') NO QUIERO
+              
 
-
-  
-  &nbsp; PUNTOS PARA EL ENVIDO: #{penvido}
-  
-
-  p Que desea hacer????
-      
-      if(estadoCantarTruco)  
-        form(role='form', action="/cantarTruco",method="post")
-         input.form(type='hidden', name="idgame",value='#{game._id}')
-         button.btn.btn-default(type='submit') Cantar Truco
-    
-      if(estadoCantarEnvido)  
-        form(role='form', action="/cantarEnvido",method="post")
-          input.form(type='hidden', name="idgame",value='#{game._id}')
-          button.btn.btn-default(type='submit') Cantar Envido
-      
-      if(estadoQuiero)  
-        form(role='form', action="/quiero",method="post")
-          input.form(type='hidden', name="idgame",value='#{game._id}')
-          button.btn.btn-default(type='submit') QUIERO
-      
-      if(estadoNoQuiero)  
-        form(role='form', action="/no-quiero",method="post")
-          input.form(type='hidden', name="idgame",value='#{game._id}')
-          button.btn.btn-default(type='submit') NO QUIERO
-      
-
-      &nbsp;
-      &nbsp;
-      &nbsp;
-      p Cartas para jugar
-      if(c1jt)
-        form(role='form', action="/jugarcarta1",method="post",margin='0',class='carta')
-          input.form(type='hidden', name="idgame",value='#{game._id}')
-          input.form(type='image', src='#{c1jt}',height="111", width="80")
-      if(c2jt)
-        form(role='form', action="/jugarcarta2",method="post",margin='0',class='carta')
-          input.form(type='hidden', name="idgame",value='#{game._id}')
-          input.form(type='image', src='#{c2jt}',height="111", width="80")
-      if(c3jt)
-        form(role='form', action="/jugarcarta3",method="post",margin='0',class='carta')
-          input.form(type='hidden', name="idgame",value='#{game._id}')
-          input.form(type='image', src='#{c3jt}',height="111", width="80")
-
+              &nbsp;
+              &nbsp;
+              &nbsp;
+              p Cartas para jugar
+              if(c1jt)
+                form(role='form', action="/jugarcarta1",method="post",margin='0',class='carta')
+                  input.form(type='hidden', name="idgame",value='#{game._id}')
+                  input.form(type='image', src='#{c1jt}',height="111", width="80")
+              if(c2jt)
+                form(role='form', action="/jugarcarta2",method="post",margin='0',class='carta')
+                  input.form(type='hidden', name="idgame",value='#{game._id}')
+                  input.form(type='image', src='#{c2jt}',height="111", width="80")
+              if(c3jt)
+                form(role='form', action="/jugarcarta3",method="post",margin='0',class='carta')
+                  input.form(type='hidden', name="idgame",value='#{game._id}')
+                  input.form(type='image', src='#{c3jt}',height="111", width="80")
+      if(usuario != game.currentRound.currentTurn.name)      
+        p No es tu turno: Espera a que el otro jugador juege!
 
