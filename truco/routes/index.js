@@ -29,13 +29,52 @@ router.get('/register', function(req, res) {
     res.render('register', { });
 });
 
+
+router.get('/joingame', function(req, res) {
+    res.render('joingame', { });
+});
+
+router.post('/joingame',function(req,res){
+    ///TEMPORALMENTE LE AGREGAMOS UN CAMPO OWNER AL GAME
+    var dueno= req.body.owner;
+    
+  Game.findOne({owner:dueno,inicio:false},function(err,result){
+      if(err){console.log(err)};
+      
+      if(!err){
+        var paux= new Player(result.player2);
+        paux.name=req.session.passport.user;
+        
+        result.player2=paux;
+        result.inicio=true;
+        var roundaux= new Round(result.currentRound);
+        roundaux.player2=paux;
+        result.currentRound=roundaux;
+        
+
+        result.save(function(err,result){
+          if(err){console.log(err)}
+          console.log(result);  
+          if(!err){res.redirect('/jugar?idgame='+result._id);}
+
+        });
+
+
+
+
+        
+      }
+
+  });
+});
+
+
+
+
 router.get('/jugar',function(req,res){
-  
-  console.log("entro al get /jugar");
+  console.log(req.session.passport.user);//MUESTRA EL USUARIO
   var id =req.query.idgame;
-  console.log(req);
-  console.log("ACA ME TENDRIA QUE MOSTRAR EL USUARIO DE passport");
-  console.log(req.user.username);
+  
   Game.findOne({_id:id},function(err,result){
     if(!err){
       if(result.currentRound.fsm.current=='estado-final'){
@@ -56,7 +95,7 @@ router.get('/jugar',function(req,res){
 
 
         };
-
+        
         var p1 = new Player({name:result.player1.name});
         var p2 = new Player({name:result.player2.name});
         var rondanueva = new Round({
@@ -88,9 +127,14 @@ router.get('/jugar',function(req,res){
         
         result.currentRound=rondanueva;
         result.rounds=result.rounds+rondanueva;
-        result.save(function(err,r){
+
+            var nombresesion=req.session.passport.user;
+            console.log('1-NOMBRE DE SESION ES !!! '+nombresesion);
+        result.save(function(err,result){
           if(err){console.log(err);}
           if(!err){
+            var nombresesion=req.session.passport.user;
+            console.log('NOMBRE DE SESION ES !!! '+nombresesion);
             var carta1Jugador;
             var carta2Jugador;
             var carta3Jugador;
@@ -122,8 +166,9 @@ router.get('/jugar',function(req,res){
             var estadoQuiero=false;
             var estadoNoQuiero=false;
             if(result.currentRound.fsm.current=='envido'||result.currentRound.fsm.current=='truco'){estadoQuiero=true;estadoNoQuiero=true;}
-
-            res.render('jugar',{usuario:req.user,game:result,c1jt:carta1Jugador,c2jt:carta2Jugador,c3jt:carta3Jugador,penvido:result.currentRound.currentTurn.envidopoints,estadoCantarEnvido:estadoCantarEnvido,estadoCantarTruco:estadoCantarTruco,jugadas11:jugadas11,jugadas12:jugadas12,jugadas13:jugadas13,jugadas21:jugadas21,jugadas22:jugadas22,jugadas23:jugadas23,estadoQuiero:estadoQuiero,estadoNoQuiero:estadoNoQuiero});                        
+            
+			console.log('NOMBRE DE SESION ES !!! '+nombresesion);
+            res.render('jugar',{usuario:nombresesion,game:result,c1jt:carta1Jugador,c2jt:carta2Jugador,c3jt:carta3Jugador,penvido:result.currentRound.currentTurn.envidopoints,estadoCantarEnvido:estadoCantarEnvido,estadoCantarTruco:estadoCantarTruco,jugadas11:jugadas11,jugadas12:jugadas12,jugadas13:jugadas13,jugadas21:jugadas21,jugadas22:jugadas22,jugadas23:jugadas23,estadoQuiero:estadoQuiero,estadoNoQuiero:estadoNoQuiero});                        
           };
         });
 
@@ -153,8 +198,6 @@ if(result.currentRound.fsm.current!='estado-final'){
 
 
 
-      console.log(result.currentRound.currentTurn);
-      console.log(result.currentRound.player2);
 
       if(result.currentRound.cartasPrimerJugador[0]!=undefined){jugadas11 = './cartas/'+result.currentRound.cartasPrimerJugador[0].suit+'/'+result.currentRound.cartasPrimerJugador[0].number+'.jpg';}
       if(result.currentRound.cartasPrimerJugador[1]!=undefined){jugadas12='./cartas/'+result.currentRound.cartasPrimerJugador[1].suit+'/'+result.currentRound.cartasPrimerJugador[1].number+'.jpg';}
@@ -166,8 +209,10 @@ if(result.currentRound.fsm.current!='estado-final'){
       var estadoQuiero=false;
       var estadoNoQuiero=false;
       if(result.currentRound.fsm.current=='envido'||result.currentRound.fsm.current=='truco'){estadoQuiero=true;estadoNoQuiero=true;}
-      console.log(estadoQuiero);
-      res.render('jugar',{game:result,c1jt:carta1Jugador,c2jt:carta2Jugador,c3jt:carta3Jugador,penvido:result.currentRound.currentTurn.envidopoints,estadoCantarEnvido:estadoCantarEnvido,estadoCantarTruco:estadoCantarTruco,jugadas11:jugadas11,jugadas12:jugadas12,jugadas13:jugadas13,jugadas21:jugadas21,jugadas22:jugadas22,jugadas23:jugadas23,estadoQuiero:estadoQuiero,estadoNoQuiero:estadoNoQuiero});
+      
+            var nombresesion=req.session.passport.user;
+            
+      res.render('jugar',{usuario:nombresesion,nombrep2:result.player2.name,game:result,c1jt:carta1Jugador,c2jt:carta2Jugador,c3jt:carta3Jugador,penvido:result.currentRound.currentTurn.envidopoints,estadoCantarEnvido:estadoCantarEnvido,estadoCantarTruco:estadoCantarTruco,jugadas11:jugadas11,jugadas12:jugadas12,jugadas13:jugadas13,jugadas21:jugadas21,jugadas22:jugadas22,jugadas23:jugadas23,estadoQuiero:estadoQuiero,estadoNoQuiero:estadoNoQuiero});
   }  
     }
   });
@@ -208,13 +253,13 @@ router.post('/cantarEnvido', function(req, res) {
         var ronda = new Round(result.currentRound);
         ronda.fsm=ronda.newTrucoFSM(ronda.fsm.current);
         result.currentRound=ronda;
-        console.log(ronda);
+       
 
 
 
 
         result.play(p,'envido');
-        console.log(result);
+        
         result.save(function(err,result){
           if(err){console.log(err)}
 
@@ -239,13 +284,13 @@ router.post('/cantarTruco', function(req, res) {
         var ronda = new Round(result.currentRound);
         ronda.fsm=ronda.newTrucoFSM(ronda.fsm.current);
         result.currentRound=ronda;
-        console.log(ronda);
+        
 
 
 
 
         result.play(p,'truco');
-        console.log(result);
+        
         result.save(function(err,result){
           if(err){console.log(err)}
 
@@ -270,14 +315,13 @@ router.post('/jugarcarta1', function(req, res) {
         var ronda = new Round(result.currentRound);
         ronda.fsm=ronda.newTrucoFSM(ronda.fsm.current);
         result.currentRound=ronda;
-        console.log(ronda);
+        
 
 
 
         var carta =result.currentRound.currentTurn.cards[0];
-        console.log(carta);
         result.play(p,'play-card',carta);
-        console.log(result.currentRound);
+        
         result.save(function(err,result){
           if(err){console.log(err)}
 
@@ -302,14 +346,11 @@ router.post('/jugarcarta2', function(req, res) {
         var ronda = new Round(result.currentRound);
         ronda.fsm=ronda.newTrucoFSM(ronda.fsm.current);
         result.currentRound=ronda;
-        console.log(ronda);
 
 
 
         var carta =result.currentRound.currentTurn.cards[1];
-        console.log(carta);
         result.play(p,'play-card',carta);
-        console.log(result.currentRound);
         result.save(function(err,result){
           if(err){console.log(err)}
 
@@ -339,9 +380,7 @@ router.post('/jugarcarta3', function(req, res) {
 
 
         var carta =result.currentRound.currentTurn.cards[2];
-        console.log(carta);
         result.play(p,'play-card',carta);
-        console.log(result.currentRound);
         result.save(function(err,result){
           if(err){console.log(err)}
 
@@ -368,13 +407,11 @@ router.post('/quiero', function(req, res) {
         var ronda = new Round(result.currentRound);
         ronda.fsm=ronda.newTrucoFSM(ronda.fsm.current);
         result.currentRound=ronda;
-        console.log(ronda);
 
 
 
 
         result.play(p,'quiero');
-        console.log(result);
         result.save(function(err,result){
           if(err){console.log(err)}
 
@@ -399,13 +436,11 @@ router.post('/no-quiero', function(req, res) {
         var ronda = new Round(result.currentRound);
         ronda.fsm=ronda.newTrucoFSM(ronda.fsm.current);
         result.currentRound=ronda;
-        console.log(ronda);
 
 
 
 
         result.play(p,'no-quiero');
-        console.log(result);
         result.save(function(err,result){
           if(err){console.log(err)}
 
@@ -425,23 +460,13 @@ router.post('/no-quiero', function(req, res) {
 
 
 
+
+
 router.get('/newgame', function(req, res) {
-    res.render('newgame', { });
-});
-
-router.post('/newgame', function(req, res) {
     
-    var p1=new Player({name:req.body.nombrejug1});
-    var p2=new Player({name:req.body.nombrejug2});
-     
-
+    var p1=new Player({name:req.session.passport.user});
+    var p2=new Player();
     
-
-
-
-
-
-
 
     var newround = new Round({
       currentTurn : p1,
@@ -465,30 +490,25 @@ router.post('/newgame', function(req, res) {
 
     
     newround.fsm=newround.newTrucoFSM();
-    console.log(newround);
     var game = new Game ({
+       owner:p1.name,
        player1:p1,
        player2:p2,
+       inicio:false,
        rounds:[newround],
        currentHand:p1,
        currentRound:newround,
        score:[0,0]
     });
     
-    console.log("ANTES DEL NEWROUND");
-    console.log(game);
-  
-
-
-
+    
     game.currentRound.deal();
-    console.log(game._id);    
+     
 
 
     game.save(function(err,game){
      if(err){console.log(err);}
      if(!err){
-      console.log('nuevo juego cargado');
       res.redirect('/jugar?idgame='+game._id);
       }       
 
@@ -510,7 +530,6 @@ router.post('/newgame', function(req, res) {
 
 
 router.get('/login', function(req, res) {
-    console.log(req.user);
     res.render('login', { user : req.user });
 });
 

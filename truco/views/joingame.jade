@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  .container
+    h1 Unete a un juego creado! 
+    p.lead 
+    br
+    form(role='form', action="/joingame",method="post", style='max-width: 300px;')
+      .form-group
+        p Ingrese el nombre del otro jugador
+        input.form-control(type='text', name="owner", placeholder='INGRESE EL NOMBRE DEL OTRO JUGADOR!!!')
+     
+       button.btn.btn-default(type='submit') Aceptar
+      &nbsp;
+      a(href='/')
+        button.btn.btn-primary(type="button") cancelar
+    br
+    
