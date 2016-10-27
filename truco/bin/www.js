@@ -5,6 +5,7 @@
  */
 
 var app = require('../server');
+
 var debug = require('debug')('truco:server');
 var http = require('http');
 
@@ -21,11 +22,46 @@ app.set('port', port);
 
 var server = http.createServer(app);
 
+
+
+server.listen(port);
+
+// var server = http.createServer(app).listen(app.get('port'), function(){
+// 	console.log("Express server listening on port " + app.get('port'));
+// });
+
+
+
 /**
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
+
+// var cantidadUsuarios=0;
+
+
+
+
+var io = require('socket.io').listen(server);
+
+
+
+io.on('connection', function(socket){
+  console.log('UN USUARIO SE CONECTO!');  
+
+  socket.on('disconnect', function () {
+    console.log('A user disconnected');
+  });
+
+});
+
+
+
+
+
+
+
+
 server.on('error', onError);
 server.on('listening', onListening);
 
@@ -88,3 +124,5 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+module.exports = server;

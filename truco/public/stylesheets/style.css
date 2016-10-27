@@ -1,3 +1,47 @@
+@font-face
+{
+   font-family: "pricedown";
+   
+   src: url("/fonts/pricedow.ttf");
+   
+}
+
+
+
+body{
+	background-image: url('/images/texturaceleste.png');
+	color:white;
+	font:100% roboto;
+}
+
+.container{
+	padding: 15px
+	text-align: center;
+	align-items: center;
+	background: #1c1c1c;
+	border-radius: 15px 15px 15px 15px;
+    -moz-border-radius: 15px 15px 15px 15px;
+    -webkit-border-radius: 15px 15px 15px 15px;
+    border: 0px solid #000000;
+	width: 250px;
+  padding-bottom: 20px;	
+}
+
+a{
+	font-size: 16px;
+}
+.logo{
+  background-image: url('/images/texturablack.jpg');	
+	font:100px pricedown;
+  width: 306px;
+  border-radius: 60px 60px 60px 60px;
+-moz-border-radius: 60px 60px 60px 60px;
+-webkit-border-radius: 60px 60px 60px 60px;
+border: 0px solid #000000;
+}
+
+
+
 form.carta {
   width: 0px;
   margin-left: 322px;
