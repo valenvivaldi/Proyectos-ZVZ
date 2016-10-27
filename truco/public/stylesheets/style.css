@@ -8,15 +8,29 @@
 
 
 
-body{
-	background-image: url('/images/texturaceleste.png');
-	color:white;
-	font:100% roboto;
+body {
+  background-image: url('/images/masche.jpg');
+  background-size: 100%;
+  color: white;
+  font: 100% roboto;
+  /* background-repeat: repeat; */
+  background-position-x: 123px;
+}
+
+.logout{
+  text-align: center;
+  font-size: 16px
+}
+
+
+.homero {
+  width: 185px;
+  height: auto;
 }
 
 .container{
 	padding: 15px
-	text-align: center;
+	text-align:center;
 	align-items: center;
 	background: #1c1c1c;
 	border-radius: 15px 15px 15px 15px;
@@ -29,8 +43,12 @@ body{
 
 a{
 	font-size: 16px;
+
 }
+
 .logo{
+  margin-top: 10px;
+  
   background-image: url('/images/texturablack.jpg');	
 	font:100px pricedown;
   width: 306px;

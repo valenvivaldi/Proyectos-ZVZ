@@ -1,22 +1,27 @@
 extends layout
 
 block content
-  
   if (!user)
     br
 
     a(href="/login") <center><h1><b>Login<b><h1><center>
 
+    
   
 
 
   if (user)
-    p Ya te logeaste como: #{user.username}
-    a(href="/logout") <h3><b>Logout<b><h3>
-    br
-    br
-    a(href="/newgame") <h3><b>CREAR<b><h3>
-    a(href="/joingame") <h3><b>UNIRTE<b><h3>
-    br
-    br
-    a(href="/ayuda") <h3><b>No se jugar<b><h3>
+    .logout
+      p Ya te logeaste como: #{user.username}
+        a(href="/logout") 
+          button.btn.btn-default Logout
+    center
+      a(href="/newgame")
+        button.btn.btn-default CREAR
+      a(href="/joingame")
+        button.btn.btn-default UNIRTE
+      br
+      img(src='/images/homero2.gif',class='homero')  
+      br
+      a(href="/ayuda") 
+        button.btn.btn-default AIUDA

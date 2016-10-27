@@ -4,7 +4,10 @@ block content
   script(src="/socket.io/socket.io.js")
   script.
     var socket = io.connect('http://localhost:3000');
-    socket.nombreusuario=usuario;
+    console.log('refresh');
+    socket.on("refresh", function (data) {
+      location.reload();
+    });
 
 
   p Estas jugando como: #{usuario} el jugador 2 se llama #{game.player2.name}

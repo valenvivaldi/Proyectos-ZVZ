@@ -48,6 +48,9 @@ var io = require('socket.io').listen(server);
 
 io.on('connection', function(socket){
   console.log('UN USUARIO SE CONECTO!');  
+  
+  
+  
 
   socket.on('disconnect', function () {
     console.log('A user disconnected');
@@ -66,8 +69,8 @@ server.on('error', onError);
 server.on('listening', onListening);
 
 /**
- * Normalize a port into a number, string, or false.
  */
+ * Normalize a port into a number, string, or false.
 
 function normalizePort(val) {
   var port = parseInt(val, 10);
@@ -125,4 +128,4 @@ function onListening() {
   debug('Listening on ' + bind);
 }
 
-module.exports = server;
+module.exports.socket = io;

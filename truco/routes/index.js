@@ -19,21 +19,16 @@ var Player = player_model.player;
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 /* GET home page. */
 router.get('/', function (req, res) {
   res.render('index', { user : req.user ,idgame:req.idgame});
 });
+
+
+
+
+
+
 
 router.get('/register', function(req, res) {
     res.render('register', { });
