@@ -756,6 +756,7 @@ io.on('connection', function(socket){
   var faux= function(){
     socket.broadcast.emit("refresh");
   };
+  clearTimeout();
   setTimeout(faux, 6000);
   
   

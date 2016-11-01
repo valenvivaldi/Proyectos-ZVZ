@@ -9,12 +9,12 @@
 
 
 body {
-  background-image: url('/images/masche.jpg');
+  background-image: url('/images/fondoverde.jpg');
   background-size: 100%;
   color: white;
   font: 100% roboto;
-  /* background-repeat: repeat; */
-  background-position-x: 123px;
+  background-repeat: repeat-y;
+  background-position-x: 0px;
 }
 
 .logout{
@@ -29,10 +29,11 @@ body {
 }
 
 .container{
-	padding: 15px;
+	 
+  padding: 15px;
 	text-align:center;
 	align-items: center;
-	background: #1c1c1c;
+	background-color: #1c1c1c;
 	border-radius: 15px 15px 15px 15px;
     -moz-border-radius: 15px 15px 15px 15px;
     -webkit-border-radius: 15px 15px 15px 15px;
@@ -41,11 +42,12 @@ body {
   padding-bottom: 20px;	
 }
 .container2{
+    background-image: url("http://2.bp.blogspot.com/-y0FSVIUp36Y/UFcYIHMLyKI/AAAAAAAAAUA/xVVacJvjeZk/s1600/mesa2.jpg");
   padding: 2%;
   font:200% roboto;
   text-align:center;
   align-items: center;
-  background: #1c1c1c;
+  
   border-radius: 15px 15px 15px 15px;
     -moz-border-radius: 15px 15px 15px 15px;
     -webkit-border-radius: 15px 15px 15px 15px;
@@ -61,15 +63,18 @@ body {
 }
 
 .container3 {
+    background-image: url("http://2.bp.blogspot.com/-y0FSVIUp36Y/UFcYIHMLyKI/AAAAAAAAAUA/xVVacJvjeZk/s1600/mesa2.jpg");
     font-size: 12px;
     padding: 5px;
     text-align: center;
     align-items: center;
-    background: #1c1c1c;
+   
     border-radius: 15px 15px 15px 15px;
     -moz-border-radius: 15px 15px 15px 15px;
     -webkit-border-radius: 15px 15px 15px 15px;
     width: 10%;
+    float:right;
+    margin-right: 10%
     /* padding-bottom: 20px; */
 }
 
@@ -82,8 +87,9 @@ a{
 
 .logo{
   margin-top: 10px;
-  
+  float:left;
   background-image: url('/images/texturablack.jpg');	
+
 	font:100px pricedown;
   width: 306px;
   border-radius: 60px 60px 60px 60px;
