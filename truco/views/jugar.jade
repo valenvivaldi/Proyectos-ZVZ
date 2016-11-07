@@ -8,11 +8,15 @@ block content
     socket.on("refresh", function (data) {
       location.reload();
     });
+    function FuncJugar(accion){
+      socket.emit("play",accion,'#{game._id}');
+    }
 
   if(!game.player2.name)
       .container2  
         h2 ESPERANDO AL OTRO JUGADOR :V
   if(game.player2.name)  
+  
     .container3    
       p PUNTOS: 
         p #{game.player1.name} : #{game.currentRound.score[0]} 
@@ -41,40 +45,44 @@ block content
             p Que desea hacer????
                 
                 if(estadoCantarTruco)  
-                  form(role='form', action="/cantarTruco",method="post")
-                   input.form(type='hidden', name="idgame",value='#{game._id}')
-                   button.btn.btn-default(type='submit') Cantar Truco
-              
+                  //form(role='form', action="/cantarTruco",method="post")
+                  // input.form(type='hidden', name="idgame",value='#{game._id}')
+                  button.btn.btn-default(onclick='FuncJugar("Truco")') Cantar Truco
+
                 if(estadoCantarEnvido)  
-                  form(role='form', action="/cantarEnvido",method="post")
-                    input.form(type='hidden', name="idgame",value='#{game._id}')
-                    button.btn.btn-default(type='submit') Cantar Envido
+                  //form(role='form', action="/cantarEnvido",method="post")
+                    //input.form(type='hidden', name="idgame",value='#{game._id}')
+                  button.btn.btn-default(onclick='FuncJugar("Envido")') Cantar Envido
                 
                 if(estadoQuiero)  
-                  form(role='form', action="/quiero",method="post")
-                    input.form(type='hidden', name="idgame",value='#{game._id}')
-                    button.btn.btn-default(type='submit') QUIERO
+                  //- form(role='form', action="/quiero",method="post")
+                  //-   input.form(type='hidden', name="idgame",value='#{game._id}')
+                  button.btn.btn-default(onclick='FuncJugar("Quiero")') QUIERO
                 
                 if(estadoNoQuiero)  
-                  form(role='form', action="/no-quiero",method="post")
-                    input.form(type='hidden', name="idgame",value='#{game._id}')
-                    button.btn.btn-default(type='submit') NO QUIERO
+                  //form(role='form', action="/no-quiero",method="post")
+                    //input.form(type='hidden', name="idgame",value='#{game._id}')
+                  button.btn.btn-default(onclick='FuncJugar("NoQuiero")') NO QUIERO
                 
 
                 &nbsp;
                 p Cartas para jugar
                   if(c1jt)
-                    form(role='form', action="/jugarcarta1",method="post",class="formulario")
-                      input.form(type='hidden', name="idgame",value='#{game._id}')
-                      input.form(type='image', src='#{c1jt}')
+                    //form(role='form', action="/jugarcarta1",method="post",class="formulario")
+                      //input.form(type='hidden', name="idgame",value='#{game._id}')
+                      //input.form(type='image', src='#{c1jt}')
+                    input(type="image",src='#{c1jt}',name="j1",onclick='FuncJugar("JugarCarta1")')
                   if(c2jt)
-                    form(role='form', action="/jugarcarta2",method="post",class="formulario")
-                      input.form(type='hidden', name="idgame",value='#{game._id}')
-                      input.form(type='image', src='#{c2jt}')
+                    //- form(role='form', action="/jugarcarta2",method="post",class="formulario")
+                    //-   input.form(type='hidden', name="idgame",value='#{game._id}')
+                    //-   input.form(type='image', src='#{c2jt}')
+                    input(type="image",src='#{c2jt}',onclick='FuncJugar("JugarCarta2")')
+
                   if(c3jt)
-                    form(role='form', action="/jugarcarta3",method="post",class="formulario")
-                      input.form(type='hidden', name="idgame",value='#{game._id}')
-                      input.form(type='image', src='#{c3jt}')
+                    //- form(role='form', action="/jugarcarta3",method="post",class="formulario")
+                    //-   input.form(type='hidden', name="idgame",value='#{game._id}')
+                    //-   input.form(type='image', src='#{c3jt}')
+                    input(type="image",src='#{c3jt}',onclick='FuncJugar("JugarCarta3")')
+
         if(usuario != game.currentRound.currentTurn.name)      
           p No es tu turno: Espera a que el otro jugador juege!
-
