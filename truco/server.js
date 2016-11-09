@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-
+var lodash = require('lodash');
 
 var users = require('./routes/users');
 
@@ -83,14 +83,22 @@ router.get('/register', function(req, res) {
 
 
 router.get('/joingame', function(req, res) {
-    res.render('joingame', { });
+
+    Game.find({inicio:false},function(err,result){
+      res.render('joingame', {games:result,username:req.session.passport.user });
+    });
+
+
+
+
+
 });
 
 router.post('/joingame',function(req,res){
     ///TEMPORALMENTE LE AGREGAMOS UN CAMPO OWNER AL GAME
-    var dueno= req.body.owner;
+    var idgame= req.body.idgame;
 
-  Game.findOne({owner:dueno,inicio:false},function(err,result){
+  Game.findOne({_id:idgame,inicio:false},function(err,result){
       if(err){console.log(err)};
 
       if(!err){

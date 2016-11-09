@@ -15,14 +15,15 @@ block content
     h1 Unete a un juego creado! 
     p.lead 
     br
-    form(role='form', action="/joingame",method="post", style='max-width: 300px;')
-      .form-group
-        p Ingrese el nombre del otro jugador
-        input.form-control(type='text', name="owner", placeholder='INGRESE EL NOMBRE DEL OTRO JUGADOR!!!')
-     
-       button.btn.btn-default(type='submit',onclick="FuncJoin()") Aceptar
-      &nbsp;
-      a(href='/')
-        button.btn.btn-primary(type="button") cancelar
+    
+    form(name="join",role="form",action="/joingame",method="post")
+      each juego in games
+        if (username != juego.owner)
+          .cajabotonjoin
+            button(type="submit",name="idgame",value='#{juego._id}',class="botonjoin") #{juego.owner}
+          
+          
+    a(href='/')
+      button.btn.btn-primary(type="button") cancelar
     br
     

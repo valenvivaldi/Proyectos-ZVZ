@@ -1,9 +1,9 @@
 @font-face
 {
    font-family: "pricedown";
-   
+
    src: url("/fonts/pricedow.ttf");
-   
+
 }
 
 
@@ -15,6 +15,15 @@ body {
   font: 100% roboto;
   background-repeat: repeat-y;
   background-position-x: 0px;
+}
+
+
+.cajabotonjoin{
+  margin-bottom: 15px
+}
+
+.botonjoin{
+  font-size: 10px;
 }
 
 .logout{
@@ -29,7 +38,7 @@ body {
 }
 
 .container{
-	 
+
   padding: 15px;
 	text-align:center;
 	align-items: center;
@@ -39,7 +48,7 @@ body {
     -webkit-border-radius: 15px 15px 15px 15px;
     border: 0px solid #000000;
 	width: 250px;
-  padding-bottom: 20px;	
+  padding-bottom: 20px;
 }
 .container2{
     background-image: url("http://2.bp.blogspot.com/-y0FSVIUp36Y/UFcYIHMLyKI/AAAAAAAAAUA/xVVacJvjeZk/s1600/mesa2.jpg");
@@ -47,15 +56,15 @@ body {
   font:200% roboto;
   text-align:center;
   align-items: center;
-  
+
   border-radius: 15px 15px 15px 15px;
     -moz-border-radius: 15px 15px 15px 15px;
     -webkit-border-radius: 15px 15px 15px 15px;
     border: 0px solid #000000;
   width: 50%;
   margin-left: 25%;
-  margin-right: 25%;  
-  
+  margin-right: 25%;
+
 }
 
 .cartajugada{
@@ -68,7 +77,7 @@ body {
     padding: 5px;
     text-align: center;
     align-items: center;
-   
+
     border-radius: 15px 15px 15px 15px;
     -moz-border-radius: 15px 15px 15px 15px;
     -webkit-border-radius: 15px 15px 15px 15px;
@@ -88,7 +97,7 @@ a{
 .logo{
   margin-top: 10px;
   float:left;
-  background-image: url('/images/texturablack.jpg');	
+  background-image: url('/images/texturablack.jpg');
 
 	font:100px pricedown;
   width: 306px;
@@ -112,5 +121,3 @@ border: 0px solid #000000;
   margin: 6px;
 
 }
-
-
