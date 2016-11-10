@@ -47,22 +47,22 @@ block content
                 if(estadoCantarTruco)  
                   //form(role='form', action="/cantarTruco",method="post")
                   // input.form(type='hidden', name="idgame",value='#{game._id}')
-                  button.btn.btn-default(onclick='FuncJugar("Truco")') Cantar Truco
+                  button(onclick='FuncJugar("Truco")',class="botontruco") Cantar Truco
 
                 if(estadoCantarEnvido)  
                   //form(role='form', action="/cantarEnvido",method="post")
                     //input.form(type='hidden', name="idgame",value='#{game._id}')
-                  button.btn.btn-default(onclick='FuncJugar("Envido")') Cantar Envido
+                  button(onclick='FuncJugar("Envido")',class="botontruco") Cantar Envido
                 
                 if(estadoQuiero)  
                   //- form(role='form', action="/quiero",method="post")
                   //-   input.form(type='hidden', name="idgame",value='#{game._id}')
-                  button.btn.btn-default(onclick='FuncJugar("Quiero")') QUIERO
+                  button(onclick='FuncJugar("Quiero")',class="botontruco") QUIERO
                 
                 if(estadoNoQuiero)  
                   //form(role='form', action="/no-quiero",method="post")
                     //input.form(type='hidden', name="idgame",value='#{game._id}')
-                  button.btn.btn-default(onclick='FuncJugar("NoQuiero")') NO QUIERO
+                  button(onclick='FuncJugar("NoQuiero")',class="botontruco") NO QUIERO
                 
 
                 &nbsp;

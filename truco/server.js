@@ -139,6 +139,7 @@ router.post('/joingame',function(req,res){
 
 
 router.get('/jugar',function(req,res){
+  
   console.log(req.session.passport.user);//MUESTRA EL USUARIO
   var id =req.query.idgame;
 

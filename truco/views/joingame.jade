@@ -11,7 +11,7 @@ block content
   
   
   
-  .container
+  .container2
     h1 Unete a un juego creado! 
     p.lead 
     br
@@ -20,10 +20,10 @@ block content
       each juego in games
         if (username != juego.owner)
           .cajabotonjoin
-            button(type="submit",name="idgame",value='#{juego._id}',class="botonjoin") #{juego.owner}
+            button(type="submit",name="idgame",value='#{juego._id}',class="botontruco") #{juego.owner}
           
           
     a(href='/')
-      button.btn.btn-primary(type="button") cancelar
+      button(type="button",class="botontruco") Cancelar
     br
     

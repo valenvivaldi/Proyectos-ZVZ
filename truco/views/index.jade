@@ -3,27 +3,24 @@ extends layout
 block content
   
     
-
-  if (!user)
-    br
-
-    a(href="/login") <center><h1><b>Login<b><h1><center>
-      
   
-
-
+  if (!user)
+    a(href="/login")
+      button(class="botontruco") Login
   if (user)
     .logout
       p Ya te logeaste como: #{user.username}
         a(href="/logout") 
-          button.btn.btn-default Logout
-    center
+          button(class="botontruco") Logout
+    
+    .container2
+      h1 Bienvenido! 
+      h3 Crea una partida de truco o unete a una!
       a(href="/newgame")
-        button.btn.btn-default CREAR
+        button(class="botontruco") CREAR
       a(href="/joingame")
-        button.btn.btn-default UNIRTE
+        button(class="botontruco") UNIRTE
       br
-      img(src='/images/homero2.gif',class='homero')  
+      //img(src='/images/homero2.gif',class='homero')  
       br
-      a(href="/ayuda") 
-        button.btn.btn-default AIUDA
+      
