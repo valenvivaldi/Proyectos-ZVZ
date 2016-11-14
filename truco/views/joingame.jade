@@ -1,18 +1,31 @@
 extends layout
 
 block content
-  .container
+  script(src="/socket.io/socket.io.js")
+  script.
+    var socket = io.connect('/'); //var socket = io.connect('http://localhost:3000');
+    function FuncJoin(){
+      socket.emit("join");
+    }
+  
+  
+  
+  
+  .container2
     h1 Unete a un juego creado! 
     p.lead 
     br
-    form(role='form', action="/joingame",method="post", style='max-width: 300px;')
-      .form-group
-        p Ingrese el nombre del otro jugador
-        input.form-control(type='text', name="owner", placeholder='INGRESE EL NOMBRE DEL OTRO JUGADOR!!!')
-     
-       button.btn.btn-default(type='submit') Aceptar
-      &nbsp;
-      a(href='/')
-        button.btn.btn-primary(type="button") cancelar
+    
+    form(name="join",role="form",action="/joingame",method="post")
+      each juego in games
+        if (username != juego.owner)
+          .cajabotonjoin
+            button(type="submit",name="idgame",value='#{juego._id}',class="botontruco",onclick="FuncJoin()") #{juego.owner}
+          
+          
+    a(href='/')
+      button(type="button",class="botontruco") Cancelar
+    a(href='/joingame')
+      button(type="button",class="botontruco") Refrescar  
     br
     

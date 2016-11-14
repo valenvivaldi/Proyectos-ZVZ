@@ -1,5 +1,135 @@
-form.carta {
-  width: 0px;
-  margin-left: 322px;
-  float: left;
+@font-face
+{
+   font-family: "pricedown";
+
+   src: url("/fonts/pricedow.ttf");
+
+}
+
+
+
+body {
+  background-image: url('/images/fondoverde.jpg');
+  background-size: 100%;
+  color: white;
+  font: 100% roboto;
+  background-repeat: repeat-y;
+  background-position-x: 0px;
+}
+
+
+.cajabotonjoin{
+  margin-bottom: 15px
+}
+
+.botontruco {
+  margin: 4px;
+  font-size: 24px;
+  -webkit-border-radius: 9;
+  -moz-border-radius: 9;
+  border-radius: 9px;
+  color: #ffffff;
+  background: #545454;
+  padding: 8px 16px 8px 16px;
+  text-decoration: none;
+}
+
+.botontruco:hover {
+  background: #8c8c8c;
+  text-decoration: none;
+}
+.logout{
+  text-align: center;
+  font-size: 16px
+}
+
+
+.homero {
+  width: 50%;
+  height: auto;
+}
+
+.container{
+
+  padding: 15px;
+	text-align:center;
+	align-items: center;
+	background-color: #1c1c1c;
+	border-radius: 15px 15px 15px 15px;
+    -moz-border-radius: 15px 15px 15px 15px;
+    -webkit-border-radius: 15px 15px 15px 15px;
+    border: 0px solid #000000;
+	width: 250px;
+  padding-bottom: 20px;
+}
+.container2{
+    background-image: url("http://2.bp.blogspot.com/-y0FSVIUp36Y/UFcYIHMLyKI/AAAAAAAAAUA/xVVacJvjeZk/s1600/mesa2.jpg");
+  padding: 2%;
+  font:200% roboto;
+  text-align:center;
+  align-items: center;
+  align-content: center;
+  border-radius: 15px 15px 15px 15px;
+    -moz-border-radius: 15px 15px 15px 15px;
+    -webkit-border-radius: 15px 15px 15px 15px;
+    border: 0px solid #000000;
+  width: 50%;
+  margin-left: 25%;
+  margin-right: 25%;
+
+}
+
+.cartajugada{
+  width: 80px;
+}
+
+.container3 {
+    background-image: url("http://2.bp.blogspot.com/-y0FSVIUp36Y/UFcYIHMLyKI/AAAAAAAAAUA/xVVacJvjeZk/s1600/mesa2.jpg");
+    font-size: 180%;
+    padding: 5px;
+    text-align: center;
+    align-items: center;
+
+    border-radius: 15px 15px 15px 15px;
+    -moz-border-radius: 15px 15px 15px 15px;
+    -webkit-border-radius: 15px 15px 15px 15px;
+    width: 10%;
+    float:right;
+    margin-right: 10%
+    /* padding-bottom: 20px; */
+}
+
+
+
+a{
+	font-size: 16px;
+
+}
+
+.logo{
+  margin-top: 10px;
+  float:left;
+  background-image: url('/images/texturablack.jpg');
+
+	font:100px pricedown;
+  width: 306px;
+  border-radius: 60px 60px 60px 60px;
+-moz-border-radius: 60px 60px 60px 60px;
+-webkit-border-radius: 60px 60px 60px 60px;
+border: 0px solid #000000;
+	height: auto;
+padding: 0px;
+}
+
+
+
+
+form.formulario{
+  display: inline;
+  border-radius: 25px 25px 25px 25px;
+-moz-border-radius: 25px 25px 25px 25px;
+-webkit-border-radius: 25px 25px 25px 25px;
+border: 0px solid #000000;
+  margin: 6px;
+
 }

@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  script(src="/socket.io/socket.io.js")
+  script.
+    var socket = io.connect('http://localhost:3000');
+    
+  h1  El usuario conectado es: #{user} !
+    
