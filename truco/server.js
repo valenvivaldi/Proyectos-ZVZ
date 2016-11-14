@@ -35,8 +35,8 @@ app.use(require('express-session')({
     resave: false,
     saveUninitialized: false
 }));
-app.use(passport.initialize());
 app.use(passport.session());
+app.use(passport.initialize());
 app.use(express.static(path.join(__dirname, 'public')));
 
 ///////////////////////////////////////////////////////////////////////////////////////////////7
@@ -68,7 +68,16 @@ var Player = player_model.player;
 
 /* GET home page. */
 router.get('/', function (req, res) {
-  res.render('index', { user : req.user ,idgame:req.idgame});
+  aux=undefined;
+  if(req.session.passport){
+    aux=req.session.passport.user;
+  }
+
+
+
+
+
+  res.render('index', {usuario:aux, idgame:req.idgame});
 });
 
 
@@ -139,7 +148,7 @@ router.post('/joingame',function(req,res){
 
 
 router.get('/jugar',function(req,res){
-  
+
   console.log(req.session.passport.user);//MUESTRA EL USUARIO
   var id =req.query.idgame;
 
@@ -155,7 +164,7 @@ router.get('/jugar',function(req,res){
           if(puntosp1 >=30){winner=p1};
           if(puntosp2 >=30){winner=p2};
 
-          return res.render ('/winner',{winner:winner,p1:p1,p2:p2,puntosp1:puntosp1,puntosp2:puntosp2});
+          return res.render ('/winner',{winner:winner,p1:p1,p2:p2,puntosp1:puntosp1,puntosp2:puntosp2,usuario:req.session.passport.user});
 
 
 
@@ -598,7 +607,7 @@ router.get('/newgame', function(req, res) {
 
 
 router.get('/login', function(req, res) {
-    res.render('login', { user : req.user });
+    res.render('login', {usuario:undefined});
 });
 
 router.get('/ayuda', function(req, res) {
@@ -613,7 +622,7 @@ router.post('/login', passport.authenticate('local'), function(req, res) {
 
 router.get('/logout', function(req, res) {
     req.logout();
-    res.redirect('/');
+    res.redirect('/',{usuario:req.session.passport.user});
 });
 
 router.get('/ping', function(req, res){

@@ -4,23 +4,21 @@ block content
   
     
   
-  if (!user)
-    a(href="/login")
-      button(class="botontruco") Login
-  if (user)
-    .logout
-      p Ya te logeaste como: #{user.username}
-        a(href="/logout") 
-          button(class="botontruco") Logout
-    
-    .container2
-      h1 Bienvenido! 
-      h3 Crea una partida de truco o unete a una!
-      a(href="/newgame")
-        button(class="botontruco") CREAR
-      a(href="/joingame")
-        button(class="botontruco") UNIRTE
-      br
-      //img(src='/images/homero2.gif',class='homero')  
-      br
+
+  .container2
+    if (!usuario)
+        p No has iniciado sesion!
+        a(href="/login")
+          button(class="botontruco") Login
+    if (usuario)    
+      
+        h1 Bienvenido! 
+        h3 Crea una partida de truco o unete a una!
+        a(href="/newgame")
+          button(class="botontruco") CREAR
+        a(href="/joingame")
+          button(class="botontruco") UNIRTE
+        br
+        //img(src='/images/homero2.gif',class='homero')  
+        br
       

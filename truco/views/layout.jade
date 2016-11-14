@@ -17,7 +17,11 @@ html
       .logo
         p Truco!
     br
-
+    if (usuario)
+      .logout
+        p Ya te logeaste como: #{usuario}
+          a(href="/logout") 
+            button(class="botontruco") Logout
     block content
 
   script(src='http://code.jquery.com/jquery.js')
