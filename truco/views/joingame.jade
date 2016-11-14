@@ -20,7 +20,7 @@ block content
       each juego in games
         if (username != juego.owner)
           .cajabotonjoin
-            button(type="submit",name="idgame",value='#{juego._id}',class="botontruco") #{juego.owner}
+            button(type="submit",name="idgame",value='#{juego._id}',class="botontruco",onclick="FuncJoin()") #{juego.owner}
           
           
     a(href='/')
