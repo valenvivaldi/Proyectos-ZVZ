@@ -622,7 +622,7 @@ router.post('/login', passport.authenticate('local'), function(req, res) {
 
 router.get('/logout', function(req, res) {
     req.logout();
-    res.redirect('/',{usuario:req.session.passport.user});
+    res.redirect('/');
 });
 
 router.get('/ping', function(req, res){

@@ -43,7 +43,7 @@ block content
         if(usuario == game.currentRound.currentTurn.name)
             p PUNTOS PARA EL ENVIDO: #{penvido}
             p Que desea hacer????
-                
+                br
                 if(estadoCantarTruco)  
                   //form(role='form', action="/cantarTruco",method="post")
                   // input.form(type='hidden', name="idgame",value='#{game._id}')
@@ -67,6 +67,7 @@ block content
 
                 &nbsp;
                 p Cartas para jugar
+                  br
                   if(c1jt)
                     //form(role='form', action="/jugarcarta1",method="post",class="formulario")
                       //input.form(type='hidden', name="idgame",value='#{game._id}')
