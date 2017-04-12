@@ -52,7 +52,6 @@ var game_model   = require("./models/game");
 var game_card    = require("./models/card");
 
 var round_model = require("./models/round");
-
 var Round = round_model.round;
 var Game = game_model.game;
 var Card = game_card.card;
