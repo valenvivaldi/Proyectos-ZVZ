@@ -1,0 +1,41 @@
+import java.util.LinkedList;
+
+public class ClaveForanea {
+	private LinkedList<Atributo> listaAtributos;
+	private String tabla;
+	private String nombreAttrRef;
+
+	public ClaveForanea(Atributo attr, Tabla tabla) {
+
+		this.attr = attr;
+		this.tabla = tabla;
+	}
+	/**
+	 * @return the tabla
+	 */
+	public Tabla getTabla() {
+		return tabla;
+	}
+	/**
+	 * @param tabla the tabla to set
+	 */
+	public void setTabla(Tabla tabla) {
+		this.tabla = tabla;
+	}
+	/**
+	 * @return the attr
+	 */
+	public Atributo getAttr() {
+		return attr;
+	}
+	/**
+	 * @param attr the attr to set
+	 */
+	public void setAttr(Atributo attr) {
+		this.attr = attr;
+	}
+	@Override
+	public String toString() {
+		return "ClaveForanea [attr=" + attr + ", tabla=" + tabla.getNombre() + "]";
+	}
+}

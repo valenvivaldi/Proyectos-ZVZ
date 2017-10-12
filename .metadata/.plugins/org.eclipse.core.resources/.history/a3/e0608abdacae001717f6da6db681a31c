@@ -1,0 +1,16 @@
+import java.util.LinkedList;
+
+
+public class Base {
+	private LinkedList<Tabla> listaTablas;
+
+	public LinkedList<Tabla> getListaTablas() {
+		return listaTablas;
+	}
+
+	public void setListaTablas(LinkedList<Tabla> listaTablas) {
+		this.listaTablas = listaTablas;
+	}
+	
+	
+}

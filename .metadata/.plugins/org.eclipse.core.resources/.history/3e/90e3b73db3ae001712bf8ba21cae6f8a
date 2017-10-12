@@ -1,0 +1,51 @@
+import java.util.LinkedList;
+
+
+public class Tabla {
+public Tabla(String nombre) {
+		
+		this.nombre = nombre;
+	}
+
+
+private LinkedList<Atributo> listaAtributos;
+private String nombre;
+private LinkedList<ClaveForanea> listaClavesForaneas;
+private LinkedList<Atributos> listaClavesPrimarias;
+private LinkedList<ClaveForanea> listaClavesForaneas;
+
+
+/**
+ * @return the listaAtributos
+ */
+public LinkedList<Atributo> getListaAtributos() {
+	return listaAtributos;
+}
+
+/**
+ * @param listaAtributos the listaAtributos to set
+ */
+public void setListaAtributos(LinkedList<Atributo> listaAtributos) {
+	this.listaAtributos = listaAtributos;
+}
+
+/**
+ * @return the nombre
+ */
+public String getNombre() {
+	return nombre;
+}
+
+/**
+ * @param nombre the nombre to set
+ */
+public void setNombre(String nombre) {
+	this.nombre = nombre;
+}
+
+@Override
+public String toString() {
+	return "Tabla [listaAtributos=" + listaAtributos + ", nombre=" + nombre
+			+ "]";
+}
+}

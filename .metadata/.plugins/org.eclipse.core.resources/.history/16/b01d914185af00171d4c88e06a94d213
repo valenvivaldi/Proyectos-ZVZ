@@ -1,0 +1,17 @@
+import java.util.LinkedList;
+
+public class ClaveForanea {
+	private LinkedList<Atributo> listaAtributos;
+	private String tabla;
+	private String nombreAttrRef; // PREGUNTAR AL PROFE
+
+	public ClaveForanea( String tabla) {
+
+		this.listaAtributos = new LinkedList<Atributo>();
+		this.tabla=tabla;
+	}
+	public void addAtributo (Atributo nuevo) {
+		listaAtributos.add(nuevo);
+	}
+	}
+	
