@@ -1,3 +1,7 @@
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.LinkedList;
 
 
@@ -51,6 +55,44 @@ public class Base {
 	@Override
 	public String toString() {
 		return "Base [listaTablas=" + listaTablas + ", nombre=" + nombre + "]";
+	}
+
+
+
+	public void CargarTablas(Connection connection) {
+		String[] tipo = {"TABLE"};
+		ResultSet resultSetTables;
+		try {
+			DatabaseMetaData metaData = connection.getMetaData();
+			resultSetTables = metaData.getTables(null,this.nombre, null, tipo);
+			while(resultSetTables.next()) {
+				System.out.println(" nombre: " + resultSetTables.getString(3));
+				System.out.println(" tipo: " + resultSetTables.getString(4));
+				System.out.println("----------------------------------------------------------");
+
+				if(resultSetTables.getString(4)=="TABLE") {
+					Tabla nuevaTabla = new Tabla(resultSetTables.getString(3));
+					nuevaTabla.Cargar(connection);
+					this.listaTablas.add(nuevaTabla);
+				}
+
+
+			}
+
+		} catch (SQLException e) {
+			System.out.println("error durante extraccion de las tablas de la base "+this.nombre);	
+			System.out.println(e.toString());
+			e.printStackTrace();
+		}
+		
+		
+		
+
+
+
+
+
+
 	}
 
 
