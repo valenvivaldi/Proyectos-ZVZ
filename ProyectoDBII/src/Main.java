@@ -7,7 +7,7 @@ public class Main {
 		Properties prop = new Properties();
 		InputStream is = null;
 		try {
-			is = new FileInputStream("./src/config.PROPERTIES");
+			is = new FileInputStream("./config.PROPERTIES");
 			prop.load(is);
 		} catch(IOException e) {
 			System.out.println(e.toString());
@@ -34,9 +34,11 @@ public class Main {
 		System.out.println(host);
 		String nombre_base1 = prop.getProperty("nombre_base1");
 		System.out.println(nombre_base1);
+		String schema1 =prop.getProperty("schema1");
 		String nombre_base2 = prop.getProperty("nombre_base2");
 		System.out.println(nombre_base2);
-
+		String schema2 =prop.getProperty("schema2");
+		
 		String url = "jdbc:"+protocolo+"://"+host+"/"+nombre_base1;
 		String url2 = "jdbc:"+protocolo+"://"+host+"/"+nombre_base2;
 		System.out.println("string de coneccion para la 1ra base ");
@@ -44,22 +46,38 @@ public class Main {
 		System.out.println("string de coneccion para la 2da base ");
 		System.out.println(url2);
 
-		Connection connection;
+		
+		@SuppressWarnings("unused")
+		Base base1 = new Base(schema1);
+		@SuppressWarnings("unused")
+		Base base2 = new Base(schema2);
+
+
+		Connection connection1;
+		@SuppressWarnings("unused")
+		Connection connection2;
 		try {
-			connection = DriverManager.getConnection(url, usuario, password);
-			String[] tipo = {"TABLE"};
-			DatabaseMetaData metaData = connection.getMetaData();
-			ResultSet resultSetTables = metaData.getTables("procedimientos","public", null, tipo);
+			connection1 = DriverManager.getConnection(url, usuario, password);
+			System.out.println("INICIA CARGA DE TABLAS DE "+nombre_base1+"."+schema1);
+			base1.CargarTablas(connection1);
 			System.out.println(" tablas de la base de datos ");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			System.out.println("error conectando a la base");
+			e.printStackTrace();
+		}	
+		try {
+			connection2 = DriverManager.getConnection(url2, usuario, password);
+			System.out.println("INICIA CARGA DE TABLAS DE "+nombre_base2+"."+schema2);
+			base2.CargarTablas(connection2);
+			System.out.println(" tablas de la base de datos ");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("error conectando a la base");
 			e.printStackTrace();
 		}	
 
 
-
-		Base base1 = new Base(nombre_base1);
-		Base base2 = new Base(nombre_base2);
 
 
 

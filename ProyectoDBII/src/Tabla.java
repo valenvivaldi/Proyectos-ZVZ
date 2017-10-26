@@ -1,3 +1,4 @@
+import java.sql.Connection;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -138,4 +139,11 @@ public class Tabla {
 	public void setListaIndices(LinkedList<Atributo> listaIndices) {
 		this.listaIndices = listaIndices;
 	}
+
+	public void Cargar(Connection connection) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 }
