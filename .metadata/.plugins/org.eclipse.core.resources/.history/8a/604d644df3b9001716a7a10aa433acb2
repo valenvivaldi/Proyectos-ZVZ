@@ -1,4 +1,3 @@
-import java.sql.*;
 import java.io.*;
 import java.util.*;
 
@@ -12,18 +11,13 @@ public class Main {
 		} catch(IOException e) {
 			System.out.println(e.toString());
 		}
-
+		
 		String driver = prop.getProperty("driver");
 		System.out.println(driver);
-		try {
-			Class.forName(driver);
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-
-
+	    Class.forName(driver);
+		
+		
+		
 		String protocolo = prop.getProperty("protocolo");
 		System.out.println(protocolo);
 		String usuario = prop.getProperty("usuario");
@@ -43,26 +37,13 @@ public class Main {
 		System.out.println(url);
 		System.out.println("string de coneccion para la 2da base ");
 		System.out.println(url2);
-
-		Connection connection;
-		try {
-			connection = DriverManager.getConnection(url, usuario, password);
-			String[] tipo = {"TABLE"};
-			DatabaseMetaData metaData = connection.getMetaData();
-			ResultSet resultSetTables = metaData.getTables("procedimientos","public", null, tipo);
-			System.out.println(" tablas de la base de datos ");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
-
-
+		
 
 		Base base1 = new Base(nombre_base1);
 		Base base2 = new Base(nombre_base2);
-
-
-
-
+		
+		
+		
+		
 	}
 }
