@@ -46,17 +46,14 @@ public class Main {
 		System.out.println("string de coneccion para la 2da base ");
 		System.out.println(url2);
 
-		
-		@SuppressWarnings("unused")
-		Base base1 = new Base(schema1);
-		@SuppressWarnings("unused")
-		Base base2 = new Base(schema2);
+
 
 
 		Connection connection1;
 		@SuppressWarnings("unused")
 		Connection connection2;
 		try {
+			Base base1 = new Base(schema1);
 			connection1 = DriverManager.getConnection(url, usuario, password);
 			System.out.println("INICIA CARGA DE TABLAS DE "+nombre_base1+"."+schema1);
 			base1.CargarTablas(connection1);
@@ -67,6 +64,7 @@ public class Main {
 			e.printStackTrace();
 		}	
 		try {
+			Base base2 = new Base(schema2);
 			connection2 = DriverManager.getConnection(url2, usuario, password);
 			System.out.println("INICIA CARGA DE TABLAS DE "+nombre_base2+"."+schema2);
 			base2.CargarTablas(connection2);

@@ -1,24 +1,21 @@
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.LinkedList;
 
 
 public class Tabla {
+	private String schema;
 	private String nombre;
 	private LinkedList<Atributo> listaAtributos;
-	private LinkedList<ClaveForanea> listaClavesForaneas;
-	private LinkedList<Atributo> listaClavesPrimarias;
-	private LinkedList<Atributo> listaUnicas;
-	private LinkedList<Atributo> listaIndices;
-
+	
 	public Tabla(String nombre) {
 
 		this.nombre = nombre;
 		this.listaAtributos=new LinkedList<Atributo>();
-		this.listaClavesForaneas=new LinkedList<ClaveForanea>();
-		this.listaClavesPrimarias=new LinkedList<Atributo>();
-		this.listaUnicas=new LinkedList<Atributo>();
-		this.listaIndices=new LinkedList<Atributo>();
+		
 
 	}
 
@@ -26,28 +23,10 @@ public class Tabla {
 		this.listaAtributos.add(n);
 	}
 
-	public void addClaveP(String nombre) {
-		Iterator<Atributo> iter = listaAtributos.iterator();
-		while(iter.hasNext()) {
-			Atributo actual = iter.next();
-			if(actual.getNombre()==nombre) {
-				this.listaClavesPrimarias.add(actual);
-				break;
-			}
-		}
-	}
-	public void addClaveForanea(String nombre) {
-		Iterator<Atributo> iter = listaAtributos.iterator();
-		while(iter.hasNext()) {
-			Atributo actual = iter.next();
-			if(actual.getNombre()==nombre) {
-				this.listaClavesPrimarias.add(actual);
-				break;
-			}
-		}
-	}
 	
 	
+
+
 	/**
 	 * @return the listaAtributos
 	 */
@@ -77,73 +56,148 @@ public class Tabla {
 	}
 
 
-	@Override
-	public String toString() {
-		return "Tabla [listaAtributos=" + listaAtributos + ", nombre=" + nombre + ", listaClavesForaneas="
-				+ listaClavesForaneas + ", listaClavesPrimarias=" + listaClavesPrimarias + ", listaUnicas=" + listaUnicas
-				+ ", listaIndices=" + listaIndices + "]";
+	
+
+	
+
+	
+
+	
+
+	
+	
+
+	
+
+	
+
+
+	public void CargarBasico(Connection connection) {
+		ResultSet atributos = null;
+		String n =null;
+		try {
+
+			DatabaseMetaData metaData = connection.getMetaData();
+			atributos = metaData.getColumns(null,this.schema,this.nombre, null);
+			while(atributos.next()) {
+				n =atributos.getString(4);
+				System.out.println(" nombre: " +n );
+				System.out.println(" tipo: " + atributos.getString(6));
+				Atributo nuevoAtributo = new Atributo(atributos.getString(4),atributos.getString(6));
+				if(atributos.getString(18)=="YES") {
+					nuevoAtributo.setNullable(true);
+				}
+
+
+				this.listaAtributos.add(nuevoAtributo);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("error cargando la tabla "+n);
+			e.printStackTrace();
+		}
 	}
 
-	/**
-	 * @return the listaUnicas
-	 */
-	public LinkedList<Atributo> getListaUnicas() {
-		return listaUnicas;
-	}
+	public void CargarClavesPrimarias(Connection connection) {
+		ResultSet atributos = null;
+		String n =null;
+		try {
 
-	/**
-	 * @param listaUnicas the listaUnicas to set
-	 */
-	public void setListaUnicas(LinkedList<Atributo> listaUnicas) {
-		this.listaUnicas = listaUnicas;
+			DatabaseMetaData metaData = connection.getMetaData();
+			atributos = metaData.getPrimaryKeys(null,this.schema,this.nombre);
+			while(atributos.next()) {
+				n =atributos.getString(4);
+				System.out.println(" la columna  " +n+" es pk" );
+				buscarAtributo(n).setPrimaryKey(true);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("error cargando la tabla "+n);
+			e.printStackTrace();
+		}
 	}
+	
+	public void CargarIndices(Connection connection) {
+		ResultSet atributos = null;
+		String nombre =null;
+		String indicenombre=null;
+		boolean unica;
+		Atributo actual =null;
+		try {
 
-	/**
-	 * @return the listaClavesPrimarias
-	 */
-	public LinkedList<Atributo> getListaClavesPrimarias() {
-		return listaClavesPrimarias;
+			DatabaseMetaData metaData = connection.getMetaData();
+			atributos = metaData.getIndexInfo(null,this.schema,this.nombre,false,false);
+			while(atributos.next()) {
+				if (atributos.getString(9)!=null) {
+					nombre =atributos.getString(9);
+					indicenombre =atributos.getString(6);
+					unica = !(atributos.getBoolean(4));
+					actual = buscarAtributo(nombre);
+					actual.setIndexnombre(indicenombre);
+					actual.setUnique(unica);
+				}
+
+
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("error cargando la tabla "+n);
+			e.printStackTrace();
+		}
 	}
+	
+	public void CargarClavesForaneas(Connection connection) {
+		ResultSet atributos = null;
+		String n =null;
+		try {
 
-	/**
-	 * @param listaClavesPrimarias the listaClavesPrimarias to set
-	 */
-	public void setListaClavesPrimarias(LinkedList<Atributo> listaClavesPrimarias) {
-		this.listaClavesPrimarias = listaClavesPrimarias;
+			DatabaseMetaData metaData = connection.getMetaData();
+			atributos = metaData.getImportedKeys(null,this.schema,this.nombre);
+			while(atributos.next()) {
+				String fkname = atributos.getString(8);
+				String pkname = atributos.getString(4);
+				String pktable = atributos.getString(3);
+				Atributo actual = buscarAtributo(fkname);
+				actual.setRefAtributo(pkname);
+				actual.setRefTabla(pktable);
+				
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("error cargando la tabla "+n);
+			e.printStackTrace();
+		}
 	}
-
-	/**
-	 * @return the listaClavesForaneas
-	 */
-	public LinkedList<ClaveForanea> getListaClavesForaneas() {
-		return listaClavesForaneas;
-	}
-
-	/**
-	 * @param listaClavesForaneas the listaClavesForaneas to set
-	 */
-	public void setListaClavesForaneas(LinkedList<ClaveForanea> listaClavesForaneas) {
-		this.listaClavesForaneas = listaClavesForaneas;
-	}
-
-	/**
-	 * @return the listaIndices
-	 */
-	public LinkedList<Atributo> getListaIndices() {
-		return listaIndices;
-	}
-
-	/**
-	 * @param listaIndices the listaIndices to set
-	 */
-	public void setListaIndices(LinkedList<Atributo> listaIndices) {
-		this.listaIndices = listaIndices;
-	}
-
+	
+	
 	public void Cargar(Connection connection) {
-		// TODO Auto-generated method stub
+		this.CargarBasico(connection);
+		this.CargarClavesPrimarias(connection);
+		this.CargarClavesForaneas(connection);
+		this.CargarIndices(connection);
 		
 	}
 
+	public String getSchema() {
+		return schema;
+	}
+
+	public void setSchema(String schema) {
+		this.schema = schema;
+	}
+
+	public Atributo buscarAtributo(String name) {
+		int i = 0;
+		Atributo actual=null;
+		Iterator<Atributo> iter =this.listaAtributos.iterator();
+		while (iter.hasNext()) {
+			actual = iter.next();
+			if (actual.getNombre()==name) {
+				return actual;
+			}
+		}
 	
+		
+		return actual;	
+	}
 }

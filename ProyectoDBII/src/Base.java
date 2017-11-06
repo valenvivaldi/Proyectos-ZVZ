@@ -15,7 +15,7 @@ public class Base {
 
 	private LinkedList<Tabla> listaTablas;
 	private String nombre;
-
+	
 
 	public void addTabla (Tabla nueva) {
 		this.listaTablas.add(nueva);
@@ -72,6 +72,7 @@ public class Base {
 
 				if(resultSetTables.getString(4)=="TABLE") {
 					Tabla nuevaTabla = new Tabla(resultSetTables.getString(3));
+					nuevaTabla.setSchema(this.nombre);
 					nuevaTabla.Cargar(connection);
 					this.listaTablas.add(nuevaTabla);
 				}
