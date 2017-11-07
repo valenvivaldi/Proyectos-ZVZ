@@ -10,12 +10,12 @@ public class Tabla {
 	private String schema;
 	private String nombre;
 	private LinkedList<Atributo> listaAtributos;
-	
+
 	public Tabla(String nombre) {
 
 		this.nombre = nombre;
 		this.listaAtributos=new LinkedList<Atributo>();
-		
+
 
 	}
 
@@ -23,8 +23,8 @@ public class Tabla {
 		this.listaAtributos.add(n);
 	}
 
-	
-	
+
+
 
 
 	/**
@@ -39,6 +39,11 @@ public class Tabla {
 	 */
 	public void setListaAtributos(LinkedList<Atributo> listaAtributos) {
 		this.listaAtributos = listaAtributos;
+	}
+
+	@Override
+	public String toString() {
+		return "Tabla [schema=" + schema + ", nombre=" + nombre + ", listaAtributos=" + listaAtributos + "]";
 	}
 
 	/**
@@ -56,20 +61,20 @@ public class Tabla {
 	}
 
 
-	
 
-	
 
-	
 
-	
 
-	
-	
 
-	
 
-	
+
+
+
+
+
+
+
+
 
 
 	public void CargarBasico(Connection connection) {
@@ -93,7 +98,7 @@ public class Tabla {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			System.out.println("error cargando la tabla "+n);
+			System.out.println("error durante carg de tabla (carga basica)");
 			e.printStackTrace();
 		}
 	}
@@ -112,11 +117,11 @@ public class Tabla {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			System.out.println("error cargando la tabla "+n);
+			System.out.println("error durante carg de tabla (carga de claves primarias)");
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void CargarIndices(Connection connection) {
 		ResultSet atributos = null;
 		String nombre =null;
@@ -141,11 +146,11 @@ public class Tabla {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			System.out.println("error cargando la tabla "+n);
+			System.out.println("error durante carg de tabla (indices y claves unicas)");
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void CargarClavesForaneas(Connection connection) {
 		ResultSet atributos = null;
 		String n =null;
@@ -160,22 +165,22 @@ public class Tabla {
 				Atributo actual = buscarAtributo(fkname);
 				actual.setRefAtributo(pkname);
 				actual.setRefTabla(pktable);
-				
+
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			System.out.println("error cargando la tabla "+n);
+			System.out.println("error durante carg de tabla (carga claves foraneas)");
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+
 	public void Cargar(Connection connection) {
 		this.CargarBasico(connection);
 		this.CargarClavesPrimarias(connection);
 		this.CargarClavesForaneas(connection);
 		this.CargarIndices(connection);
-		
+
 	}
 
 	public String getSchema() {
@@ -196,8 +201,19 @@ public class Tabla {
 				return actual;
 			}
 		}
-	
-		
+
+
 		return actual;	
 	}
+
+	public void imprimirTabla() {
+		System.out.println("");
+		System.out.println("  Tabla "+this.nombre+"("+this.listaAtributos.size()+"):");
+		Iterator<Atributo> iter = this.listaAtributos.iterator();
+		while(iter.hasNext()) {
+			iter.next().imprimirAtributo();
+		}
+	}
+
+
 }

@@ -38,7 +38,7 @@ public class Main {
 		String nombre_base2 = prop.getProperty("nombre_base2");
 		System.out.println(nombre_base2);
 		String schema2 =prop.getProperty("schema2");
-		
+
 		String url = "jdbc:"+protocolo+"://"+host+"/"+nombre_base1;
 		String url2 = "jdbc:"+protocolo+"://"+host+"/"+nombre_base2;
 		System.out.println("string de coneccion para la 1ra base ");
@@ -58,22 +58,23 @@ public class Main {
 			System.out.println("INICIA CARGA DE TABLAS DE "+nombre_base1+"."+schema1);
 			base1.CargarTablas(connection1);
 			System.out.println(" tablas de la base de datos ");
+			base1.imprimirBase();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			System.out.println("error conectando a la base");
 			e.printStackTrace();
 		}	
-		try {
-			Base base2 = new Base(schema2);
-			connection2 = DriverManager.getConnection(url2, usuario, password);
-			System.out.println("INICIA CARGA DE TABLAS DE "+nombre_base2+"."+schema2);
-			base2.CargarTablas(connection2);
-			System.out.println(" tablas de la base de datos ");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			System.out.println("error conectando a la base");
-			e.printStackTrace();
-		}	
+		//		try {
+		//			Base base2 = new Base(schema2);
+		//			connection2 = DriverManager.getConnection(url2, usuario, password);
+		//			System.out.println("INICIA CARGA DE TABLAS DE "+nombre_base2+"."+schema2);
+		//			base2.CargarTablas(connection2);
+		//			System.out.println(" tablas de la base de datos ");
+		//		} catch (SQLException e) {
+		//			// TODO Auto-generated catch block
+		//			System.out.println("error conectando a la base");
+		//			e.printStackTrace();
+		//		}	
 
 
 

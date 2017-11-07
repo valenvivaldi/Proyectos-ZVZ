@@ -8,7 +8,7 @@ public class Atributo {
 	private boolean isPrimaryKey;
 	private boolean isUnique;
 	private String indexnombre;
-	
+
 	public Atributo(String nombre,String tipo) {
 		this.tipo = tipo;
 		this.nombre = nombre;
@@ -18,7 +18,7 @@ public class Atributo {
 		this.isPrimaryKey=false;
 		this.isUnique=false;
 		this.indexnombre=null;
-		
+
 	}
 
 	public String getTipo() {
@@ -37,14 +37,14 @@ public class Atributo {
 		this.nombre = nombre;
 	}
 
-	@Override
-	public String toString() {
-		return "Atributo [tipo=" + tipo + ", nombre=" + nombre + "]";
-	}
+
+
+
+	
 
 	public void Cargar() {
-		
-		
+
+
 	}
 
 	public String getRefTabla() {
@@ -93,6 +93,29 @@ public class Atributo {
 
 	public void setIndexnombre(String indexnombre) {
 		this.indexnombre = indexnombre;
+	}
+
+	public void imprimirAtributo() {
+		
+		System.out.println("    Atributo "+this.nombre+" de tipo "+this.tipo);
+		System.out.println("aaaaaaa");
+		if(this.isPrimaryKey) {
+			System.out.print(" es clave primaria,");
+		}
+		if(this.isNullable) {
+			System.out.print(" es nullable,");
+		}
+		if(this.refTabla!=null) {
+			System.out.print(", es clave foranea haciendo referencia a "+this.refTabla+"."+this.refAtributo);
+		}
+		if(this.isUnique) {
+			System.out.print(" es clave unica ");
+
+		}
+		if(this.indexnombre != null) {
+			System.out.print(", el nombre del indice es "+this.indexnombre);
+		}
+		
 	}
 
 }

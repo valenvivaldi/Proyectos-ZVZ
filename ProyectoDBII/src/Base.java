@@ -2,6 +2,7 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 
@@ -15,7 +16,7 @@ public class Base {
 
 	private LinkedList<Tabla> listaTablas;
 	private String nombre;
-	
+
 
 	public void addTabla (Tabla nueva) {
 		this.listaTablas.add(nueva);
@@ -69,13 +70,14 @@ public class Base {
 				System.out.println(" nombre: " + resultSetTables.getString(3));
 				System.out.println(" tipo: " + resultSetTables.getString(4));
 				System.out.println("----------------------------------------------------------");
-
-				if(resultSetTables.getString(4)=="TABLE") {
+				
+					
 					Tabla nuevaTabla = new Tabla(resultSetTables.getString(3));
 					nuevaTabla.setSchema(this.nombre);
 					nuevaTabla.Cargar(connection);
+					
 					this.listaTablas.add(nuevaTabla);
-				}
+				
 
 
 			}
@@ -85,15 +87,23 @@ public class Base {
 			System.out.println(e.toString());
 			e.printStackTrace();
 		}
-		
-		
-		
 
 
 
 
 
 
+
+
+
+	}
+	public void imprimirBase(){
+		System.out.println("Base "+this.nombre+"("+this.listaTablas.size()+"):");
+		Iterator<Tabla> iter = this.listaTablas.iterator();
+		while(iter.hasNext()) {
+			iter.next().imprimirTabla();
+		}
+		System.out.println("/Base "+this.nombre+":");
 	}
 
 
