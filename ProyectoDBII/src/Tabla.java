@@ -17,7 +17,8 @@ public class Tabla {
 
 		this.nombre = nombre;
 		this.listaAtributos=new LinkedList<Atributo>();
-
+		this.listaTriggers=new LinkedList<Trigger>();
+		this.listaChecks=new LinkedList<Check>();
 
 	}
 
@@ -91,7 +92,7 @@ public class Tabla {
 				System.out.println(" nombre: " +n );
 				System.out.println(" tipo: " + atributos.getString(6));
 				Atributo nuevoAtributo = new Atributo(atributos.getString(4),atributos.getString(6));
-				if(atributos.getString(18)=="YES") {
+				if(atributos.getString(18).equals("YES")) {
 					nuevoAtributo.setNullable(true);
 				}
 
@@ -199,7 +200,7 @@ public class Tabla {
 		Iterator<Atributo> iter =this.listaAtributos.iterator();
 		while (iter.hasNext()) {
 			actual = iter.next();
-			if (actual.getNombre()==name) {
+			if (actual.getNombre().equals(name)) {
 				return actual;
 			}
 		}
@@ -234,7 +235,7 @@ public class Tabla {
 		Iterator<Check> iter =this.listaChecks.iterator();
 		while (iter.hasNext()) {
 			actual = iter.next();
-			if (actual.getNombre()==nombre) {
+			if (actual.getNombre().equals(nombre)) {
 				return actual;
 			}
 		}
@@ -252,7 +253,7 @@ public class Tabla {
 		Iterator<Trigger> iter =this.listaTriggers.iterator();
 		while (iter.hasNext()) {
 			actual = iter.next();
-			if (actual.getNombre()==nombre) {
+			if (actual.getNombre().equals(nombre)) {
 				return actual;
 			}
 		}
@@ -352,7 +353,7 @@ public class Tabla {
 			System.out.println("--POSEE LOS MISMOS ATRIBUTOS EN AMBAS BASES");
 		}
 
-
+		
 		System.out.println("--LOS SIGUIENTES ATRIBUTOS SE ENCUENTRAN EN LA TABLA "+this.getNombre()+" DE AMBAS BASES");
 		LinkedList<String> atributosEnComun = this.ObtenerAtributosComunes(other);
 		Iterator<String> iter = atributosEnComun.iterator();
@@ -361,22 +362,28 @@ public class Tabla {
 			this.buscarAtributo(nombreAtributoComun).CompararAtributos(other.buscarAtributo(nombreAtributoComun),nombreBase1,nombreBase2);
 		}
 
-
-		System.out.println("--LOS SIGUIENTES ATRIBUTOS  SE ENCUENTRAN SOLO EN LA EN LA TABLA "+this.getNombre()+" DE LA BASE "+nombreBase1);
-		Iterator<Atributo> iterAtributo = atributosUnicosThis.iterator();
+		Iterator<Atributo> iterAtributo;
 		Atributo actual;
-		while (iterAtributo.hasNext()) {
-			actual = iterAtributo.next();
-			actual.imprimirAtributo();
+		if(atributosUnicosThis.size()>0) {
+			System.out.println("--LOS SIGUIENTES ATRIBUTOS  SE ENCUENTRAN SOLO EN LA EN LA TABLA "+this.getNombre()+" DE LA BASE "+nombreBase1);
+			 iterAtributo = atributosUnicosThis.iterator();
+			
+			while (iterAtributo.hasNext()) {
+				actual = iterAtributo.next();
+				actual.imprimirAtributo();
+			}
+		}
+		
+		if(atributosUnicosOther.size()>0) {
+			System.out.println("--LOS SIGUIENTES ATRIBUTOS  SE ENCUENTRAN SOLO EN LA EN LA TABLA "+other.getNombre()+" DE LA BASE "+nombreBase2);
+			iterAtributo = atributosUnicosOther.iterator();
+			while (iterAtributo.hasNext()) {
+				actual = iterAtributo.next();
+				actual.imprimirAtributo();
+			}	
 		}
 
-
-		System.out.println("--LOS SIGUIENTES ATRIBUTOS  SE ENCUENTRAN SOLO EN LA EN LA TABLA "+other.getNombre()+" DE LA BASE "+nombreBase2);
-		iterAtributo = atributosUnicosOther.iterator();
-		while (iterAtributo.hasNext()) {
-			actual = iterAtributo.next();
-			actual.imprimirAtributo();
-		}
+		
 		//--------------------------------------------------------------------------------------------------------------------------
 
 
@@ -387,7 +394,7 @@ public class Tabla {
 			System.out.println("--POSEE LOS MISMOS CHECK EN AMBAS BASES");
 		}
 
-
+		
 		System.out.println("--LOS SIGUIENTES CHECK SE ENCUENTRAN EN LA TABLA "+this.getNombre()+" DE AMBAS BASES");
 		LinkedList<String> checksEnComun = this.ObtenerChecksComunes(other);
 		iter = checksEnComun.iterator();
@@ -395,23 +402,27 @@ public class Tabla {
 			String nombreCheckComun= iter.next();
 			this.buscarCheck(nombreCheckComun).CompararChecks(other.buscarCheck(nombreCheckComun),nombreBase1,nombreBase2);
 		}
-
-
-		System.out.println("--LOS SIGUIENTES CHECK  SE ENCUENTRAN SOLO EN LA EN LA TABLA "+this.getNombre()+" DE LA BASE "+nombreBase1);
-		Iterator<Check> iterCheck = checksUnicosThis.iterator();
+		Iterator<Check> iterCheck;
 		Check actual2;
-		while (iterCheck.hasNext()) {
-			actual2 = iterCheck.next();
-			actual2.imprimirCheck();
+		if(checksUnicosThis.size()>0) {
+			System.out.println("--LOS SIGUIENTES CHECK  SE ENCUENTRAN SOLO EN LA EN LA TABLA "+this.getNombre()+" DE LA BASE "+nombreBase1);
+			iterCheck = checksUnicosThis.iterator();
+			
+			while (iterCheck.hasNext()) {
+				actual2 = iterCheck.next();
+				actual2.imprimirCheck();
+			}	
 		}
+		
 
-
-		System.out.println("--LOS SIGUIENTES CHECK  SE ENCUENTRAN SOLO EN LA EN LA TABLA "+other.getNombre()+" DE LA BASE "+nombreBase2);
-		iterCheck = checksUnicosOther.iterator();
-		while (iterCheck.hasNext()) {
-			actual2 = iterCheck.next();
-			actual2.imprimirCheck();
-		}		
+		if(checksUnicosOther.size()>0) {
+			System.out.println("--LOS SIGUIENTES CHECK  SE ENCUENTRAN SOLO EN LA EN LA TABLA "+other.getNombre()+" DE LA BASE "+nombreBase2);
+			iterCheck = checksUnicosOther.iterator();
+			while (iterCheck.hasNext()) {
+				actual2 = iterCheck.next();
+				actual2.imprimirCheck();
+			}		
+		}	
 		//--------------------------------------------------------------------------------------------------------------------------
 		
 
@@ -431,22 +442,28 @@ public class Tabla {
 			this.buscarTrigger(nombreTriggerComun).CompararTriggers(other.buscarTrigger(nombreTriggerComun),nombreBase1,nombreBase2);
 		}
 
-
-		System.out.println("--LOS SIGUIENTES TRIGGER  SE ENCUENTRAN SOLO EN LA EN LA TABLA "+this.getNombre()+" DE LA BASE "+nombreBase1);
-		Iterator<Trigger> iterTrigger = triggersUnicosThis.iterator();
+		Iterator<Trigger> iterTrigger;
 		Trigger actual3;
-		while (iterTrigger.hasNext()) {
-			actual3 = iterTrigger.next();
-			actual3.imprimirTrigger();
+
+		if(triggersUnicosThis.size()>0) {
+			System.out.println("--LOS SIGUIENTES TRIGGER  SE ENCUENTRAN SOLO EN LA EN LA TABLA "+this.getNombre()+" DE LA BASE "+nombreBase1);
+			iterTrigger = triggersUnicosThis.iterator();
+
+			while (iterTrigger.hasNext()) {
+				actual3 = iterTrigger.next();
+				actual3.imprimirTrigger();
+			}	
 		}
 
+		if(triggersUnicosOther.size()>0) {
+			System.out.println("--LOS SIGUIENTES TRIGGER  SE ENCUENTRAN SOLO EN LA EN LA TABLA "+other.getNombre()+" DE LA BASE "+nombreBase2);
+			iterTrigger = triggersUnicosOther.iterator();
+			while (iterTrigger.hasNext()) {
+				actual3 = iterTrigger.next();
+				actual3.imprimirTrigger();
+			}	
+		}
 
-		System.out.println("--LOS SIGUIENTES TRIGGER  SE ENCUENTRAN SOLO EN LA EN LA TABLA "+other.getNombre()+" DE LA BASE "+nombreBase2);
-		iterTrigger = triggersUnicosOther.iterator();
-		while (iterTrigger.hasNext()) {
-			actual3 = iterTrigger.next();
-			actual3.imprimirTrigger();
-		}	
 	}
 
 

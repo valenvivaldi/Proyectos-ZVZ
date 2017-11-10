@@ -114,7 +114,7 @@ public class Atributo {
 
 	public void CompararAtributos(Atributo other, String nombreBase1, String nombreBase2) {
 		System.out.println("----Atributo "+this.nombre);
-		if(this.tipo==other.tipo) {
+		if(this.tipo.equals(other.tipo)) {
 			System.out.println("------TIPO: "+this.tipo);
 		}else {
 			System.out.println("------TIPO: "+this.tipo+ "(EN "+nombreBase1+")"+" "+other.tipo+ "(EN "+nombreBase2+")");
@@ -131,8 +131,9 @@ public class Atributo {
 		}else {
 			System.out.println("------NULLABLE?: "+this.isNullable+ "(EN "+nombreBase1+")"+" "+other.isNullable+ "(EN "+nombreBase2+")");
 		}
-
-		if(this.refTabla ==other.refTabla) {
+		
+		
+		if(this.refTabla!=null&&other.refTabla!=null&&this.refTabla .equals(other.refTabla)) {
 			if(this.refTabla != null) {
 				System.out.println("------TABLA REFERENCIADA: "+this.refTabla+ "(AMBOS)");	
 			}
@@ -146,7 +147,7 @@ public class Atributo {
 			}
 		}
 
-		if(this.refAtributo ==other.refAtributo) {
+		if(this.refAtributo!=null&&other.refAtributo!=null&&this.refAtributo.equals(other.refAtributo)) {
 			if(this.refAtributo != null) {
 				System.out.println("------ATRIBUTO REFERENCIADO: "+this.refAtributo+ "(AMBOS)");	
 			}
@@ -165,7 +166,7 @@ public class Atributo {
 			System.out.println("------UNIQUE?: "+this.isUnique+ "(EN "+nombreBase1+")"+" "+other.isUnique+ "(EN "+nombreBase2+")");
 		}
 
-		if(this.indexnombre ==other.indexnombre) {
+		if(this.indexnombre!=null&&other.indexnombre!=null&&this.indexnombre.equals(other.indexnombre)) {
 			System.out.println("------NOMBRE INDICE: "+this.indexnombre+ "(AMBOS)");
 		}else {
 			System.out.println("------NOMBRE INDICE: "+this.indexnombre+ "(EN "+nombreBase1+")"+" "+other.indexnombre+ "(EN "+nombreBase2+")");

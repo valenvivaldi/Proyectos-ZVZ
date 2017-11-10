@@ -31,19 +31,19 @@ public class Trigger {
 
 	public void CompararTriggers(Trigger other, String nombreBase1, String nombreBase2) {
 		System.out.println("----TRIGGER "+this.getNombre()+":");
-		if(this.evento==other.evento) {
+		if(this.evento!=null&&other.evento!=null&&this.evento.equals(other.evento)) {
 			System.out.println("------EVENTO: "+this.evento+ "(AMBOS)");
 		}else {
 			System.out.println("------EVENTO: "+this.evento+ "(EN "+nombreBase1+")"+" "+other.evento+ "(EN "+nombreBase2+")");
 		}
 		
-		if(this.tiempo==other.tiempo) {
+		if(this.tiempo!=null&&other.tiempo!=null&&this.tiempo.equals(other.tiempo)) {
 			System.out.println("------TIEMPO: "+this.tiempo+ "(AMBOS)");
 		}else {
 			System.out.println("------TIEMPO: "+this.tiempo+ "(EN "+nombreBase1+")"+" "+other.tiempo+ "(EN "+nombreBase2+")");
 		}
 		
-		if(this.accion==other.accion) {
+		if(this.accion!=null&&other.accion!=null&&this.accion.equals(other.accion)) {
 			System.out.println("------ACCION: "+this.accion+ "(AMBOS)");
 		}else {
 			System.out.println("------ACCION: "+this.accion+ "(EN "+nombreBase1+")"+" "+other.accion+ "(EN "+nombreBase2+")");
@@ -53,9 +53,9 @@ public class Trigger {
 
 	public void imprimirTrigger() {
 		System.out.println("----TRIGGER "+this.getNombre()+":");
-			System.out.println("------EVENTO: "+this.evento+ "(AMBOS)");
-			System.out.println("------TIEMPO: "+this.tiempo+ "(AMBOS)");
-			System.out.println("------ACCION: "+this.accion+ "(AMBOS)");
+			System.out.println("------EVENTO: "+this.evento+ "");
+			System.out.println("------TIEMPO: "+this.tiempo+ "");
+			System.out.println("------ACCION: "+this.accion+ "");
 	}
 
 	public String getEvento() {

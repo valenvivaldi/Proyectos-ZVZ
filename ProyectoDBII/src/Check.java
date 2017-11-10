@@ -36,12 +36,18 @@ public class Check {
 	}
 
 	public void imprimirCheck() {
-
-		
+		System.out.println("----CHECK "+this.getNombre()+":");
+		System.out.println("------EXPRESION: "+this.expresion+ "");
 	}
 
-	public void CompararChecks(Check buscarCheck, String nombreBase1, String nombreBase2) {
-		// TODO Auto-generated method stub
+	public void CompararChecks(Check other, String nombreBase1, String nombreBase2) {
+		System.out.println("----CHECK "+this.getNombre()+":");
+		if(this.expresion!=null&&other.expresion!=null&&this.expresion.equals(other.expresion)) {
+			System.out.println("------EXPRESION: "+this.expresion+ "(AMBOS)");
+		}else {
+			System.out.println("------EXPRESION: "+this.expresion+ "(EN "+nombreBase1+")"+" "+other.expresion+ "(EN "+nombreBase2+")");
+		}
+		
 		
 	}
 

@@ -139,7 +139,7 @@ public class Base {
 		Iterator<Tabla> iter = this.listaTablas.iterator();
 		while(iter.hasNext()) {
 			res = iter.next();
-			if(res.getNombre()==nombre) {
+			if(res.getNombre().equals(nombre)) {
 				return res;
 			}
 		}
@@ -226,29 +226,37 @@ public class Base {
 		if(tablasUnicasThis.size()==0&&tablasUnicasOther.size()==0) {
 			System.out.println("NINGUNA BASE POSEE TABLAS EXCLUSIVAS");
 		}
-		
+
 		System.out.println("LAS SIGUIENTES TABLAS SE ENCUENTRAN EN AMBAS BASES");
 		LinkedList<String> tablasEnComun = this.ObtenerTablasComunes(other);
+		System.out.println(tablasEnComun);
 		Iterator<String> iter = tablasEnComun.iterator();
 		while (iter.hasNext()) {
 			String nombreTablaComun= iter.next();
 			this.obtenerTabla(nombreTablaComun).CompararTablas(other.obtenerTabla(nombreTablaComun),this.getNombre(),other.getNombre());
 		}
-		
-		System.out.println("LAS SIGUIENTES TABLAS SE ENCUENTRAN SOLO EN LA BASE "+this.getNombre());
-		Iterator<Tabla> iterTabla = tablasUnicasThis.iterator();
+		Iterator<Tabla> iterTabla;
 		Tabla actual;
-		while (iterTabla.hasNext()) {
-			actual = iterTabla.next();
-			actual.imprimirTabla();
+		if(tablasUnicasThis.size()>0) {
+			System.out.println("LAS SIGUIENTES TABLAS SE ENCUENTRAN SOLO EN LA BASE "+this.getNombre());
+			iterTabla = tablasUnicasThis.iterator();
+
+			while (iterTabla.hasNext()) {
+				actual = iterTabla.next();
+				actual.imprimirTabla();
+			}
 		}
-		
-		System.out.println("LAS SIGUIENTES TABLAS SE ENCUENTRAN SOLO EN LA BASE "+other.getNombre());
-		iterTabla = tablasUnicasOther.iterator();
-		while (iterTabla.hasNext()) {
-			actual= iterTabla.next();
-			actual.imprimirTabla();
+
+		if(tablasUnicasOther.size()>0) {
+			System.out.println("LAS SIGUIENTES TABLAS SE ENCUENTRAN SOLO EN LA BASE "+other.getNombre());
+			iterTabla = tablasUnicasOther.iterator();
+			while (iterTabla.hasNext()) {
+				actual= iterTabla.next();
+				actual.imprimirTabla();
+			}
 		}
+
+
 		
 //------------------------------------------------------------------------------------------------------------------
 		LinkedList<Procedure> proceduresUnicosThis=this.ObtenerProceduresPropios(other);
@@ -256,7 +264,7 @@ public class Base {
 		if(proceduresUnicosThis.size()==0&&proceduresUnicosOther.size()==0) {
 			System.out.println("NINGUNA BASE POSEE TABLAS EXCLUSIVAS");
 		}
-		
+
 		System.out.println("LOS SIGUIENTES PROCEDURES SE ENCUENTRAN EN AMBAS BASES");
 		LinkedList<String> proceduresEnComun = this.ObtenerProceduresComunes(other);
 		iter = proceduresEnComun.iterator();
@@ -264,28 +272,27 @@ public class Base {
 			String nombreProcedureComun= iter.next();
 			this.obtenerProcedure(nombreProcedureComun).CompararProcedures(other.obtenerProcedure(nombreProcedureComun),this.getNombre(),other.getNombre());
 		}
-		
-		System.out.println("LOS SIGUIENTES PROCEDURES SE ENCUENTRAN SOLO EN LA BASE "+this.getNombre());
-		Iterator<Procedure> iterProcedure = proceduresUnicosThis.iterator();
+		Iterator<Procedure> iterProcedure;
 		Procedure actual2;
-		while (iterProcedure.hasNext()) {
-			actual2 = iterProcedure.next();
-			actual2.imprimirProcedure();
-		}
-		
-		System.out.println("LOS SIGUIENTES PROCEDURES SE ENCUENTRAN SOLO EN LA BASE "+other.getNombre());
-		iterProcedure = proceduresUnicosOther.iterator();
-		while (iterProcedure.hasNext()) {
-			actual2= iterProcedure.next();
-			actual2.imprimirProcedure();
+		if(proceduresUnicosThis.size()>0) {
+			System.out.println("LOS SIGUIENTES PROCEDURES SE ENCUENTRAN SOLO EN LA BASE "+this.getNombre());
+			iterProcedure = proceduresUnicosThis.iterator();
+
+			while (iterProcedure.hasNext()) {
+				actual2 = iterProcedure.next();
+				actual2.imprimirProcedure();
+			}
 		}
 
-		
-		
-		
-		
-		
-		
+		if(proceduresUnicosOther.size()>0) {
+
+			System.out.println("LOS SIGUIENTES PROCEDURES SE ENCUENTRAN SOLO EN LA BASE "+other.getNombre());
+			iterProcedure = proceduresUnicosOther.iterator();
+			while (iterProcedure.hasNext()) {
+				actual2= iterProcedure.next();
+				actual2.imprimirProcedure();
+			}
+		}
 	}
 
 
@@ -295,7 +302,7 @@ public class Base {
 		Iterator<Procedure> iter = this.listaProcedures.iterator();
 		while(iter.hasNext()) {
 			res = iter.next();
-			if(res.getNombre()==nombre) {
+			if(res.getNombre().equals(nombre)) {
 				return res;
 			}
 		}

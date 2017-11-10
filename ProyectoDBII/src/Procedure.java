@@ -45,7 +45,13 @@ public class Procedure {
 	}
 
 	public void imprimirProcedure() {
-		// TODO Auto-generated method stub
+		System.out.println("PROCEDURE "+this.nombre+":");
+		Iterator<ParametroProcedure> iter = this.listaParametros.iterator();
+		ParametroProcedure actual;
+		while(iter.hasNext()) {
+			actual=iter.next();
+			actual.imprimirParametroProcedure();
+		}
 		
 	}
 
@@ -66,24 +72,33 @@ public class Procedure {
 
 		}
 		
-		System.out.println("LOS PARAMETROS DE AMBOS PROCEDIMIENTOS SON");
 		LinkedList<String> parametrosEnComun = this.obtenerParametrosComunes(other);
+		if(parametrosEnComun.size()>0) {
+			System.out.println("LOS PARAMETROS DE AMBOS PROCEDIMIENTOS SON");
+		}
+		
 		Iterator<String> iter = parametrosEnComun.iterator();
 		while (iter.hasNext()) {
 			String nombreParametroComun= iter.next();
 			this.obtenerParametro(nombreParametroComun).CompararParametros(other.obtenerParametro(nombreParametroComun),db1,db2);
 		}
 		
-		
-		System.out.println("LOS SIGUIENTES PARAMETROS SE ENCUENTRAN SOLO EN PROCEDIMIENTO "+this.getNombre());
 		Iterator<ParametroProcedure> iterParametro = parametrosThisPropios.iterator();
+		if(parametrosThisPropios.size()>0) {
+			System.out.println("LOS SIGUIENTES PARAMETROS SE ENCUENTRAN SOLO EN PROCEDIMIENTO "+this.getNombre());	
+		}
+		
+		
 		ParametroProcedure actual;
 		while (iterParametro.hasNext()) {
 			actual = iterParametro.next();
 			actual.imprimirParametroProcedure();
 		}
 		
-		System.out.println("LOS SIGUIENTES PARAMETROS SE ENCUENTRAN SOLO EN PROCEDIMIENTO "+other.getNombre());
+		if(parametrosOtherPropios.size()>0) {
+			System.out.println("LOS SIGUIENTES PARAMETROS SE ENCUENTRAN SOLO EN PROCEDIMIENTO "+other.getNombre());	
+		}
+		
 		iterParametro = parametrosOtherPropios.iterator();
 		while (iterParametro.hasNext()) {
 			actual = iterParametro.next();
@@ -99,7 +114,7 @@ public class Procedure {
 		Iterator<ParametroProcedure> iter = this.listaParametros.iterator();
 		while(iter.hasNext()) {
 			res = iter.next();
-			if(res.getNombre()==nombre) {
+			if(res.getNombre().equals(nombre)) {
 				return res;
 			}
 		}

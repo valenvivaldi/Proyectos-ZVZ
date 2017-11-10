@@ -19,7 +19,7 @@ public class ParametroProcedure {
 	public void CompararParametros(ParametroProcedure other, String db1, String db2) {
 		System.out.println("------Parametro "+this.nombre);
 
-		if(this.tipo==other.tipo) {
+		if(this.tipo!=null&&other.tipo!=null&&this.tipo.equals(other.tipo)) {
 			System.out.println("--------TIPO: "+this.tipo);
 		}else {
 			System.out.println("--------TIPO: "+this.tipo+ "(EN "+db1+")"+" "+other.tipo+ "(EN "+db2+")");
