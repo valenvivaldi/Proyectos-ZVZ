@@ -10,6 +10,8 @@ public class Tabla {
 	private String schema;
 	private String nombre;
 	private LinkedList<Atributo> listaAtributos;
+	private LinkedList<Trigger> listaTriggers;
+	private LinkedList<Check> listaChecks;
 
 	public Tabla(String nombre) {
 
@@ -97,7 +99,7 @@ public class Tabla {
 				this.listaAtributos.add(nuevoAtributo);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+	
 			System.out.println("error durante carg de tabla (carga basica)");
 			e.printStackTrace();
 		}
@@ -116,7 +118,7 @@ public class Tabla {
 				buscarAtributo(n).setPrimaryKey(true);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			System.out.println("error durante carg de tabla (carga de claves primarias)");
 			e.printStackTrace();
 		}
@@ -145,7 +147,7 @@ public class Tabla {
 
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			System.out.println("error durante carg de tabla (indices y claves unicas)");
 			e.printStackTrace();
 		}
@@ -153,7 +155,7 @@ public class Tabla {
 
 	public void CargarClavesForaneas(Connection connection) {
 		ResultSet atributos = null;
-		String n =null;
+		
 		try {
 
 			DatabaseMetaData metaData = connection.getMetaData();
@@ -168,7 +170,7 @@ public class Tabla {
 
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			System.out.println("error durante carg de tabla (carga claves foraneas)");
 			e.printStackTrace();
 		}
@@ -192,7 +194,7 @@ public class Tabla {
 	}
 
 	public Atributo buscarAtributo(String name) {
-		int i = 0;
+		
 		Atributo actual=null;
 		Iterator<Atributo> iter =this.listaAtributos.iterator();
 		while (iter.hasNext()) {
@@ -213,6 +215,238 @@ public class Tabla {
 		while(iter.hasNext()) {
 			iter.next().imprimirAtributo();
 		}
+	}
+
+	public void addTrigger(Trigger aux) {
+		this.listaTriggers.add(aux);
+		
+	}
+
+	public void addCheck(Check aux) {
+		this.listaChecks.add(aux);
+		
+	}
+
+
+	public Check buscarCheck(String nombre) {
+
+		Check actual=null;
+		Iterator<Check> iter =this.listaChecks.iterator();
+		while (iter.hasNext()) {
+			actual = iter.next();
+			if (actual.getNombre()==nombre) {
+				return actual;
+			}
+		}
+
+
+		return actual;	
+
+
+
+	}
+
+	public Trigger buscarTrigger(String nombre) {
+
+		Trigger actual=null;
+		Iterator<Trigger> iter =this.listaTriggers.iterator();
+		while (iter.hasNext()) {
+			actual = iter.next();
+			if (actual.getNombre()==nombre) {
+				return actual;
+			}
+		}
+		return actual;	
+	}
+
+	
+
+	public LinkedList<String> ObtenerAtributosComunes(Tabla other){
+		LinkedList<String> result = new LinkedList<String>();
+		Iterator<Atributo> iter = this.listaAtributos.iterator();
+		while(iter.hasNext()) {
+			String aux= iter.next().getNombre();
+
+			if(other.buscarAtributo(aux) != null) {
+				result.add(aux);
+			}
+
+		}
+		return result;
+
+	}
+	public LinkedList<String> ObtenerChecksComunes(Tabla other){
+		LinkedList<String> result = new LinkedList<String>();
+		Iterator<Check> iter = this.listaChecks.iterator();
+		while(iter.hasNext()) {
+			String aux= iter.next().getNombre();
+
+			if(other.buscarCheck(aux) != null) {
+				result.add(aux);
+			}
+
+		}
+		return result;
+	}
+
+	public LinkedList<String> ObtenerTriggersComunes(Tabla other){
+		LinkedList<String> result = new LinkedList<String>();
+		Iterator<Trigger> iter = this.listaTriggers.iterator();
+		while(iter.hasNext()) {
+			String aux= iter.next().getNombre();
+
+			if(other.buscarTrigger(aux) != null) {
+				result.add(aux);
+			}
+
+		}
+		return result;
+	}
+
+	
+	public LinkedList<Atributo> ObtenerAtributosPropios (Tabla other){
+		LinkedList<Atributo> result = new LinkedList<Atributo>();
+		Iterator<Atributo> iter = this.listaAtributos.iterator();
+		while(iter.hasNext()) {
+			Atributo aux= iter.next();
+			if(other.buscarAtributo(aux.getNombre()) == null) {
+				result.add(aux);
+			}
+		}
+		return result;
+	} 
+	
+	public LinkedList<Check> ObtenerChecksPropios (Tabla other){
+		LinkedList<Check> result = new LinkedList<Check>();
+		Iterator<Check> iter = this.listaChecks.iterator();
+		while(iter.hasNext()) {
+			Check aux= iter.next();
+			if(other.buscarCheck(aux.getNombre()) == null) {
+				result.add(aux);
+			}
+		}
+		return result;
+	} 
+	public LinkedList<Trigger> ObtenerTriggersPropios (Tabla other){
+		LinkedList<Trigger> result = new LinkedList<Trigger>();
+		Iterator<Trigger> iter = this.listaTriggers.iterator();
+		while(iter.hasNext()) {
+			Trigger aux= iter.next();
+			if(other.buscarTrigger(aux.getNombre()) == null) {
+				result.add(aux);
+			}
+		}
+		return result;
+	} 
+
+
+
+
+	public void CompararTablas(Tabla other,String nombreBase1, String nombreBase2) {
+
+		System.out.println("-TABLA "+this.nombre);
+		LinkedList<Atributo> atributosUnicosThis=this.ObtenerAtributosPropios(other);
+		LinkedList<Atributo> atributosUnicosOther=other.ObtenerAtributosPropios(this);
+
+		if(atributosUnicosThis.size()==0&&atributosUnicosOther.size()==0) {
+			System.out.println("--POSEE LOS MISMOS ATRIBUTOS EN AMBAS BASES");
+		}
+
+
+		System.out.println("--LOS SIGUIENTES ATRIBUTOS SE ENCUENTRAN EN LA TABLA "+this.getNombre()+" DE AMBAS BASES");
+		LinkedList<String> atributosEnComun = this.ObtenerAtributosComunes(other);
+		Iterator<String> iter = atributosEnComun.iterator();
+		while (iter.hasNext()) {
+			String nombreAtributoComun= iter.next();
+			this.buscarAtributo(nombreAtributoComun).CompararAtributos(other.buscarAtributo(nombreAtributoComun),nombreBase1,nombreBase2);
+		}
+
+
+		System.out.println("--LOS SIGUIENTES ATRIBUTOS  SE ENCUENTRAN SOLO EN LA EN LA TABLA "+this.getNombre()+" DE LA BASE "+nombreBase1);
+		Iterator<Atributo> iterAtributo = atributosUnicosThis.iterator();
+		Atributo actual;
+		while (iterAtributo.hasNext()) {
+			actual = iterAtributo.next();
+			actual.imprimirAtributo();
+		}
+
+
+		System.out.println("--LOS SIGUIENTES ATRIBUTOS  SE ENCUENTRAN SOLO EN LA EN LA TABLA "+other.getNombre()+" DE LA BASE "+nombreBase2);
+		iterAtributo = atributosUnicosOther.iterator();
+		while (iterAtributo.hasNext()) {
+			actual = iterAtributo.next();
+			actual.imprimirAtributo();
+		}
+		//--------------------------------------------------------------------------------------------------------------------------
+
+
+		LinkedList<Check> checksUnicosThis=this.ObtenerChecksPropios(other);
+		LinkedList<Check> checksUnicosOther=other.ObtenerChecksPropios(this);
+
+		if(checksUnicosThis.size()==0&&checksUnicosOther.size()==0) {
+			System.out.println("--POSEE LOS MISMOS CHECK EN AMBAS BASES");
+		}
+
+
+		System.out.println("--LOS SIGUIENTES CHECK SE ENCUENTRAN EN LA TABLA "+this.getNombre()+" DE AMBAS BASES");
+		LinkedList<String> checksEnComun = this.ObtenerChecksComunes(other);
+		iter = checksEnComun.iterator();
+		while (iter.hasNext()) {
+			String nombreCheckComun= iter.next();
+			this.buscarCheck(nombreCheckComun).CompararChecks(other.buscarCheck(nombreCheckComun),nombreBase1,nombreBase2);
+		}
+
+
+		System.out.println("--LOS SIGUIENTES CHECK  SE ENCUENTRAN SOLO EN LA EN LA TABLA "+this.getNombre()+" DE LA BASE "+nombreBase1);
+		Iterator<Check> iterCheck = checksUnicosThis.iterator();
+		Check actual2;
+		while (iterCheck.hasNext()) {
+			actual2 = iterCheck.next();
+			actual2.imprimirCheck();
+		}
+
+
+		System.out.println("--LOS SIGUIENTES CHECK  SE ENCUENTRAN SOLO EN LA EN LA TABLA "+other.getNombre()+" DE LA BASE "+nombreBase2);
+		iterCheck = checksUnicosOther.iterator();
+		while (iterCheck.hasNext()) {
+			actual2 = iterCheck.next();
+			actual2.imprimirCheck();
+		}		
+		//--------------------------------------------------------------------------------------------------------------------------
+		
+
+		LinkedList<Trigger> triggersUnicosThis=this.ObtenerTriggersPropios(other);
+		LinkedList<Trigger> triggersUnicosOther=other.ObtenerTriggersPropios(this);
+
+		if(triggersUnicosThis.size()==0&&triggersUnicosOther.size()==0) {
+			System.out.println("--POSEE LOS MISMOS TRIGGER EN AMBAS BASES");
+		}
+
+
+		System.out.println("--LOS SIGUIENTES TRIGGER SE ENCUENTRAN EN LA TABLA "+this.getNombre()+" DE AMBAS BASES");
+		LinkedList<String> triggersEnComun = this.ObtenerTriggersComunes(other);
+		iter = triggersEnComun.iterator();
+		while (iter.hasNext()) {
+			String nombreTriggerComun= iter.next();
+			this.buscarTrigger(nombreTriggerComun).CompararTriggers(other.buscarTrigger(nombreTriggerComun),nombreBase1,nombreBase2);
+		}
+
+
+		System.out.println("--LOS SIGUIENTES TRIGGER  SE ENCUENTRAN SOLO EN LA EN LA TABLA "+this.getNombre()+" DE LA BASE "+nombreBase1);
+		Iterator<Trigger> iterTrigger = triggersUnicosThis.iterator();
+		Trigger actual3;
+		while (iterTrigger.hasNext()) {
+			actual3 = iterTrigger.next();
+			actual3.imprimirTrigger();
+		}
+
+
+		System.out.println("--LOS SIGUIENTES TRIGGER  SE ENCUENTRAN SOLO EN LA EN LA TABLA "+other.getNombre()+" DE LA BASE "+nombreBase2);
+		iterTrigger = triggersUnicosOther.iterator();
+		while (iterTrigger.hasNext()) {
+			actual3 = iterTrigger.next();
+			actual3.imprimirTrigger();
+		}	
 	}
 
 

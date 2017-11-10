@@ -18,7 +18,7 @@ public class Main {
 		try {
 			Class.forName(driver);
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 
@@ -50,33 +50,36 @@ public class Main {
 
 
 		Connection connection1;
-		@SuppressWarnings("unused")
+		
 		Connection connection2;
 		try {
 			Base base1 = new Base(schema1);
 			connection1 = DriverManager.getConnection(url, usuario, password);
 			System.out.println("INICIA CARGA DE TABLAS DE "+nombre_base1+"."+schema1);
 			base1.CargarTablas(connection1);
+			base1.CargarCatalogo(connection1);
 			System.out.println(" tablas de la base de datos ");
-			base1.imprimirBase();
+		//	base1.imprimirBase();
+		
+			Base base2 = new Base(schema2);
+			connection2 = DriverManager.getConnection(url2, usuario, password);
+			System.out.println("INICIA CARGA DE TABLAS DE "+nombre_base2+"."+schema2);
+			base2.CargarTablas(connection2);
+			base2.CargarCatalogo(connection2);
+			System.out.println(" tablas de la base de datos ");
+			//base2.imprimirBase();
+			
+			base1.CompararBases(base2);
+		
+		
+		
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			System.out.println("error conectando a la base");
+			
+			System.out.println("error conectando a las bases");
 			e.printStackTrace();
 		}	
-		//		try {
-		//			Base base2 = new Base(schema2);
-		//			connection2 = DriverManager.getConnection(url2, usuario, password);
-		//			System.out.println("INICIA CARGA DE TABLAS DE "+nombre_base2+"."+schema2);
-		//			base2.CargarTablas(connection2);
-		//			System.out.println(" tablas de la base de datos ");
-		//		} catch (SQLException e) {
-		//			// TODO Auto-generated catch block
-		//			System.out.println("error conectando a la base");
-		//			e.printStackTrace();
-		//		}	
-
-
+		
+		
 
 
 

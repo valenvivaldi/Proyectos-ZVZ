@@ -96,26 +96,86 @@ public class Atributo {
 	}
 
 	public void imprimirAtributo() {
-		
-		System.out.println("    Atributo "+this.nombre+" de tipo "+this.tipo);
-		System.out.println("aaaaaaa");
-		if(this.isPrimaryKey) {
-			System.out.print(" es clave primaria,");
-		}
-		if(this.isNullable) {
-			System.out.print(" es nullable,");
-		}
-		if(this.refTabla!=null) {
-			System.out.print(", es clave foranea haciendo referencia a "+this.refTabla+"."+this.refAtributo);
-		}
-		if(this.isUnique) {
-			System.out.print(" es clave unica ");
+		System.out.println("----Atributo "+this.nombre);
 
+		System.out.println("------TIPO: "+this.tipo);
+		System.out.println("------CLAVE PRIMARIA?: "+this.isPrimaryKey+ "(AMBOS)");
+		System.out.println("------NULLABLE?: "+this.isNullable+ "(AMBOS)");		
+		if(this.refTabla != null) {
+			System.out.println("------TABLA REFERENCIADA: "+this.refTabla+ "(AMBOS)");	
 		}
-		if(this.indexnombre != null) {
-			System.out.print(", el nombre del indice es "+this.indexnombre);
+		if(this.refAtributo != null) {
+			System.out.println("------ATRIBUTO REFERENCIADO: "+this.refAtributo+ "(AMBOS)");	
 		}
-		
+		System.out.println("------UNIQUE?: "+this.isUnique+ "(AMBOS)");
+		System.out.println("------NOMBRE INDICE: "+this.indexnombre+ "(AMBOS)");
+
+	}
+
+	public void CompararAtributos(Atributo other, String nombreBase1, String nombreBase2) {
+		System.out.println("----Atributo "+this.nombre);
+		if(this.tipo==other.tipo) {
+			System.out.println("------TIPO: "+this.tipo);
+		}else {
+			System.out.println("------TIPO: "+this.tipo+ "(EN "+nombreBase1+")"+" "+other.tipo+ "(EN "+nombreBase2+")");
+		}
+
+		if(this.isPrimaryKey ==other.isPrimaryKey) {
+			System.out.println("------CLAVE PRIMARIA?: "+this.isPrimaryKey+ "(AMBOS)");
+		}else {
+			System.out.println("------CLAVE PRIMARIA?: "+this.isPrimaryKey+ "(EN "+nombreBase1+")"+" "+other.isPrimaryKey+ "(EN "+nombreBase2+")");
+		}
+
+		if(this.isNullable ==other.isNullable) {
+			System.out.println("------NULLABLE?: "+this.isNullable+ "(AMBOS)");
+		}else {
+			System.out.println("------NULLABLE?: "+this.isNullable+ "(EN "+nombreBase1+")"+" "+other.isNullable+ "(EN "+nombreBase2+")");
+		}
+
+		if(this.refTabla ==other.refTabla) {
+			if(this.refTabla != null) {
+				System.out.println("------TABLA REFERENCIADA: "+this.refTabla+ "(AMBOS)");	
+			}
+
+		}else {
+			if(this.refTabla!=null) {
+				System.out.println("------TABLA REFERENCIADA: "+this.refTabla+ "(EN "+nombreBase1+")");	
+			}
+			if(other.refTabla!=null) {
+				System.out.print("------TABLA REFERENCIADA: "+other.refTabla+ "(EN "+nombreBase2+")");	
+			}
+		}
+
+		if(this.refAtributo ==other.refAtributo) {
+			if(this.refAtributo != null) {
+				System.out.println("------ATRIBUTO REFERENCIADO: "+this.refAtributo+ "(AMBOS)");	
+			}
+		}else {
+			if(this.refAtributo!=null) {
+				System.out.println("------ATRIBUTO REFERENCIADO: "+this.refAtributo+ "(EN "+nombreBase1+")");	
+			}
+			if(other.refAtributo!=null) {
+				System.out.print("------ATRIBUTO REFERENCIADO: "+other.refAtributo+ "(EN "+nombreBase2+")");	
+			}
+		}
+
+		if(this.isUnique ==other.isUnique) {
+			System.out.println("------UNIQUE?: "+this.isUnique+ "(AMBOS)");
+		}else {
+			System.out.println("------UNIQUE?: "+this.isUnique+ "(EN "+nombreBase1+")"+" "+other.isUnique+ "(EN "+nombreBase2+")");
+		}
+
+		if(this.indexnombre ==other.indexnombre) {
+			System.out.println("------NOMBRE INDICE: "+this.indexnombre+ "(AMBOS)");
+		}else {
+			System.out.println("------NOMBRE INDICE: "+this.indexnombre+ "(EN "+nombreBase1+")"+" "+other.indexnombre+ "(EN "+nombreBase2+")");
+		}
+
+
+
+
+
+
 	}
 
 }
