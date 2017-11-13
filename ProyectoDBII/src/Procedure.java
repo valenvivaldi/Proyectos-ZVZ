@@ -64,17 +64,18 @@ public class Procedure {
 	}
 
 	public void CompararProcedures(Procedure other, String db1, String db2) {
+		System.out.println("--PROCEDURE: "+this.getNombre());
 		LinkedList<ParametroProcedure> parametrosThisPropios = this.obtenerParametrosPropios(other);
 		LinkedList<ParametroProcedure> parametrosOtherPropios = other.obtenerParametrosPropios(this);
 		
 		if((parametrosThisPropios.size()==0) && (parametrosOtherPropios.size()==0)) {
-			System.out.println("LOS PROCEDIMIENTOS TIENEN LOS MISMO PARAMETROS");
+			System.out.println("--LOS PROCEDIMIENTOS TIENEN LOS MISMO PARAMETROS");
 
 		}
 		
 		LinkedList<String> parametrosEnComun = this.obtenerParametrosComunes(other);
 		if(parametrosEnComun.size()>0) {
-			System.out.println("LOS PARAMETROS DE AMBOS PROCEDIMIENTOS SON");
+			System.out.println("--LOS PARAMETROS DE AMBOS PROCEDIMIENTOS SON");
 		}
 		
 		Iterator<String> iter = parametrosEnComun.iterator();
@@ -85,7 +86,7 @@ public class Procedure {
 		
 		Iterator<ParametroProcedure> iterParametro = parametrosThisPropios.iterator();
 		if(parametrosThisPropios.size()>0) {
-			System.out.println("LOS SIGUIENTES PARAMETROS SE ENCUENTRAN SOLO EN PROCEDIMIENTO "+this.getNombre()+"de la base "+db1);	
+			System.out.println("--LOS SIGUIENTES PARAMETROS SE ENCUENTRAN SOLO EN PROCEDIMIENTO "+this.getNombre()+"de la base "+db1);	
 		}
 		
 		
@@ -96,7 +97,7 @@ public class Procedure {
 		}
 		
 		if(parametrosOtherPropios.size()>0) {
-			System.out.println("LOS SIGUIENTES PARAMETROS SE ENCUENTRAN SOLO EN PROCEDIMIENTO "+other.getNombre()+"de la base "+db2);	
+			System.out.println("--LOS SIGUIENTES PARAMETROS SE ENCUENTRAN SOLO EN PROCEDIMIENTO "+other.getNombre()+"de la base "+db2);	
 		}
 		
 		iterParametro = parametrosOtherPropios.iterator();

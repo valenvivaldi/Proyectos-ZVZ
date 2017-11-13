@@ -76,9 +76,9 @@ public class Base {
 			DatabaseMetaData metaData = connection.getMetaData();
 			resultSetTables = metaData.getTables(null,this.nombre, null, tipo);
 			while(resultSetTables.next()) {
-				System.out.println(" nombre: " + resultSetTables.getString(3));
-				System.out.println(" tipo: " + resultSetTables.getString(4));
-				System.out.println("----------------------------------------------------------");
+//				System.out.println(" nombre: " + resultSetTables.getString(3));
+//				System.out.println(" tipo: " + resultSetTables.getString(4));
+//				System.out.println("----------------------------------------------------------");
 
 
 				Tabla nuevaTabla = new Tabla(resultSetTables.getString(3));
@@ -307,7 +307,7 @@ public class Base {
 
 	private Procedure obtenerProcedure(String nombre) {
 		Procedure res;
-		System.out.println("TAMAÑO LISTA PROCEDURES "+this.listaProcedures.size());
+		
 		Iterator<Procedure> iter = this.listaProcedures.iterator();
 		while(iter.hasNext()) {
 			res = iter.next();
