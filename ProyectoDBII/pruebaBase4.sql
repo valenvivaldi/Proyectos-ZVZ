@@ -8,6 +8,12 @@ create table Gato(idanimal integer, nombre varchar(50),color varchar(50), raza v
 
 create table Perro(idanimal integer, nombre varchar(50),color varchar(50), raza varchar(50), constraint pkperro primary key(idanimal),constraint fkperro foreign key(idanimal) references Animal(idanimal));
 
+  CREATE OR REPLACE FUNCTION p(IN param int, IN p int, in r int, IN re int) returns void AS
+  $$
+  BEGIN
+    r := param + p;
+  END;
+  $$ LANGUAGE plpgsql;
 ----------------------------------------------------------------------------------------------
 
 create schema basep2;
@@ -20,3 +26,10 @@ create table Animal(idanimal integer primary key, descripcion varchar(100)); --e
 create table Gato(idanimal integer, nombre varchar(50),color varchar(50), raza varchar(50), constraint pkgato primary key(idanimal), constraint fkgato foreign key(idanimal) references Animal(idanimal) );
 
 create table Perro(idanimal integer, nombre varchar(50),color varchar(50), raza varchar(50), constraint pkperro primary key(idanimal),constraint fkperro foreign key(idanimal) references Animal(idanimal));
+
+  CREATE OR REPLACE FUNCTION p(IN param int, IN p int, IN r int) returns void AS
+  $$
+  BEGIN
+    r := param + p;
+  END;
+  $$ LANGUAGE plpgsql;
