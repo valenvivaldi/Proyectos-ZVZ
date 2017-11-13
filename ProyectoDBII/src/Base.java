@@ -9,9 +9,11 @@ import java.util.LinkedList;
 public class Base {
 
 	private LinkedList<Procedure> listaProcedures;
+	private String nombreSchema;
 
 
-	public Base(String nombre) {
+	public Base(String nombre,String nombreconcat) {
+		this.nombreSchema = nombreconcat;
 		this.nombre = nombre;
 		this.listaTablas=new LinkedList<Tabla>();
 
@@ -237,7 +239,7 @@ public class Base {
 		Iterator<String> iter = tablasEnComun.iterator();
 		while (iter.hasNext()) {
 			String nombreTablaComun= iter.next();
-			this.obtenerTabla(nombreTablaComun).CompararTablas(other.obtenerTabla(nombreTablaComun),this.getNombre(),other.getNombre());
+			this.obtenerTabla(nombreTablaComun).CompararTablas(other.obtenerTabla(nombreTablaComun),this.nombreSchema,other.nombreSchema);
 		}
 		Iterator<Tabla> iterTabla;
 		Tabla actual;
@@ -278,7 +280,7 @@ public class Base {
 		iter = proceduresEnComun.iterator();
 		while (iter.hasNext()) {
 			String nombreProcedureComun= iter.next();
-			this.obtenerProcedure(nombreProcedureComun).CompararProcedures(other.obtenerProcedure(nombreProcedureComun),this.getNombre(),other.getNombre());
+			this.obtenerProcedure(nombreProcedureComun).CompararProcedures(other.obtenerProcedure(nombreProcedureComun),this.nombreSchema,other.nombreSchema);
 		}
 		Iterator<Procedure> iterProcedure;
 		Procedure actual2;

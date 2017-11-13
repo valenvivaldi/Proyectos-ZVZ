@@ -352,7 +352,7 @@ public class Tabla {
 		if(atributosUnicosThis.size()==0&&atributosUnicosOther.size()==0) {
 			System.out.println("--POSEE LOS MISMOS ATRIBUTOS EN AMBAS BASES");
 		}
-
+		
 		
 		System.out.println("--LOS SIGUIENTES ATRIBUTOS SE ENCUENTRAN EN LA TABLA "+this.getNombre()+" DE AMBAS BASES");
 		LinkedList<String> atributosEnComun = this.ObtenerAtributosComunes(other);
@@ -365,6 +365,7 @@ public class Tabla {
 		Iterator<Atributo> iterAtributo;
 		Atributo actual;
 		if(atributosUnicosThis.size()>0) {
+			System.out.println("LA TABLA "+this.getNombre()+" DE LA BASE "+nombreBase1+" POSEE "+atributosUnicosThis.size()+" QUE NO ESTAN EN LA OTRA");
 			System.out.println("--LOS SIGUIENTES ATRIBUTOS  SE ENCUENTRAN SOLO EN LA EN LA TABLA "+this.getNombre()+" DE LA BASE "+nombreBase1);
 			 iterAtributo = atributosUnicosThis.iterator();
 			
@@ -375,14 +376,17 @@ public class Tabla {
 		}
 		
 		if(atributosUnicosOther.size()>0) {
+			System.out.println("LA TABLA "+this.getNombre()+" DE LA BASE "+nombreBase2+" POSEE "+atributosUnicosOther.size()+" QUE NO ESTAN EN LA OTRA");
 			System.out.println("--LOS SIGUIENTES ATRIBUTOS  SE ENCUENTRAN SOLO EN LA EN LA TABLA "+other.getNombre()+" DE LA BASE "+nombreBase2);
+			
 			iterAtributo = atributosUnicosOther.iterator();
 			while (iterAtributo.hasNext()) {
 				actual = iterAtributo.next();
 				actual.imprimirAtributo();
 			}	
 		}
-
+		//---------------------------------------------------------------------------------------------------------------------------
+		
 		
 		//--------------------------------------------------------------------------------------------------------------------------
 

@@ -132,21 +132,47 @@ public class Atributo {
 			System.out.println("------NULLABLE?: "+this.isNullable+ "(EN "+nombreBase1+")"+" "+other.isNullable+ "(EN "+nombreBase2+")");
 		}
 		
-		
+//		
+//		if(this.refTabla!=null&&other.refTabla!=null&&this.refTabla .equals(other.refTabla)) {
+//			if(this.refTabla != null) {
+//				System.out.println("------TABLA REFERENCIADA: "+this.refTabla+ "(AMBOS)");	
+//			}
+//
+//		}else {
+//			if(this.refTabla!=null) {
+//				System.out.println("------TABLA REFERENCIADA: "+this.refTabla+ "(EN "+nombreBase1+")");	
+//			}
+//			if(other.refTabla!=null) {
+//				System.out.print("------TABLA REFERENCIADA: "+other.refTabla+ "(EN "+nombreBase2+")");	
+//			}
+//		}
+//
+//		if(this.refAtributo!=null&&other.refAtributo!=null&&this.refAtributo.equals(other.refAtributo)) {
+//			if(this.refAtributo != null) {
+//				System.out.println("------ATRIBUTO REFERENCIADO: "+this.refAtributo+ "(AMBOS)");	
+//			}
+//		}else {
+//			if(this.refAtributo!=null) {
+//				System.out.println("------ATRIBUTO REFERENCIADO: "+this.refAtributo+ "(EN "+nombreBase1+")");	
+//			}
+//			if(other.refAtributo!=null) {
+//				System.out.print("------ATRIBUTO REFERENCIADO: "+other.refAtributo+ "(EN "+nombreBase2+")");	
+//			}
+//		}
+
 		if(this.refTabla!=null&&other.refTabla!=null&&this.refTabla .equals(other.refTabla)) {
-			if(this.refTabla != null) {
-				System.out.println("------TABLA REFERENCIADA: "+this.refTabla+ "(AMBOS)");	
+			if(this.refTabla != null&&this.refAtributo.equals(other.refAtributo)) {
+				System.out.println("------ES CLAVE FORANEA AL ATRIBUTO  "+this.refAtributo+" DE LA TABLA "+this.refTabla+ "(AMBAS TABLAS)");	
 			}
 
 		}else {
 			if(this.refTabla!=null) {
-				System.out.println("------TABLA REFERENCIADA: "+this.refTabla+ "(EN "+nombreBase1+")");	
+				System.out.println("------ ES CLAVE FORANEA AL ATRIBUTO  "+this.refAtributo+" DE LA TABLA "+this.refTabla+ "(EN "+nombreBase1+")");	
 			}
 			if(other.refTabla!=null) {
-				System.out.print("------TABLA REFERENCIADA: "+other.refTabla+ "(EN "+nombreBase2+")");	
+				System.out.println("------ES CLAVE FORANEA AL ATRIBUTO  "+other.refAtributo+" DE LA TABLA "+other.refTabla+ "(EN "+nombreBase2+")");	
 			}
 		}
-
 		if(this.refAtributo!=null&&other.refAtributo!=null&&this.refAtributo.equals(other.refAtributo)) {
 			if(this.refAtributo != null) {
 				System.out.println("------ATRIBUTO REFERENCIADO: "+this.refAtributo+ "(AMBOS)");	
@@ -159,7 +185,8 @@ public class Atributo {
 				System.out.print("------ATRIBUTO REFERENCIADO: "+other.refAtributo+ "(EN "+nombreBase2+")");	
 			}
 		}
-
+		
+		
 		if(this.isUnique ==other.isUnique) {
 			System.out.println("------UNIQUE?: "+this.isUnique+ "(AMBOS)");
 		}else {

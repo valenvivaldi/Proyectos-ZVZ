@@ -53,7 +53,7 @@ public class Main {
 		
 		Connection connection2;
 		try {
-			Base base1 = new Base(schema1);
+			Base base1 = new Base(schema1,nombre_base1+"."+schema1);
 			connection1 = DriverManager.getConnection(url, usuario, password);
 		//	System.out.println("INICIA CARGA DE TABLAS DE "+nombre_base1+"."+schema1);
 			base1.CargarTablas(connection1);
@@ -62,7 +62,7 @@ public class Main {
 			//System.out.println(" tablas de la base de datos ");
 		//	base1.imprimirBase();
 		
-			Base base2 = new Base(schema2);
+			Base base2 = new Base(schema2,nombre_base2+"."+schema2);
 			connection2 = DriverManager.getConnection(url2, usuario, password);
 	//		System.out.println("INICIA CARGA DE TABLAS DE "+nombre_base2+"."+schema2);
 			base2.CargarTablas(connection2);
