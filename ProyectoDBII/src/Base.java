@@ -112,12 +112,16 @@ public class Base {
 		try {
 			DatabaseMetaData metaData = connection.getMetaData();
 			resultSetProc = metaData.getProcedures(null,this.nombre, null);
+			int i = 0;
 			while(resultSetProc.next()) {
 				Procedure nuevoP = new Procedure(resultSetProc.getString(3));
 				nuevoP.setSchema(this.nombre);
 				nuevoP.Cargar(connection);
 				this.listaProcedures.add(nuevoP);
+				System.out.println("agregado el procedures nro "+i);
+				i++;
 			}
+			
 		} catch (SQLException e) {
 			System.out.println("error durante extraccion de las tablas de la base "+this.nombre);	
 			System.out.println(e.toString());
@@ -259,14 +263,18 @@ public class Base {
 
 		
 //------------------------------------------------------------------------------------------------------------------
+		
 		LinkedList<Procedure> proceduresUnicosThis=this.ObtenerProceduresPropios(other);
 		LinkedList<Procedure> proceduresUnicosOther=other.ObtenerProceduresPropios(this);
 		if(proceduresUnicosThis.size()==0&&proceduresUnicosOther.size()==0) {
 			System.out.println("NINGUNA BASE POSEE TABLAS EXCLUSIVAS");
 		}
-
-		System.out.println("LOS SIGUIENTES PROCEDURES SE ENCUENTRAN EN AMBAS BASES");
+		
 		LinkedList<String> proceduresEnComun = this.ObtenerProceduresComunes(other);
+		if(proceduresEnComun.size()>0) {
+			System.out.println("LOS SIGUIENTES PROCEDURES SE ENCUENTRAN EN AMBAS BASES");
+		}
+			
 		iter = proceduresEnComun.iterator();
 		while (iter.hasNext()) {
 			String nombreProcedureComun= iter.next();
@@ -297,8 +305,9 @@ public class Base {
 
 
 
-	private Procedure obtenerProcedure(String nombreProcedureComun) {
+	private Procedure obtenerProcedure(String nombre) {
 		Procedure res;
+		System.out.println("TAMAÑO LISTA PROCEDURES "+this.listaProcedures.size());
 		Iterator<Procedure> iter = this.listaProcedures.iterator();
 		while(iter.hasNext()) {
 			res = iter.next();

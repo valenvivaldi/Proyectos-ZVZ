@@ -58,6 +58,7 @@ public class Main {
 		//	System.out.println("INICIA CARGA DE TABLAS DE "+nombre_base1+"."+schema1);
 			base1.CargarTablas(connection1);
 			base1.CargarCatalogo(connection1);
+			base1.CargarProcedures(connection1);
 			//System.out.println(" tablas de la base de datos ");
 		//	base1.imprimirBase();
 		
@@ -66,7 +67,8 @@ public class Main {
 	//		System.out.println("INICIA CARGA DE TABLAS DE "+nombre_base2+"."+schema2);
 			base2.CargarTablas(connection2);
 			base2.CargarCatalogo(connection2);
-		//	System.out.println(" tablas de la base de datos ");
+			base2.CargarProcedures(connection2);
+			//	System.out.println(" tablas de la base de datos ");
 			//base2.imprimirBase();
 			
 			base1.CompararBases(base2);

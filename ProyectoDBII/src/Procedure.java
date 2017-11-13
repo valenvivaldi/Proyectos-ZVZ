@@ -85,7 +85,7 @@ public class Procedure {
 		
 		Iterator<ParametroProcedure> iterParametro = parametrosThisPropios.iterator();
 		if(parametrosThisPropios.size()>0) {
-			System.out.println("LOS SIGUIENTES PARAMETROS SE ENCUENTRAN SOLO EN PROCEDIMIENTO "+this.getNombre());	
+			System.out.println("LOS SIGUIENTES PARAMETROS SE ENCUENTRAN SOLO EN PROCEDIMIENTO "+this.getNombre()+"de la base "+db1);	
 		}
 		
 		
@@ -96,7 +96,7 @@ public class Procedure {
 		}
 		
 		if(parametrosOtherPropios.size()>0) {
-			System.out.println("LOS SIGUIENTES PARAMETROS SE ENCUENTRAN SOLO EN PROCEDIMIENTO "+other.getNombre());	
+			System.out.println("LOS SIGUIENTES PARAMETROS SE ENCUENTRAN SOLO EN PROCEDIMIENTO "+other.getNombre()+"de la base "+db2);	
 		}
 		
 		iterParametro = parametrosOtherPropios.iterator();
@@ -109,7 +109,7 @@ public class Procedure {
 		
 	}	
 
-	private ParametroProcedure obtenerParametro(String parametrosEnComun) {
+	private ParametroProcedure obtenerParametro(String nombre) {
 		ParametroProcedure res;
 		Iterator<ParametroProcedure> iter = this.listaParametros.iterator();
 		while(iter.hasNext()) {
